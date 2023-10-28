@@ -1,0 +1,1 @@
+export { assertIsTupleable } from './assertIsTupleable';

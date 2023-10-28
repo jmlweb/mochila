@@ -1,0 +1,1 @@
+export { intoChunks } from './intoChunks';

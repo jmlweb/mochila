@@ -1,0 +1,1 @@
+export { assertIsDate } from './assertIsDate';

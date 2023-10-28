@@ -1,0 +1,1 @@
+export { assertIsObject } from './assertIsObject';

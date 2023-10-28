@@ -1,0 +1,1 @@
+export { assertIsFunction } from './assertIsFunction';

@@ -1,0 +1,1 @@
+export { deleteAt } from './deleteAt';
