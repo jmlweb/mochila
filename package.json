@@ -1,7 +1,7 @@
 {
   "name": "@jmlweb/mochila",
   "version": "0.0.1",
-  "description": "A collection of utilities with TypeScript support",
+  "description": "A set of utilities with (as much as we can) TypeScript support",
   "author": "José Manuel Lucas",
   "license": "MIT",
   "files": [

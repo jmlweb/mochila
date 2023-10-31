@@ -1,14 +1,14 @@
 import { toString } from '../toString';
-import { mapObject } from './mapObject';
+import { mapObjectWith } from './mapObjectWith';
 
-describe('mapObject', () => {
+describe('mapObjectWith', () => {
   it('should map object values preserving keys', () => {
     const obj = {
       a: 1,
       b: 2,
     };
 
-    const result = mapObject((value: number) => value + 1)(obj);
+    const result = mapObjectWith(obj)((value: number) => value + 1);
 
     expect(result).toEqual({
       a: 2,
@@ -22,9 +22,9 @@ describe('mapObject', () => {
       b: '2',
     };
 
-    const result = mapObject((value: string | number) =>
+    const result = mapObjectWith(obj)((value: string | number) =>
       typeof value === 'number' ? value + 1 : value + '1',
-    )(obj);
+    );
 
     expect(result).toEqual({
       a: 2,
@@ -38,7 +38,7 @@ describe('mapObject', () => {
       b: '2',
     } as const;
 
-    const result = mapObject(toString<1 | '2'>)(obj);
+    const result = mapObjectWith(obj)(toString);
 
     expect(result).toEqual({
       a: 1,

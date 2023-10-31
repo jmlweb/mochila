@@ -1,0 +1,1 @@
+export { mapObjectWith } from './mapObjectWith';

@@ -1,11 +1,9 @@
-import { SubTypeOr } from '../types';
-
 export const mapObject =
-  <K extends string, From, To>(transformation: (v: From, key: K) => To) =>
-  <Input extends Record<K, From>>(obj: Input) =>
+  <From, To>(transformation: (x: From) => To) =>
+  <K extends string>(obj: Record<K, From>) =>
     Object.fromEntries(
       Object.entries(obj).map(([key, val]) => [
         key,
-        transformation(val as From, key as K),
+        transformation(val as From),
       ]),
-    ) as SubTypeOr<Input, Record<keyof Input, To>>;
+    ) as Record<K, To>;
