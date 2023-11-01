@@ -41,7 +41,7 @@ describe('mapObjectWith', () => {
     const result = mapObjectWith(obj)(toString);
 
     expect(result).toEqual({
-      a: 1,
+      a: '1',
       b: '2',
     });
   });

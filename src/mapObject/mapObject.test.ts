@@ -41,7 +41,7 @@ describe('mapObject', () => {
     const result = mapObject(toString<1 | '2'>)(obj);
 
     expect(result).toEqual({
-      a: 1,
+      a: '1',
       b: '2',
     });
   });

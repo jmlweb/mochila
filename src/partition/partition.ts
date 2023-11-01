@@ -1,4 +1,3 @@
-import { isString } from '../isString';
 import { ProtectIfNonEmptyArray } from '../types';
 
 export const partition =
@@ -18,6 +17,3 @@ export const partition =
       ProtectIfNonEmptyArray<A>,
     ];
   };
-
-const result = partition(isString)([1, 2, 3, 4, 5, 6, 'a'] as const);
-const result2 = ([1, 2, 3, 4, 5, 6, 'a'] as const).filter(isString);

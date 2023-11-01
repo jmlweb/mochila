@@ -14,3 +14,5 @@ export type IsUnion<T, C = T> = T extends C
     ? false
     : true
   : never;
+
+export type IsWide<W, O> = IfExtends<W, O>;
