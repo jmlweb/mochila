@@ -4,6 +4,8 @@ describe('pipe', () => {
   const add = (x: number) => (y: number) => x + y;
   const multiply = (x: number) => (y: number) => x * y;
   const divide = (x: number) => (y: number) => y / x;
+  const strLength = (str: string) => str.length;
+  const identity = <T>(x: T) => x;
 
   const add5 = add(5);
   const multiplyBy2 = multiply(2);
@@ -16,10 +18,13 @@ describe('pipe', () => {
   });
 
   it('should infer types properly', () => {
-    const strLength = (str: string) => str.length;
-
     const piped = pipe(strLength, add5, multiplyBy2, (x) => [x]);
 
     expect(piped('hello')).toEqual([20]);
+  });
+
+  it('should work with generics', () => {
+    const piped = pipe(identity<string>, strLength, add5);
+    expect(piped('hello')).toEqual(10);
   });
 });

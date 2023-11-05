@@ -1,1 +1,0 @@
-export { assertIsDate } from './assertIsDate';

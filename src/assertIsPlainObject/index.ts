@@ -1,1 +1,0 @@
-export { assertIsPlainObject } from './assertIsPlainObject';

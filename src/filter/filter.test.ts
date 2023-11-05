@@ -1,4 +1,4 @@
-import { isString } from '../isString';
+import { isString } from '../is';
 import { filter } from './filter';
 
 describe('filter', () => {

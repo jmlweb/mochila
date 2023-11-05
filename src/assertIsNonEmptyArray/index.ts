@@ -1,1 +1,0 @@
-export { assertIsNonEmptyArray } from './assertIsNonEmptyArray';

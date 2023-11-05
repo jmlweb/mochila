@@ -1,1 +1,0 @@
-export { assertIsFunction } from './assertIsFunction';

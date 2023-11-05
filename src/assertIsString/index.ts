@@ -1,1 +1,0 @@
-export { assertIsString } from './assertIsString';

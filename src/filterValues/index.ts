@@ -1,1 +1,0 @@
-export { filterValues } from './filterValues';

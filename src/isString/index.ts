@@ -1,1 +1,0 @@
-export { isString } from './isString';

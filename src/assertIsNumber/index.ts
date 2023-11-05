@@ -1,1 +1,0 @@
-export { assertIsNumber } from './assertIsNumber';

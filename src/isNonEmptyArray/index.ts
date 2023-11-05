@@ -1,1 +1,0 @@
-export { isNonEmptyArray } from './isNonEmptyArray';
