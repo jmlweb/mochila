@@ -6,7 +6,7 @@ import { Assertion } from '../types';
  * @param x The input to be asserted.
  * @throws An error if the input is not an array.
  */
-export const assertIsArray: Assertion<ReadonlyArray<unknown>> = (x) => {
+export const assertIsArray: Assertion<Array<unknown>> = (x) => {
   if (!isArray(x)) {
     throw new Error('Expected an array');
   }
