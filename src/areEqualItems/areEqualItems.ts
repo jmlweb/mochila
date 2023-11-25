@@ -4,9 +4,10 @@ type AreEqualItems<S extends ReadonlyArray<unknown>> = S['length'] extends 0
 
 /**
  * Determines if all items in the given array are equal.
- * @template S The type of the input array.
- * @param {S} source The input array to check.
- * @returns {AreEqualItems<S>} A boolean indicating if all items in the array are equal.
+ *
+ * @example
+ * areEqualItems([1, 1, 1]) // true
+ * areEqualItems([1, 2, 3]) // false
  */
 export const areEqualItems = <S extends ReadonlyArray<unknown>>(
   source: S,

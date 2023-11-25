@@ -1,0 +1,1 @@
+export { reduceRight } from './reduceRight';

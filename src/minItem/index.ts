@@ -1,0 +1,1 @@
+export { minItem } from './minItem';

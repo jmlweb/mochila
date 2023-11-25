@@ -1,6 +1,6 @@
 /**
- * Returns a function that adds a number to the given value.
- * @param {number} a The number to add to.
- * @returns {function} A function that takes a number and returns the sum of a and that number.
+ * Curried function that adds two numbers.
+ *
+ * @example add(1)(2) // 3
  */
 export const add = (a: number) => (b: number) => a + b;

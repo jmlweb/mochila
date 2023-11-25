@@ -1,0 +1,1 @@
+export { firstItem } from './firstItem';
