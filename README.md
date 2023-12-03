@@ -11,7 +11,7 @@ The functions are written with a "data last" philosophy, so they can be easily c
 For the same reason, the functions are curried when needed, so they can be partially applied.
 
 ```typescript
-import { length, multiply, pipe } from '@jmlweb/mochila';
+import { length, multiply, pipe } from 'mochila-ts';
 
 const doubleLength = pipe(length, multiply(2));
 

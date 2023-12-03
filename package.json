@@ -1,5 +1,5 @@
 {
-  "name": "@jmlweb/mochila",
+  "name": "mochila-ts",
   "version": "0.0.1",
   "description": "A set of utilities with (as much as we can) TypeScript support",
   "author": "José Manuel Lucas",
