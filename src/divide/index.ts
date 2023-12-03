@@ -1,1 +1,2 @@
-export { divide, divideBy } from './divide';
+export { divide } from './divide';
+export { divideBy } from './divideBy';

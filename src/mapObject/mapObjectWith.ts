@@ -1,9 +1,17 @@
 /**
  * Maps an object's values to a new set of values using a transformation function.
- * @template From - The type of the values in the source object.
- * @template Source - The type of the source object.
- * @param {Source} source - The object to map.
- * @returns {function} A function that takes a transformation function and returns a new object with the mapped values.
+ *
+ * The type of the result is an object preserving the keys and inferring the type of each value based on the transformation function.
+ *
+ * @category Object
+ *
+ * @example
+ * ```
+ * const obj = { a: 1, b: 2, c: 3 };
+ * const double = (x: number) => x * 2;
+ * const a = mapObjectWith(obj)(double); // { a: 2, b: 4, c: 6 }
+ * // type { a: number, b: number, c: number }
+ * ```
  */
 export const mapObjectWith =
   <From, Source extends Record<string, From>>(source: Source) =>

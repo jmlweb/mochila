@@ -1,7 +1,14 @@
 /**
- * Returns a function that checks if all the elements in the `searched` array are included in the `source` array.
- * @param searched - The array of elements to search for.
- * @returns A function that takes an array and returns a boolean indicating if all the elements in `searched` are included in it.
+ * Checks if all items in the searched array are included in the source array.
+ *
+ * @category Array
+ *
+ * @example
+ * ```
+ * includesItems([1, 2])([1, 2, 3]); // => true
+ * includesItems([1, 2])([2, 3]); // => false
+ * includesItems([{}])([{}]); // => false, because they hold different references
+ * ```
  */
 export const includesItems =
   (searched: ReadonlyArray<unknown>) => (source: ReadonlyArray<unknown>) =>

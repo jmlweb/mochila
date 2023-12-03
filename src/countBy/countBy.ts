@@ -2,9 +2,21 @@ import { toString } from '../toString';
 import { Stringifiable, ToString } from '../types';
 
 /**
- * Returns an object with the count of occurrences of each stringified value returned by the provided function.
- * @param {function} fn A function that maps each element in the input array to a stringifiable value.
- * @returns {function} A function that receives array of `From` and returns an object with the count of occurrences of each stringified value returned by the provided function.
+ * Counts the occurrences of each value in an array.
+ *
+ * - The values are converted to strings before being counted.
+ * - The result is an object whose keys are the values and whose values are the number of occurrences.
+ *
+ * @category Array
+ *
+ * @example
+ * ```
+ * const a = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+ * const isEven = (x: number) => x % 2 === 0;
+ * const b = countBy(isEven)(a);
+ * console.log(b); // { 'false': 5, 'true': 4 }
+ * ```
+ *
  */
 export const countBy =
   <From, To extends Stringifiable>(fn: (item: From) => To) =>

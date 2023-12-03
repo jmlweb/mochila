@@ -1,11 +1,29 @@
 import { isArray, isFunction, isPlainObject } from '../is';
 
 /**
- * Returns a non-deep copy of the provided value.
+ * Returns a non-deep copy of the provided value in the following way:
  *
- * @template T The type of the value to be cloned.
- * @param {T} value - The value to be cloned.
- * @returns {T} A non-deep copy of the provided value.
+ * - If the provided value is an array, a shallow copy of the array is returned.
+ * - If the provided value is an object, a shallow copy of the object is returned.
+ * - If the provided value is a function, a function that returns the same value is returned.
+ * - Otherwise, the provided value is returned as-is.
+ *
+ * @category Array
+ * @category Object
+ * @category Function
+ *
+ * @typeParam T - The type of the value to be cloned.
+ * @param value - The value to be cloned.
+ * @returns A non-deep copy of the provided value.
+ *
+ * @example
+ * ```
+ * const a = [1, 2, 3];
+ * const b = clone(a);
+ * b[0] = 4;
+ * console.log(a); // [1, 2, 3]
+ * console.log(b); // [4, 2, 3]
+ * ```
  */
 export const clone = <T>(value: T): T => {
   if (isArray(value)) {

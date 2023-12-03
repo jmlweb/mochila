@@ -12,12 +12,21 @@ const isPromise = <T>(value: unknown): value is Promise<T> =>
   value instanceof Promise;
 
 /**
- * Protects a function or promise from throwing errors.
- * @template A - The function's arguments.
- * @template R - The function's return type.
- * @template T - The resulting type of the protected function.
- * @param {function} fn - The function to protect.
- * @returns {function} A function that returns a result object with a success flag and either the function's return/resolved value or the error object.
+ * Protects a function from throwing errors by returning a `Result` object.
+ * - The `success` property indicates whether the function succeeded or not.
+ * - The `data` property contains the return value of the function if it succeeded.
+ * - The `error` property contains the error thrown by the function if it failed.
+ * - If the function returns a promise, the `data` and `error` properties will contain the resolved value and the rejected error respectively.
+ *
+ * @category Function
+ *
+ * @example
+ * ```
+ * const okFn = () => 'ok';
+ * const errorFn = () => { throw new Error('error') };
+ * const okResult = protect(okFn)(); // { success: true, data: 'ok' }
+ * const errorResult = protect(errorFn)(); // { success: false, error: Error('error') }
+ * ```
  */
 export const protect =
   <

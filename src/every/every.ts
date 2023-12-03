@@ -1,9 +1,15 @@
 /**
- * Returns true if every element in the array satisfies the provided testing function.
+ * Checks if every element in an array passes a given predicate.
  *
- * @template A The type of the elements in the array.
- * @param {function} fn The testing function.
- * @returns {function} A function that takes an array of type `A` and returns a boolean.
+ * @category Array
+ *
+ * @example
+ * ```
+ * const areAllPositive = every((x: number) => x > 0);
+ * const a = areAllPositive([1, 2, 3]); // true
+ * const b = areAllPositive([-1, 0, 1]); // false
+ * ```
+ *
  */
 export const every =
   <A>(fn: (value: A) => boolean) =>

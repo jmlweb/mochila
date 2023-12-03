@@ -7,8 +7,19 @@ type AssertIsNonEmptyArray = <T>(
 
 /**
  * Asserts that the input is a non-empty array.
- * @param {ReadonlyArray<T>} x The value to be asserted.
- * @throws {Error} If the value is null or undefined.
+ *
+ * @category Assertion
+ *
+ * @param x - The value to be asserted.
+ * @throws An error if the input is not an array or it is empty.
+ *
+ * @example
+ * ```
+ * const fn = (x: number[]) => {
+ *   assertIsNonEmptyArray(x); // throws an error if x is not an array or it is empty
+ *   return x; // x has inferred type NonEmptyArray<number>
+ * }
+ * ```
  */
 export const assertIsNonEmptyArray: AssertIsNonEmptyArray = (x) => {
   if (!isNonEmptyArray(x)) {

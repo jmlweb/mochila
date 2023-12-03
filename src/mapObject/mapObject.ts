@@ -1,9 +1,19 @@
 /**
  * Maps an object's values to a new type using a transformation function.
- * @template From The original type of the object's values.
- * @template To The new type of the object's values.
- * @param {function} transformation The function used to transform the object's values.
- * @returns {function} A function that takes an object and returns a new object with the transformed values.
+ *
+ * The type of the result is a Record where the keys are the same as the original object and the values are a union of all the possible types that the transformation function can return.
+ *
+ * If you know the type of the object on anticipation, you can use the `mapObjectWith` function that will preserve the exact type for each value.
+ *
+ * @category Object
+ *
+ * @example
+ * ```
+ * const obj = { a: 1, b: 2, c: 3 };
+ * const double = (x: number) => x * 2;
+ * const a = mapObject(double)(obj); // { a: 2, b: 4, c: 6 }
+ * // type Record<"a" | "b" | "c", number>
+ * ```
  */
 export const mapObject =
   <From, To>(transformation: (x: From) => To) =>

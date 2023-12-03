@@ -1,8 +1,16 @@
 /**
  * Returns a new array with unique values from the source array.
- * @template V - The type of the elements in the source array.
- * @param {ReadonlyArray<V>} source - The source array.
- * @returns {V[]} A new array with unique values.
+ *
+ * @category Array
+ *
+ * @typeParam V - The type of the elements in the source array.
+ * @param source - The source array.
+ * @returns A new array with unique values.
+ *
+ * @example
+ * ```
+ * unique([1, 2, 3, 2, 1]) // [1, 2, 3]
+ * ```
  */
 export const unique = <V>(source: ReadonlyArray<V>) =>
   Array.from(new Set(source));

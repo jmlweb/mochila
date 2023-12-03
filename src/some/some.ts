@@ -1,8 +1,14 @@
 /**
  * Returns true if at least one element in the array satisfies the provided testing function.
- * @template A The type of the elements in the array.
- * @param {function} fn A function to test for each element, taking an argument of the element and returning a boolean.
- * @returns {function} A function that takes an array of type S and returns a boolean.
+ *
+ * @category Array
+ *
+ * @example
+ * ```
+ * const source = [1, 2, 3];
+ * const fn = (value: number) => value > 2;
+ * some(fn)(source) // true
+ * ```
  */
 export const some =
   <A>(fn: (value: A) => boolean) =>

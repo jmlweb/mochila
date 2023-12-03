@@ -1,5 +1,4 @@
 export * from './add';
-export * from './areEqualItems';
 export * from './assert';
 export * from './at';
 export * from './capitalize';
@@ -23,6 +22,7 @@ export * from './findLastIndex';
 export * from './firstItem';
 export * from './flatten';
 export * from './groupBy';
+export * from './hasEqualItems';
 export * from './hasRepeatedItems';
 export * from './identity';
 export * from './includes';

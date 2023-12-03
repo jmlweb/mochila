@@ -2,9 +2,15 @@ import { RejectValues } from '../types';
 
 /**
  * Filters the values in the source array that are not included in the values array.
- * @template V The type of the values array.
- * @param {ReadonlyArray<V>} values The array of values to reject.
- * @returns {function} A function that takes an array of type S and returns a new array without V.
+ *
+ * @category Array
+ *
+ * @example
+ * ```
+ * const source = [1, 2, 3];
+ * const values = [2, 3];
+ * rejectValues(values)(source) // [1]
+ * ```
  */
 export const rejectValues =
   <V>(values: ReadonlyArray<V>) =>

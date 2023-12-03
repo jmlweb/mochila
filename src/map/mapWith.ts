@@ -1,13 +1,16 @@
 import { NonEmptyArray } from '../types';
 
 /**
- * Applies a transformation function to each element of an array and returns a new array with the transformed elements.
- * @template From The type of the elements in the input array.
- * @template Source The type of the input array.
- * @template To The type of the elements in the output array.
- * @param {Source} source The input array.
- * @param {(function} transformation The transformation function to apply to each element.
- * @returns The output array with the transformed elements.
+ * Applies a transformation function over each element of an array and returns a new array with the transformed elements.
+ *
+ * Because the array is supplied in first place, the type of the argument of the transformation function is inferred.
+ *
+ * @category Array
+ *
+ * @example
+ * ```
+ * mapWith([1, 2, 3])((x) => x * 2); // [2, 4, 6]
+ * ```
  */
 export const mapWith =
   <From, Source extends ReadonlyArray<From>>(source: Source) =>

@@ -1,10 +1,14 @@
 import { UnknownRecord } from '../types';
 
 /**
- * Returns a new object with only the specified keys from the input object.
- * @template K - The keys to pick from the input object.
- * @param {K[]} keys - The keys to pick from the input object.
- * @returns {function} A function that takes an object and returns a new object with only the specified keys from the input object.
+ * Creates a new object by picking specific properties from an existing object.
+ *
+ * @category Object
+ *
+ * @example
+ * ```
+ * pick(['a', 'b'])({ a: 1, b: 2, c: 3 }) // { a: 1, b: 2 }
+ * ```
  */
 export const pick =
   <K extends keyof UnknownRecord>(keys: K[]) =>

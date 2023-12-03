@@ -1,7 +1,18 @@
 import { reverse } from '../reverse';
 
 /**
- * Returns the index of the last element in the array that satisfies the provided testing function.
+ * Finds the index of the last element in the source array that satisfies the provided predicate function.
+ *
+ * Returns `-1` if no element satisfies the predicate.
+ *
+ * @category Array
+ *
+ * @example
+ * ```
+ * const findLastPositiveIndex = findLastIndex((x: number) => x > 0);
+ * const a = findLastPositiveIndex([1, 2, 3]); // 2
+ * const b = findLastPositiveIndex([-1, 0, -2]); // -1
+ * ```
  */
 export const findLastIndex =
   <Item>(predicate: (item: Item) => boolean) =>

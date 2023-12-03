@@ -1,5 +1,5 @@
 import { And, Complement, Or } from '../boolean';
-import { IfElse, IsExtending } from '../helpers';
+import { IfElse, IsExtending } from '../extends';
 import { Absolute, IsNegative } from '../number';
 import { IsNonEmptyArray, ProtectIfNonEmptyArray } from './arrayHelpers';
 

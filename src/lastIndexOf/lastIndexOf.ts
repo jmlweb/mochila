@@ -3,6 +3,10 @@ import { reverse } from '../reverse';
 /**
  * Returns the last index at which a given value can be found in an array.
  *
+ * If the value is not found, `-1` is returned.
+ *
+ * @category Array
+ *
  * @example
  * const arr = [1, 2, 3, 4, 2, 5];
  * lastIndexOf(2)(arr); // 4

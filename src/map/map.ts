@@ -1,9 +1,14 @@
 /**
  * Applies a transformation function to each element of an array and returns a new array with the transformed elements.
- * @template From The type of the elements in the source array.
- * @template To The type of the elements in the resulting array.
- * @param {function} transformation A function that transforms an element from type `From` to type `To`.
- * @returns {function} A function that takes an array of type `From` and returns an array of type `To`.
+ *
+ * Because the transformation function is supplied in first place, the type of the array is inferred. The argument of the transformation function must be specified.
+ *
+ * @category Array
+ *
+ * @example
+ * ```
+ * map((x: number) => x * 2)([1, 2, 3]); // [2, 4, 6]
+ * ```
  */
 export const map =
   <From, To>(transformation: (x: From) => To) =>

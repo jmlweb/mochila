@@ -1,7 +1,7 @@
 module.exports = {
-  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
-  plugins: ['simple-import-sort'],
   root: true,
+  plugins: ['simple-import-sort'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   env: {
     node: true,
     es6: true,
@@ -10,11 +10,16 @@ module.exports = {
     'prettier/prettier': 'error',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
+    'tsdoc/syntax': 'warn',
   },
   overrides: [
     {
       files: ['**/*.ts', '**/*.tsx'],
-      plugins: ['@typescript-eslint', 'simple-import-sort'],
+      plugins: [
+        '@typescript-eslint',
+        'simple-import-sort',
+        'eslint-plugin-tsdoc',
+      ],
       extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',

@@ -1,6 +1,11 @@
 /**
- * Returns the result of subtracting b from a.
- * @param b The subtrahend number.
- * @returns A function that takes a minuend number and returns the difference.
+ * Returns the result of subtracting a from b.
+ *
+ * @category Number
+ *
+ * @example
+ * ```
+ * subtractBy(1)(2) // 1
+ * ```
  */
-export const subtractBy = (b: number) => (a: number) => a - b;
+export const subtractBy = (a: number) => (b: number) => b - a;

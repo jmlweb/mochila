@@ -1,6 +1,11 @@
 /**
- * Curried function that adds two numbers.
+ * Adds two numbers.
  *
- * @example add(1)(2) // 3
+ * @category Number
+ *
+ * @example
+ * ```
+ * add(1)(2) // 3
+ * ```
  */
 export const add = (a: number) => (b: number) => a + b;

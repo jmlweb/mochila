@@ -7,7 +7,8 @@ describe('omit', () => {
       a: 1,
       '3': 'c',
     } as const;
-    const result = omit(['a', '3'])(source);
+    const omitted = ['a', '3'];
+    const result = omit(omitted)(source);
     const expected = {
       b: 2,
     };

@@ -1,5 +1,18 @@
 import { AnyFn } from '../types';
 
+/**
+ * Composes multiple functions into a single function that can be called with multiple arguments.
+ *
+ * @category Function
+ *
+ * @example
+ * ```
+ * const add = (a: number, b: number) => a + b;
+ * const byTwo = (x: number) => x * 2;
+ * const composedFn = pipe(add, byTwo);
+ * composedFn(1, 2) // 6
+ * ```
+ */
 export function pipe<A extends unknown[], R>(fn1: (...x: A) => R): typeof fn1;
 
 export function pipe<A extends unknown[], B, R>(
@@ -70,11 +83,6 @@ export function pipe<A extends unknown[], B, C, D, E, F, G, H, I, R>(
   fn9: (x: I) => R,
 ): (...a: A) => R;
 
-/**
- * Composes multiple functions into a single function that can be called with multiple arguments.
- * @param fns The functions to compose.
- * @returns A new function that is the right composition of the input functions.
- */
 export function pipe(...fns: AnyFn[]) {
   return (...x: unknown[]) => {
     const initial = fns[0]!(...x);

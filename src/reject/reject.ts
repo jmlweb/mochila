@@ -1,8 +1,14 @@
 /**
- * Returns a new array with all the elements that do not satisfy the provided testing function.
+ * Rejects all the elements of an array that satisfy the condition specified in a callback function.
  *
- * @param {function} fn - The testing function.
- * @returns A function that takes an array of type V and returns a new array of type V.
+ * @category Array
+ *
+ * @example
+ * ```
+ * const source = [1, 2, 3];
+ * const predicate = (x: number) => x % 2 === 0;
+ * reject(predicate)(source) // [1, 3]
+ * ```
  */
 export const reject =
   <V>(fn: (x: V) => boolean) =>

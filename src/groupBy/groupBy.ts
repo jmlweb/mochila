@@ -3,10 +3,14 @@ import { ProtectIfNonEmptyArray, Stringifiable, ToString } from '../types';
 
 /**
  * Groups an array of items by a key returned by a mapping function.
- * @template From The type of the items in the input array.
- * @template To The type of the key returned by the mapping function.
- * @param {(x: From) => To} fn A function that maps an item to a key.
- * @returns A function that takes an array of items and returns an object whose keys are the result of applying the mapping function to each item, and whose values are arrays of items that share the same key.
+ *
+ * @category Array
+ *
+ * @example
+ * ```
+ * const getLength = (item: string) => item.length;
+ * groupBy(getLength)(['a', 'bb', 'c', 'dd']); // => { '1': ['a', 'c'], '2': ['bb', 'dd'] }
+ * ```
  */
 export const groupBy =
   <From, To extends Stringifiable>(fn: (item: From) => To) =>

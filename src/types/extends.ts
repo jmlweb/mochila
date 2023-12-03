@@ -1,3 +1,5 @@
+export type IsExtending<A, B> = A extends B ? true : false;
+
 export type IfExtends<A, B, T = true, F = false> = A extends B ? T : F;
 
 export type IfElse<Cond extends boolean, Then, Else> = IfExtends<

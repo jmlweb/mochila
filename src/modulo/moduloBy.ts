@@ -1,6 +1,14 @@
 /**
- * Returns the remainder of a number divided by another number.
- * @param b The divisor number.
- * @returns A function that takes a number and returns the remainder of that number divided by the divisor.
+ * Curried function that takes two numbers and returns the remainder of the division of the second by the first one.
+ *
+ * @category Number
+ *
+ * @example
+ * ```
+ * modulo(5)(2) // 2
+ * modulo(2)(5) // 1
+ * modulo(-1)(2) // 0
+ * modulo(2)(-4) // -0
+ * ```
  */
-export const moduloBy = (b: number) => (a: number) => a % b;
+export const moduloBy = (a: number) => (b: number) => b % a;

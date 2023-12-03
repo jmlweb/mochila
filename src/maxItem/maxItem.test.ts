@@ -14,7 +14,7 @@ describe('maxItem', () => {
   });
 
   it('should return undefined for an empty array', () => {
-    const emptyArray: number[] = [];
+    const emptyArray = [] as const;
     const result = maxItem(emptyArray);
     expect(result).toBeUndefined();
   });

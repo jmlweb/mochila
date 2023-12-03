@@ -26,3 +26,10 @@ export type ProtectIfNonEmptyArray<
 export type ChunksFrom<S extends ReadonlyArray<unknown>> = BiReadonlyArray<
   S[number]
 >;
+
+export type ExtractItem<S extends ReadonlyArray<unknown>> =
+  S[number] extends undefined
+    ? undefined
+    : S[number] extends infer V
+    ? V | undefined
+    : S[number] | undefined;

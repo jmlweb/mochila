@@ -4,9 +4,18 @@ type Subscriber<V> = (data: V) => void;
 
 /**
  * Creates a Subscription object that allows subscribing, unsubscribing, notifying and resetting subscribers.
- * @template V The type of data that will be passed to the subscribers.
- * @param {Subscriber<V>[]} [initialSubscribers=[]] An optional array of initial subscribers.
- * @returns {Object} An object with methods to manage subscribers.
+ *
+ * @category Subscription
+ *
+ * @example
+ * ```
+ * const subscription = Subscription();
+ * const subscriber = (data: string) => console.log(data);
+ * subscription.subscribe(subscriber);
+ * subscription.notify('Hello, world!'); // 'Hello, world!'
+ * subscription.unsubscribe(subscriber);
+ * subscription.notify('Hello, world!'); // (nothing)
+ * ```
  */
 export const Subscription = <V>(initialSubscribers: Subscriber<V>[] = []) => {
   const subscribers: Subscriber<V>[] = initialSubscribers;

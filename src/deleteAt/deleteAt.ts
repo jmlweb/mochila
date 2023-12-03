@@ -2,9 +2,21 @@ import { DeleteAt } from '../types';
 
 /**
  * Returns a new array with the element at the specified position removed.
- * @template P - The position of the element to remove.
- * @param {P} position - The position of the element to remove.
- * @returns {function} A curried function that takes an array and returns a new array with the element at the specified position removed.
+ *
+ * - If the position is negative, the element will be removed from the end of the array.
+ * - If the position is out of bounds, a new array with the same elements will be returned.
+ *
+ * @category Array
+ *
+ * @see {@link DeleteAt}
+ *
+ * @example
+ * ```
+ * const a = [1, 2, 3, 4, 5];
+ * const b = deleteAt(2)(a); // [1, 2, 4, 5]
+ * const c = deleteAt(-2)(a); // [1, 2, 3, 5]
+ * const d = deleteAt(10)(a); // [1, 2, 3, 4, 5]
+ * ```
  */
 export const deleteAt =
   <P extends number>(position: P) =>

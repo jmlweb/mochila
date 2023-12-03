@@ -2,10 +2,19 @@ import { Chunkify } from '../types';
 
 /**
  * Returns an array of arrays, where each subarray contains a maximum of `chunkSize` elements from the input `source` array.
+ *
  * If `chunkSize` is less than or equal to 0, the entire `source` array is returned as a single chunk.
- * @template N - The size of each chunk.
- * @param {N} chunkSize - The maximum number of elements in each chunk.
- * @returns {function} A function that receives an array and returns an array of arrays, where each subarray contains a maximum of `chunkSize` elements from the input `source` array.
+ *
+ * @category Array
+ *
+ * @see {@link Chunkify}
+ *
+ * @example
+ * ```
+ * const a = [1, 2, 3, 4, 5, 6, 7, 8];
+ * const b = chunkify(3)(a);
+ * console.log(b); // [[1, 2, 3], [4, 5, 6], [7, 8]]
+ * ```
  */
 export const chunkify =
   <N extends number>(chunkSize: N) =>

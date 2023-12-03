@@ -1,6 +1,12 @@
 /**
- * Returns a function that divides a number by a given number.
- * @param {number} b The number to divide by.
- * @returns A function that takes a number and returns the result of dividing it by the given number.
+ * Curried function that takes two numbers and returns the second divided by the first.
+ *
+ * @category Number
+ *
+ * @example
+ * ```
+ * const a = divideBy(4)(2); // 0.5
+ * const b = divideBy(2)(4); // 2
+ * ```
  */
 export const divideBy = (b: number) => (a: number) => a / b;

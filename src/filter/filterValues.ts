@@ -1,10 +1,17 @@
 import { Filterable, FilterValues } from '../types';
 
 /**
- * Filters an array of values based on a set of filterable values.
- * @template V The type of the filterable values.
- * @param {ReadonlyArray<V>} values The filterable values.
- * @returns {function} A function that takes a source array and returns a filtered array.
+ * Return a new array with all elements that are included in the given values.
+ *
+ * @category Array
+ * @see {@link Filterable}
+ * @see {@link FilterValues}
+ *
+ * @example
+ * ```
+ * const a = filterValues([1, 2, 3])([1, 2, 3, 4, 5]); // [1, 2, 3]
+ * const b = filterValues(['a', 'b', 'c'])(['a', 'b', 'c', 'd', 'e']); // ['a', 'b', 'c']
+ * ```
  */
 export const filterValues =
   <V extends Filterable>(values: ReadonlyArray<V>) =>

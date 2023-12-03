@@ -3,7 +3,10 @@ import { Flatten } from '../types';
 /**
  * Flattens a nested array into a single-dimensional array.
  *
- * @template S - The type of the source array.
+ * @category Array
+ * @see {@link Flatten}
+ *
+ * @typeParam S - The type of the source array.
  * @param source - The array to flatten.
  * @returns The flattened array.
  *

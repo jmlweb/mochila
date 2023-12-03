@@ -1,0 +1,11 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "Mochila",
+  "entryPoints": ["./src"],
+  "sort": ["source-order"],
+  "categorizeByGroup": true,
+  "navigationLinks": {
+      "Docs": "https://github.com/jmlweb/mochila",
+      "GitHub": "https://github.com/jmlweb/mochila"
+  }
+}

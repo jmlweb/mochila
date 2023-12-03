@@ -6,10 +6,16 @@ interface Filter {
 }
 
 /**
- * Filters an array of values based on a given predicate function.
- * @template V The type of the values in the input array.
- * @param {(x: V) => boolean} fn The predicate function used to filter the input array.
- * @returns {function} A function that takes an array of values of type V and returns an array of values of type T that satisfy the predicate function.
+ * Filters an array based on a predicate function.
+ *
+ * @category Array
+ *
+ * @example
+ * ```
+ * const takePositives = filter((x: number) => x > 0);
+ * const a = takePositives([1, 2, 3]); // [1, 2, 3]
+ * const b = takePositives([-1, 0, 1]); // [1]
+ * ```
  */
 export const filter: Filter =
   <V>(fn: (x: V) => boolean) =>
