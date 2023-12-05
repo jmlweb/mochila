@@ -1,14 +1,10 @@
-# Mochila
-
-Your travel companion for (light) functional programming in TypeScript.
+# 🎒 Mochila: Your Lightweight Travel Companion for TypeScript Programming
 
 ## Philosophy
 
-The main goal of this project is to provide a set of utilities that can be used in any project, with a focus on Light Functional TypeScript support.
+At the core of Mochila's philosophy is the commitment to a "data last" approach in writing functions. This design choice enables easy composition of functions using our internal `pipe` utility.
 
-The functions are written with a "data last" philosophy, so they can be easily composed with other functions using the internal `pipe` utility.
-
-For the same reason, the functions are curried when needed, so they can be partially applied.
+Additionally, Mochila embraces currying when necessary, allowing functions to be conveniently partially applied. This flexibility enhances the overall usability of the toolkit.
 
 ```typescript
 import { length, multiply, pipe } from 'mochila-ts';
@@ -18,4 +14,28 @@ const doubleLength = pipe(length, multiply(2));
 doubleLength([1, 2, 3]); // 6
 doubleLength('abc'); // 6
 ```
+
+Mochila not only provides robust support for TypeScript but also comes equipped with handy utilities for seamlessly handling tasks such as caching and backpressuring.
+
+```typescript
+import { LRUCache } from 'mochila-ts';
+
+const cache = new LRUCache({
+  max: 100,
+  ttl: 1000 * 60 * 60 * 24,
+});
+```
+
+All the utilities are exposed as named exports from the `mochila-ts` package.
+
+## Installation
+
+```bash
+npm install mochila-ts
+# or
+yarn add mochila-ts
+# or
+pnpm add mochila-ts
+```
+
 
