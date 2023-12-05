@@ -22,6 +22,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "jest",
+    "test:coverage": "yarn test --coverage",
     "lint": "eslint -f unix \"src/**/*.{ts,tsx}\"",
     "doc": "typedoc  --out docs"
   },
