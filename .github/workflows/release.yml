@@ -8,6 +8,8 @@ permissions:
   contents: read # for checkout
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
   release:
     name: Release
     runs-on: ubuntu-latest

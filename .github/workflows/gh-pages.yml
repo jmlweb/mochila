@@ -1,6 +1,9 @@
 name: GitHub Pages
 
 on:
+  pull_request:
+    branches:
+      - main  # Set a branch name to trigger deployment
   push:
     branches:
       - main  # Set a branch name to trigger deployment
