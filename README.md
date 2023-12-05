@@ -1,4 +1,6 @@
-# 🎒 Mochila: Your Lightweight Travel Companion for TypeScript Programming
+# 🎒 Mochila
+
+Your Lightweight Travel Companion for TypeScript Programming
 
 ## Philosophy
 
