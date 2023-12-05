@@ -1,10 +1,7 @@
-name: CI
+name: Test
 
 on:
-  push:
   pull_request:
-    branches:
-      - main  # Set a branch name to trigger deployment
     
 jobs:
   build:
