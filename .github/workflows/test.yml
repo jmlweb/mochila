@@ -1,10 +1,12 @@
 name: Test
 
 on:
-  pull_request:
+  push:
+    branches:
+      - main  # Set a branch name to trigger deployment
     
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
