@@ -3,6 +3,7 @@
   "name": "Mochila",
   "entryPoints": ["./src"],
   "sort": ["kind", "alphabetical"],
+  "includeVersion": true,
   "kindSortOrder": [
     "Reference",
     "Project",
