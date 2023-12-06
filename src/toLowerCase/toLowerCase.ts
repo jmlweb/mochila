@@ -8,10 +8,10 @@
  *
  * @example
  * ```
- * toLowerCaseL('Hello, world!') // 'hello, world!'
+ * toLowerCaseW('Hello, world!') // 'hello, world!'
  * ```
  */
-export const toLowerCaseL = (s: string) => s.toLowerCase();
+export const toLowerCaseW = (s: string) => s.toLowerCase();
 
 /**
  * Converts a string to lowercase returning LowerCase<S> as type
@@ -28,4 +28,4 @@ export const toLowerCaseL = (s: string) => s.toLowerCase();
  * ```
  */
 export const toLowerCase = <S extends string>(s: S) =>
-  toLowerCaseL(s) as Lowercase<S>;
+  toLowerCaseW(s) as Lowercase<S>;

@@ -1,1 +1,1 @@
-export { toUpperCase, toUpperCaseL } from './toUpperCase';
+export { toUpperCase, toUpperCaseW as toUpperCaseL } from './toUpperCase';

@@ -1,1 +1,1 @@
-export { toString, toStringL } from './toString';
+export { toString, toStringW as toStringL } from './toString';

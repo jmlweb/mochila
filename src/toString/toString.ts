@@ -25,4 +25,4 @@ export const toString = <T extends Stringifiable>(x: T) =>
  * @param x - The value to be converted to a string.
  * @returns A string representation of the input value.
  */
-export const toStringL = (x: unknown) => `${x}`;
+export const toStringW = (x: unknown) => `${x}`;

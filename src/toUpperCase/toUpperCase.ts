@@ -8,10 +8,10 @@
  *
  * @example
  * ```
- * toUpperCaseL('Hello, world!') // 'HELLO, WORLD!'
+ * toUpperCaseW('Hello, world!') // 'HELLO, WORLD!'
  * ```
  */
-export const toUpperCaseL = (s: string) => s.toUpperCase();
+export const toUpperCaseW = (s: string) => s.toUpperCase();
 
 /**
  * Converts a string to uppercase returning Uppercase<S> as type
@@ -28,4 +28,4 @@ export const toUpperCaseL = (s: string) => s.toUpperCase();
  * ```
  */
 export const toUpperCase = <S extends string>(s: S) =>
-  toUpperCaseL(s) as Uppercase<S>;
+  toUpperCaseW(s) as Uppercase<S>;
