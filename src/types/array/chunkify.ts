@@ -1,5 +1,5 @@
 import { And, Complement, Or } from '../boolean';
-import { IfElse, IsExtending } from '../extends';
+import { IfElse, IfExtends } from '../extends';
 import { ChunksFrom, IsNonEmptyArray } from './arrayHelpers';
 
 type ProcessChunks<
@@ -21,13 +21,18 @@ type ProcessChunks<
     : ProcessChunks<N, Rest, [readonly [First]]>
   : Readonly<Acc>;
 
+/**
+ * Returns an array of chunks of length `N` from `S`.
+ *
+ * @category Array
+ */
 export type Chunkify<
   N extends number,
   S extends ReadonlyArray<unknown>,
 > = IfElse<
   Or<
     Complement<IsNonEmptyArray<S>>,
-    And<IsExtending<S['length'], N>, IsExtending<0, N>>
+    And<IfExtends<S['length'], N>, IfExtends<0, N>>
   >,
   ChunksFrom<S>,
   ProcessChunks<N, S>

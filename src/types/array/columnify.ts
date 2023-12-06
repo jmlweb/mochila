@@ -45,6 +45,18 @@ type ProcessColumnify<
     >
   : Readonly<Acc>;
 
+/**
+ * Converts a tuple type into a tuple of tuples, where each tuple is a column of
+ * the original tuple.
+ *
+ * @category Array
+ *
+ * @example
+ * ```ts
+ * type T0 = Columnify<2, [1, 2, 3, 4, 5, 6]>;
+ * //	^ = type T0 = [[1, 3, 5], [2, 4, 6]]
+ * ```
+ */
 export type Columnify<N extends number, S extends ReadonlyArray<unknown>> = Or<
   IfExtends<N, 1>,
   IsLessThan1<N>

@@ -2,6 +2,8 @@
 
 Your Lightweight Travel Companion for TypeScript Programming
 
+[Documentation](https://jmlweb.github.io/mochila/modules.html)
+
 ## Philosophy
 
 At the core of Mochila's philosophy is the commitment to a "data last" approach in writing functions. This design choice enables easy composition of functions using our internal `pipe` utility.

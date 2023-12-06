@@ -5,6 +5,11 @@ import {
   ProcessFilterValues,
 } from './filterValues';
 
+/**
+ * Returns an array of values from `S` that are not assignable to `V`.
+ *
+ * @category Array
+ */
 export type RejectValues<
   V,
   S extends ReadonlyArray<unknown>,

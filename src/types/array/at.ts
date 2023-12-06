@@ -2,6 +2,11 @@ import { SubTypeOr } from '../extends';
 import { Absolute, IsNegative, IsWideNumber } from '../number';
 import { IsNonEmptyArray, Reverse } from './arrayHelpers';
 
+/**
+ * Returns the element at index `P` in `S`.
+ *
+ * @category Array
+ */
 export type At<
   P extends number,
   S extends ReadonlyArray<unknown>,

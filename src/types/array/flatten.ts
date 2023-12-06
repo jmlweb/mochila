@@ -11,5 +11,10 @@ type ProcessFlatten<S extends ReadonlyArray<unknown>> = S extends readonly [
     : readonly [Head, ...ProcessFlatten<Tail>]
   : S;
 
+/**
+ * Flattens a nested array type.
+ *
+ * @category Array
+ */
 export type Flatten<S extends ReadonlyArray<unknown>> =
   IsNonEmptyArray<S> extends true ? ProcessFlatten<S> : FlattenValue<S>[];

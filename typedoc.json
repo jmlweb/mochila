@@ -2,10 +2,37 @@
   "$schema": "https://typedoc.org/schema.json",
   "name": "Mochila",
   "entryPoints": ["./src"],
-  "sort": ["source-order"],
-  "categorizeByGroup": true,
+  "sort": ["kind", "alphabetical"],
+  "kindSortOrder": [
+    "Reference",
+    "Project",
+    "Module",
+    "Namespace",
+    "Function",
+    "Enum",
+    "EnumMember",
+    "Class",
+    "Interface",
+    "TypeAlias",
+    "Constructor",
+    "Property",
+    "Variable",
+    "Accessor",
+    "Method",
+    "Parameter",
+    "TypeParameter",
+    "TypeLiteral",
+    "CallSignature",
+    "ConstructorSignature",
+    "IndexSignature",
+    "GetSignature",
+    "SetSignature"
+  ],
+  "categorizeByGroup": false,
   "navigationLinks": {
-      "Docs": "https://github.com/jmlweb/mochila",
+      "Docs": "https://jmlweb.github.io/mochila/",
       "GitHub": "https://github.com/jmlweb/mochila"
-  }
+  },
+  "plugin": ["@mxssfd/typedoc-theme"],
+  "theme": "my-theme"
 }

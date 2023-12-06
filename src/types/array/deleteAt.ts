@@ -1,5 +1,5 @@
 import { And, Complement, Or } from '../boolean';
-import { IfElse, IsExtending } from '../extends';
+import { IfElse, IfExtends } from '../extends';
 import { Absolute, IsNegative } from '../number';
 import { IsNonEmptyArray, ProtectIfNonEmptyArray } from './arrayHelpers';
 
@@ -28,13 +28,18 @@ type ProcessNegative<
     : never
   : Readonly<Acc>;
 
+/**
+ * Removes the element at index `N` from `S`.
+ *
+ * @category Array
+ */
 export type DeleteAt<
   N extends number,
   S extends ReadonlyArray<unknown>,
 > = IfElse<
   Or<
     Complement<IsNonEmptyArray<S>>,
-    And<IsExtending<S['length'], N>, IsExtending<0, N>>
+    And<IfExtends<S['length'], N>, IfExtends<0, N>>
   >,
   ProtectIfNonEmptyArray<S>,
   N extends unknown

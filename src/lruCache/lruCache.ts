@@ -10,7 +10,9 @@ type Item<T> = {
 };
 
 /**
- * Creates a Least Recently Used (LRU) cache. The returned object has the following methods:
+ * Creates a Least Recently Used (LRU) cache.
+ *
+ * The returned object has the following methods:
  *
  * - `delete`: Deletes an item from the cache.
  * - `get`: Returns the value of an item in the cache.

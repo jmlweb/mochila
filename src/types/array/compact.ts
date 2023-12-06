@@ -1,4 +1,4 @@
-export type ProcessCompact<
+type ProcessCompact<
   S extends ReadonlyArray<unknown>,
   Acc extends ReadonlyArray<unknown> = [],
 > = S extends readonly [infer Head, ...infer Tail]
@@ -7,6 +7,11 @@ export type ProcessCompact<
     : ProcessCompact<Tail, [...Acc, Head]>
   : Readonly<Acc>;
 
+/**
+ * Removes all `null` and `undefined` values from the given array type.
+ *
+ * @category Array
+ */
 export type Compact<S extends ReadonlyArray<unknown>> = S extends readonly [
   unknown,
   ...unknown[],
