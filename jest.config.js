@@ -8,6 +8,7 @@ module.exports = {
       statements: 85,
     },
   },
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
   preset: 'ts-jest',
   testEnvironment: 'node',
 };

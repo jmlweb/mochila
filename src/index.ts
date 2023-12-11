@@ -42,6 +42,7 @@ export * from './multiply';
 export * from './none';
 export * from './noop';
 export * from './omit';
+export * from './parsePosition';
 export * from './partition';
 export * from './pick';
 export * from './pipe';
