@@ -1,6 +1,6 @@
 {
   "name": "mochila-ts",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A set of utilities with (as much as we can) TypeScript support",
   "author": "José Manuel Lucas",
   "license": "MIT",
