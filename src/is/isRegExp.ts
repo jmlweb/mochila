@@ -15,8 +15,4 @@
  * ```
  */
 
-import { filter } from '../filter';
-
 export const isRegExp = (x: unknown): x is RegExp => x instanceof RegExp;
-
-const filterByRegExp = filter(isRegExp);

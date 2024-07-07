@@ -8,7 +8,6 @@ import { isObject } from './isObject';
  * @category Object
  * @see {@link isObject}
  *
- * @typeParam T - The type of the value to check.
  * @param x - The value to check.
  * @returns A boolean indicating whether the value is a plain object.
  *

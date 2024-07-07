@@ -7,6 +7,29 @@ import {
   isRegExp,
 } from '../is';
 
+/**
+ * Creates a function that checks if two values are deeply equal.
+ *
+ * @category Guard
+ * @see {@link https://jmlweb.github.io/mochila/functions/isDeepEqual.html}
+ *
+ * @param options - The options for deep equality comparison.
+ * @param options.optimizeForReact - Whether to optimize for React elements. Default is true.
+ * @param options.maxDepth - The maximum depth to traverse nested objects. Default is -1 (unlimited depth).
+ * @param options.strictNullComparison - Whether to strictly compare null values. Default is true.
+ * @returns A function that takes two values and returns true if they are deeply equal, false otherwise.
+ *
+ * @example
+ * ```
+ * const isDeepEqual = makeIsDeepEqual();
+ * isDeepEqual(null)(null); // true
+ * isDeepEqual(null)(undefined); // false
+ * const isDeepEqual2 = makeIsDeepEqual({ strictNullComparison: false });
+ * isDeepEqual2(null)(undefined); // true
+ * const isDeepEqual3 = makeIsDeepEqual({ maxDepth: 2 });
+ * isDeepEqual3({ a: { b: { c: 1 } } })({ a: { b: { c: 1 } } }); // false
+ * ```
+ */
 export const makeIsDeepEqual = ({
   optimizeForReact = true,
   strictNullComparison = true,

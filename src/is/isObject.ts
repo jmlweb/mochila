@@ -4,7 +4,6 @@
  * @category Guard
  * @category Object
  *
- * @typeParam T - The type of the value to check.
  * @param x - The value to check.
  * @returns True if the value is an object, false otherwise.
  *

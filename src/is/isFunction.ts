@@ -7,7 +7,6 @@ import { AnyFn } from '../types';
  * @category Function
  * @see {@link AnyFn}
  *
- * @typeParam T - The type of the value to check.
  * @param fn - The value to check.
  * @returns True if the value is a function, false otherwise.
  *

@@ -4,7 +4,6 @@
  * @category Guard
  * @category Number
  *
- * @typeParam T - The type of the value to check.
  * @param x - The value to check.
  * @returns A boolean indicating whether the value is a number or not.
  *
