@@ -15,5 +15,5 @@
  * isObject({}) // true;
  * ```
  */
-export const isObject = <T>(x: T): x is Extract<T, object> =>
+export const isObject = (x: unknown): x is object =>
   typeof x === 'object' && x !== null;

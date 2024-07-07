@@ -19,5 +19,5 @@ import { isObject } from './isObject';
  * isPlainObject({ a: 1 }); // true
  * ```
  */
-export const isPlainObject = <T>(x: T): x is Extract<T, UnknownRecord> =>
+export const isPlainObject = (x: unknown): x is UnknownRecord =>
   isObject(x) && x.constructor === Object;

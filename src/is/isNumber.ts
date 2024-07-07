@@ -14,5 +14,4 @@
  * isNumber('abc'); // => false
  * ```
  */
-export const isNumber = <T>(x: T): x is Extract<T, number> =>
-  typeof x === 'number';
+export const isNumber = (x: unknown): x is number => typeof x === 'number';

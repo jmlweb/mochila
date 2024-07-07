@@ -17,6 +17,6 @@ import { AnyFn } from '../types';
  * isFunction({}); // => false
  * ```
  */
-export const isFunction = <T>(fn: T): fn is Extract<T, AnyFn> => {
+export const isFunction = (fn: unknown): fn is AnyFn => {
   return typeof fn === 'function';
 };

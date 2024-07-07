@@ -23,13 +23,18 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn'
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - run: pnpm run build
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
       - name: Release
@@ -51,8 +56,9 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile
-      - run: yarn doc
+      - name: Install dependencies
+        run: pnpm install
+      - run: pnpm run doc
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         # If you're changing the branch from main,

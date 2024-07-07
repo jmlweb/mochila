@@ -11,6 +11,7 @@ export * from './complement';
 export * from './constant';
 export * from './countBy';
 export * from './debounce';
+export * from './deepEqual';
 export * from './deleteAt';
 export * from './divide';
 export * from './every';
