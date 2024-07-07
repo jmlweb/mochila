@@ -13,7 +13,16 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
     - uses: actions/checkout@v4
-    - name: Install modules
-      run: yarn install --frozen-lockfile
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
+      with:
+        run_install: false
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
     - name: Run tests
-      run: yarn test
+      run: pnpm run test
