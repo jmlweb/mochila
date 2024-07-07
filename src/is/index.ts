@@ -8,5 +8,6 @@ export { isNullable } from './isNullable';
 export { isNumber } from './isNumber';
 export { isObject } from './isObject';
 export { isPlainObject } from './isPlainObject';
+export { isRegExp } from './isRegExp';
 export { isString } from './isString';
 export { isTupleable } from './isTupleable';

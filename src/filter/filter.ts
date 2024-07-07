@@ -1,7 +1,7 @@
 interface Filter {
-  <T, V>(
-    fn: (x: V) => x is Extract<V, T>,
-  ): (source: ReadonlyArray<V>) => Extract<V, T>[];
+  <T>(
+    fn: (x: unknown) => x is T,
+  ): <U>(source: ReadonlyArray<U>) => Extract<U, T>[];
   <V>(fn: (x: V) => boolean): <T extends V>(source: ReadonlyArray<V>) => T[];
 }
 

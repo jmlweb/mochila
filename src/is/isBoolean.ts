@@ -4,7 +4,6 @@
  * @category Guard
  * @category Boolean
  *
- * @typeParam T - The type of the value to check.
  * @param x - The value to check.
  * @returns A boolean indicating whether the value is a boolean or not.
  *
@@ -15,5 +14,4 @@
  * isBoolean('abc'); // => false
  * ```
  */
-export const isBoolean = <T>(x: T): x is Extract<T, boolean> =>
-  typeof x === 'boolean';
+export const isBoolean = (x: unknown): x is boolean => typeof x === 'boolean';

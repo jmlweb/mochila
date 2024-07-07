@@ -1,8 +1,6 @@
 import { isNullable } from '../is';
 import { Assertion } from '../types';
 
-type AssertIsNullable = Assertion<null | undefined>;
-
 /**
  * Asserts that a value is either null or undefined.
  *
@@ -19,7 +17,7 @@ type AssertIsNullable = Assertion<null | undefined>;
  * };
  * ```
  */
-export const assertIsNullable: AssertIsNullable = (x) => {
+export const assertIsNullable: Assertion<null | undefined> = (x) => {
   if (!isNullable(x)) {
     throw new Error('Expected a non-nullable value');
   }

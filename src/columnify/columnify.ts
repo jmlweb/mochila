@@ -18,7 +18,7 @@ import { Columnify, ProtectIfNonEmptyArray } from '../types';
  */
 export const columnify =
   <N extends number>(columnsNumber: N) =>
-  <S extends ReadonlyArray<unknown>>(source: S) => {
+  <S extends unknown[]>(source: S) => {
     const safeChunksNumber = Math.max(1, columnsNumber);
     const chunks: ProtectIfNonEmptyArray<S>[] = Array.from(
       {

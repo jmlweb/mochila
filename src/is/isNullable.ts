@@ -3,7 +3,6 @@
  *
  * @category Guard
  *
- * @typeParam T - The type of the value to check.
  * @param x - The value to check.
  * @returns True if the value is null or undefined, false otherwise.
  *

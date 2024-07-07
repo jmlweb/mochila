@@ -8,7 +8,6 @@ import { isObject } from './isObject';
  * @category Object
  * @see {@link isObject}
  *
- * @typeParam T - The type of the value to check.
  * @param x - The value to check.
  * @returns A boolean indicating whether the value is a plain object.
  *
@@ -19,5 +18,5 @@ import { isObject } from './isObject';
  * isPlainObject({ a: 1 }); // true
  * ```
  */
-export const isPlainObject = <T>(x: T): x is Extract<T, UnknownRecord> =>
+export const isPlainObject = (x: unknown): x is UnknownRecord =>
   isObject(x) && x.constructor === Object;
