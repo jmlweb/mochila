@@ -22,4 +22,4 @@ export type ToString<T extends Stringifiable> = T extends string
  *
  * @category String
  */
-export type IsWideString<S extends string> = IsWide<string, S>;
+export type IsWideString<S> = IsWide<string, S>;
