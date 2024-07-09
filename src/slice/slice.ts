@@ -10,6 +10,6 @@
  * ```
  */
 export const slice =
-  (start: number, end?: number) =>
+  (start?: number, end?: number) =>
   <T>(arr: ReadonlyArray<T>) =>
     arr.slice(start, end);

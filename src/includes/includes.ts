@@ -1,7 +1,10 @@
+import { isString } from '../is';
+
 /**
  * Checks if a value is included in a source array or string.
  *
  * @category Array
+ * @category String
  *
  * @example
  * ```
@@ -11,6 +14,14 @@
  * ```
  */
 export const includes =
-  <V>(value: V) =>
-  (source: V extends string ? V | ReadonlyArray<V> : ReadonlyArray<V>) =>
-    source.includes(value);
+  <V>(search: V, startIndex?: number) =>
+  (
+    source: V extends string
+      ? string | ReadonlyArray<unknown>
+      : ReadonlyArray<unknown>,
+  ) => {
+    if (isString(source)) {
+      return isString(search) && source.includes(search, startIndex);
+    }
+    return source.includes(search, startIndex);
+  };
