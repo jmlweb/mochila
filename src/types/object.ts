@@ -3,7 +3,10 @@
  *
  * @category Object
  */
-export type UnknownRecord<K = string | number> = Record<K, unknown>;
+export type UnknownRecord<K extends string | number = string | number> = Record<
+  K,
+  unknown
+>;
 
 /**
  * Extracts the type of the values of an object.
