@@ -49,6 +49,7 @@ export * from './noop';
 export * from './omit';
 export * from './parsePosition';
 export * from './partition';
+export * from './path';
 export * from './pick';
 export * from './pipe';
 export * from './prepend';
