@@ -14,5 +14,5 @@ import { UnknownRecord } from '../types';
 
 export const prop =
   <K extends string>(key: K) =>
-  <O extends UnknownRecord<K>>(obj: O) =>
+  <O extends UnknownRecord<string>>(obj: O) =>
     obj[key];
