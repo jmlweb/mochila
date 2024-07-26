@@ -8,4 +8,11 @@ describe('path', () => {
     const b = path('a.s')(obj);
     expect(b).toBeUndefined();
   });
+  it('works with only one key', () => {
+    const obj = { a: 1 } as const;
+    const a = path('a')(obj);
+    expect(a).toBe(1);
+    const b = path('b')(obj);
+    expect(b).toBeUndefined();
+  });
 });

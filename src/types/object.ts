@@ -3,7 +3,7 @@
  *
  * @category Object
  */
-export type UnknownRecord<K extends string | number = string | number> = Record<
+export type UnknownRecord<K extends PropertyKey = string | number> = Record<
   K,
   unknown
 >;
