@@ -1,10 +1,14 @@
-type PathResult<K extends string, O> = K extends `${infer L}.${infer R}`
-  ? L extends keyof O
-    ? PathResult<R, O[L]>
-    : unknown
-  : K extends keyof O
-    ? O[K]
-    : unknown;
+type PathResult<K extends string, O> = string extends K
+  ? unknown
+  : Record<PropertyKey, never> extends O
+    ? unknown
+    : K extends `${infer L}.${infer R}`
+      ? L extends keyof O
+        ? PathResult<R, O[L]>
+        : undefined
+      : K extends keyof O
+        ? O[K]
+        : undefined;
 
 /**
  * Given a path in form of a string, returns a function that extracts the value at that path from an object.
