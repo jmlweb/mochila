@@ -8,7 +8,21 @@ describe('clone', () => {
     expect(result).not.toBe(array);
   });
 
-  it('should clone objects', () => {
+  it('should clone dates', () => {
+    const date = new Date('2021-01-01');
+    const result = clone(date);
+    expect(result).toEqual(date);
+    expect(result).not.toBe(date);
+  });
+
+  it('should clone regular expressions', () => {
+    const regex = /abc/gi;
+    const result = clone(regex);
+    expect(result).toEqual(regex);
+    expect(result).not.toBe(regex);
+  });
+
+  it('should clone plain objects', () => {
     const object = { a: 1, b: 2, c: 3 };
     const result = clone(object);
     expect(result).toEqual(object);

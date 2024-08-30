@@ -17,11 +17,8 @@ export type IsNonEmptyArray<S extends ReadonlyArray<unknown>> =
  *
  * @category Array
  */
-export type IsTupleable<S extends ReadonlyArray<unknown>> = S extends Tupleable<
-  S[number]
->
-  ? true
-  : false;
+export type IsTupleable<S extends ReadonlyArray<unknown>> =
+  S extends Tupleable<S[number]> ? true : false;
 
 /**
  * Returns the reverse of the given array type.
@@ -63,5 +60,5 @@ export type ExtractItem<S extends ReadonlyArray<unknown>> =
   S[number] extends undefined
     ? undefined
     : S[number] extends infer V
-    ? V | undefined
-    : S[number] | undefined;
+      ? V | undefined
+      : S[number] | undefined;

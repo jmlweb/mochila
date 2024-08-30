@@ -1,4 +1,4 @@
-import { isArray, isFunction, isPlainObject } from '../is';
+import { isArray, isDate, isFunction, isPlainObject, isRegExp } from '../is';
 
 /**
  * Returns a non-deep copy of the provided value in the following way:
@@ -28,6 +28,12 @@ import { isArray, isFunction, isPlainObject } from '../is';
 export const clone = <T>(value: T): T => {
   if (isArray(value)) {
     return [...value] as T;
+  }
+  if (isDate(value)) {
+    return new Date(value) as T;
+  }
+  if (isRegExp(value)) {
+    return new RegExp(value) as T;
   }
   if (isPlainObject(value)) {
     return { ...value };
