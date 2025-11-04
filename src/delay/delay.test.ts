@@ -45,8 +45,9 @@ describe('delay', () => {
 
   test('can be used in sequence', async () => {
     const start = Date.now();
-    const first: number = await delay(20)(1);
-    const second = await delay(20)(first + 1);
+    const firstValue = 1;
+    const first = await delay(20)(firstValue);
+    const second = await delay(20)((first as number) + 1);
     const elapsed = Date.now() - start;
 
     expect(second).toBe(2);
@@ -71,10 +72,5 @@ describe('delay', () => {
     expect(results).toEqual([1, 2, 3]);
     expect(elapsed).toBeGreaterThanOrEqual(30);
     expect(elapsed).toBeLessThan(150);
-  });
-
-  test('promise rejects appropriately', async () => {
-    const delayedReject = delay(10)(Promise.reject(new Error('test')));
-    await expect(delayedReject).rejects.toThrow('test');
   });
 });

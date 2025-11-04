@@ -16,8 +16,15 @@
 export const union =
   <T>(other: ReadonlyArray<T>) =>
   (source: ReadonlyArray<T>): T[] => {
-    const seen = new Set(source);
-    const result = Array.from(source);
+    const seen = new Set<T>();
+    const result: T[] = [];
+
+    for (const item of source) {
+      if (!seen.has(item)) {
+        result.push(item);
+        seen.add(item);
+      }
+    }
 
     for (const item of other) {
       if (!seen.has(item)) {

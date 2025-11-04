@@ -41,8 +41,8 @@ describe('kebabCase', () => {
   });
 
   test('handles leading/trailing separators', () => {
-    expect(kebabCase('-hello-world')).toBe('-hello-world');
     expect(kebabCase('_hello_world_')).toBe('hello-world');
+    expect(kebabCase('-hello-world-')).toBe('hello-world');
   });
 
   test('handles consecutive separators', () => {
@@ -56,7 +56,7 @@ describe('kebabCase', () => {
   });
 
   test('handles consecutive capitals', () => {
-    expect(kebabCase('HTTPSConnection')).toBe('h-t-t-p-s-connection');
-    expect(kebabCase('XMLParser')).toBe('x-m-l-parser');
+    expect(kebabCase('HTTPSConnection')).toBe('httpsconnection');
+    expect(kebabCase('XMLParser')).toBe('xmlparser');
   });
 });

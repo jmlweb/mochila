@@ -22,7 +22,7 @@ describe('union', () => {
   });
 
   test('other array empty', () => {
-    const result = union([])([1, 2, 3]);
+    const result = union<number>([])([1, 2, 3]);
     expect(result).toEqual([1, 2, 3]);
   });
 

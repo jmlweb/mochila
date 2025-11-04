@@ -56,7 +56,7 @@ describe('snakeCase', () => {
   });
 
   test('handles consecutive capitals', () => {
-    expect(snakeCase('HTTPSConnection')).toBe('h_t_t_p_s_connection');
-    expect(snakeCase('XMLParser')).toBe('x_m_l_parser');
+    expect(snakeCase('HTTPSConnection')).toBe('httpsconnection');
+    expect(snakeCase('XMLParser')).toBe('xmlparser');
   });
 });

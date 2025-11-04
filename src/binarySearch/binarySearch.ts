@@ -28,7 +28,7 @@ export const binarySearch =
 
       if (cmp === 0) {
         return mid;
-      } else if (cmp < 0) {
+      } else if (cmp > 0) {
         right = mid - 1;
       } else {
         left = mid + 1;

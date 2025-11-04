@@ -1,3 +1,5 @@
+import { AnyFn } from '../types/function';
+
 /**
  * Memoizes a function, caching results based on arguments.
  * Works best with pure functions with small input spaces.
@@ -17,9 +19,7 @@
  * @returns Memoized function
  * @typeParam F - Function type
  */
-export const memoize = <F extends (...args: unknown[]) => unknown>(
-  fn: F,
-): F => {
+export const memoize = <F extends AnyFn>(fn: F): F => {
   const cache = new Map<string, unknown>();
 
   return ((...args: unknown[]) => {
@@ -30,7 +30,7 @@ export const memoize = <F extends (...args: unknown[]) => unknown>(
       return cache.get(key);
     }
 
-    const result = fn(...(args as Parameters<F>));
+    const result = fn(...args);
     cache.set(key, result);
     return result;
   }) as F;

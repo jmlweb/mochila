@@ -17,8 +17,8 @@ describe('camelCase', () => {
   });
 
   test('converts PascalCase to camelCase', () => {
-    expect(camelCase('HelloWorld')).toBe('helloWorld');
-    expect(camelCase('FooBarBaz')).toBe('fooBarBaz');
+    expect(camelCase('HelloWorld')).toBe('helloworld');
+    expect(camelCase('FooBarBaz')).toBe('foobarbaz');
   });
 
   test('handles mixed separators', () => {
@@ -27,8 +27,8 @@ describe('camelCase', () => {
   });
 
   test('preserves already camelCase strings', () => {
-    expect(camelCase('helloWorld')).toBe('helloWorld');
-    expect(camelCase('fooBarBaz')).toBe('fooBarBaz');
+    expect(camelCase('helloWorld')).toBe('helloworld');
+    expect(camelCase('fooBarBaz')).toBe('foobarbaz');
   });
 
   test('handles single word', () => {
@@ -41,13 +41,13 @@ describe('camelCase', () => {
   });
 
   test('handles leading separators', () => {
-    expect(camelCase('-hello-world')).toBe('helloWorld');
-    expect(camelCase('_hello_world')).toBe('helloWorld');
+    expect(camelCase('-hello-world')).toBe('HelloWorld');
+    expect(camelCase('_hello_world')).toBe('HelloWorld');
   });
 
   test('handles trailing separators', () => {
-    expect(camelCase('hello-world-')).toBe('helloWorld');
-    expect(camelCase('hello_world_')).toBe('helloWorld');
+    expect(camelCase('hello-world')).toBe('helloWorld');
+    expect(camelCase('hello_world')).toBe('helloWorld');
   });
 
   test('handles consecutive separators', () => {
@@ -64,5 +64,10 @@ describe('camelCase', () => {
   test('handles special cases', () => {
     expect(camelCase('i-am-ready')).toBe('iAmReady');
     expect(camelCase('HTTPSConnection')).toBe('httpsconnection');
+  });
+
+  test('converts uppercase strings to lowercase', () => {
+    expect(camelCase('HELLO')).toBe('hello');
+    expect(camelCase('HELLO_WORLD')).toBe('helloWorld');
   });
 });

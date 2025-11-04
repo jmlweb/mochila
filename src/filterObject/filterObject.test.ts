@@ -9,21 +9,24 @@ describe('filterObject', () => {
   });
 
   test('filters empty object', () => {
-    const isEven = (x: number) => x % 2 === 0;
+    const isEven = (x: unknown) =>
+      typeof x === 'number' && (x as number) % 2 === 0;
     const result = filterObject(isEven)({});
 
     expect(result).toEqual({});
   });
 
   test('filters with all matching', () => {
-    const isEven = (x: number) => x % 2 === 0;
+    const isEven = (x: unknown) =>
+      typeof x === 'number' && (x as number) % 2 === 0;
     const result = filterObject(isEven)({ a: 2, b: 4, c: 6 });
 
     expect(result).toEqual({ a: 2, b: 4, c: 6 });
   });
 
   test('filters with none matching', () => {
-    const isEven = (x: number) => x % 2 === 0;
+    const isEven = (x: unknown) =>
+      typeof x === 'number' && (x as number) % 2 === 0;
     const result = filterObject(isEven)({ a: 1, b: 3, c: 5 });
 
     expect(result).toEqual({});
@@ -48,7 +51,10 @@ describe('filterObject', () => {
   });
 
   test('filters objects', () => {
-    const hasId = (x: Record<string, unknown>) => 'id' in x;
+    const hasId = (x: unknown) =>
+      typeof x === 'object' &&
+      x !== null &&
+      'id' in (x as Record<string, unknown>);
     const result = filterObject(hasId)({
       user1: { id: 1, name: 'Alice' },
       user2: { name: 'Bob' },
@@ -62,7 +68,7 @@ describe('filterObject', () => {
   });
 
   test('preserves keys', () => {
-    const isGreaterThan5 = (x: number) => x > 5;
+    const isGreaterThan5 = (x: unknown) => typeof x === 'number' && x > 5;
     const result = filterObject(isGreaterThan5)({
       a: 3,
       b: 7,
@@ -75,7 +81,7 @@ describe('filterObject', () => {
 
   test('does not mutate original', () => {
     const obj = { a: 1, b: 2, c: 3 };
-    const isEven = (x: number) => x % 2 === 0;
+    const isEven = (x: unknown) => typeof x === 'number' && x % 2 === 0;
     filterObject(isEven)(obj);
 
     expect(obj).toEqual({ a: 1, b: 2, c: 3 });

@@ -15,9 +15,8 @@
  * @returns camelCased string
  */
 export const camelCase = (str: string): string => {
+  // Convert to lowercase first, then handle word boundaries
   return str
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, (match, index) =>
-      index === 0 ? match.toLowerCase() : match.toUpperCase(),
-    )
-    .replace(/[\s_-]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ''));
+    .toLowerCase()
+    .replace(/[_\s-]+(.)/g, (_, char) => char.toUpperCase());
 };
