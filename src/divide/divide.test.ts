@@ -5,10 +5,10 @@ describe('divide', () => {
     expect(divide(4)(2)).toEqual(2);
   });
 
-  it('should throw an error when dividing by zero', () => {
-    expect(() => divide(4)(0)).toThrow('Division by zero is not allowed');
-    expect(() => divide(-4)(0)).toThrow('Division by zero is not allowed');
-    expect(() => divide(0)(0)).toThrow('Division by zero is not allowed');
+  it('should return Infinity when dividing by zero', () => {
+    expect(divide(4)(0)).toEqual(Infinity);
+    expect(divide(-4)(0)).toEqual(-Infinity);
+    expect(divide(0)(0)).toBeNaN();
   });
 
   it('should handle negative numbers', () => {

@@ -42,6 +42,13 @@ type Item<T> = {
  * ```
  */
 export const LRUCache = <T>({ max, ttl, onRemove }: CacheOptions<T> = {}) => {
+  if (max !== undefined && (max <= 0 || !Number.isInteger(max))) {
+    throw new Error('max must be a positive integer');
+  }
+  if (ttl !== undefined && ttl <= 0) {
+    throw new Error('ttl must be a positive number');
+  }
+
   const keys = new Set<unknown>();
   const items = new Map<unknown, Item<T>>();
 
