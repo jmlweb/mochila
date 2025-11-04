@@ -60,6 +60,7 @@ export * from './prepend';
 export * from './prop';
 export * from './protect';
 export * from './reduce';
+export * from './reduceRight';
 export * from './reject';
 export * from './replace';
 export * from './reverse';
