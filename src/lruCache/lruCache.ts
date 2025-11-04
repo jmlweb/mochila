@@ -61,15 +61,6 @@ export const LRUCache = <T>({ max, ttl, onRemove }: CacheOptions<T> = {}) => {
     }
   };
 
-  const deleteExpiredItems = () => {
-    const now = Date.now();
-    for (const [key, item] of items.entries()) {
-      if (item.expiration && item.expiration < now) {
-        deleteItem(key);
-      }
-    }
-  };
-
   const refresh = () => {
     for (const key of keys) {
       deleteItem(key);
@@ -77,17 +68,24 @@ export const LRUCache = <T>({ max, ttl, onRemove }: CacheOptions<T> = {}) => {
   };
 
   const has = (key: unknown) => {
-    deleteExpiredItems();
+    const item = items.get(key);
+    if (item?.expiration && item.expiration < Date.now()) {
+      deleteItem(key);
+      return false;
+    }
     return items.has(key);
   };
 
   const get = (key: unknown) => {
-    deleteExpiredItems();
-    return items.get(key)?.value;
+    const item = items.get(key);
+    if (item?.expiration && item.expiration < Date.now()) {
+      deleteItem(key);
+      return undefined;
+    }
+    return item?.value;
   };
 
   const set = (key: unknown, value: T, ttlOverride?: number) => {
-    deleteExpiredItems();
     keys.delete(key);
     if (keys.size === max) {
       const firstKey = keys.values().next().value;
