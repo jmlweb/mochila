@@ -1,0 +1,1 @@
+/Users/josemanuellucasmunoz/projects/mochila/AGENTS.md
