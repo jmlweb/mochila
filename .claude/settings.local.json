@@ -23,7 +23,12 @@
       "Bash(find:*)",
       "Bash(pnpm exec eslint:*)",
       "Bash(node:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(for file in /Users/josemanuellucasmunoz/projects/mochila/src/*/[a-z]*.ts)",
+      "Bash(do if [ -f $file ])",
+      "Bash(then grep -H @category $file)",
+      "Bash(git checkout:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []
