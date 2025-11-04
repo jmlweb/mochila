@@ -43,6 +43,7 @@ export const makeIsDeepEqual = ({
     a: unknown,
     b: unknown,
     depth: number,
+    visited = new WeakMap<object, object>(),
   ): boolean => {
     if (a === b || (!strictNullComparison && isNullable(a) && isNullable(b))) {
       return true;
@@ -69,10 +70,22 @@ export const makeIsDeepEqual = ({
     }
 
     if (isArray(a) && isArray(b)) {
-      return (
+      if (visited.has(a)) {
+        return visited.get(a) === b;
+      }
+      if (visited.has(b)) {
+        return visited.get(b) === a;
+      }
+      visited.set(a, b);
+      visited.set(b, a);
+      const result =
         a.length === b.length &&
-        a.every((item, index) => internalIsDeepEqual(item, b[index], depth + 1))
-      );
+        a.every((item, index) =>
+          internalIsDeepEqual(item, b[index], depth + 1, visited),
+        );
+      visited.delete(a);
+      visited.delete(b);
+      return result;
     }
 
     if (a.valueOf !== Object.prototype.valueOf) {
@@ -83,15 +96,28 @@ export const makeIsDeepEqual = ({
       return a.toString() === b.toString();
     }
 
+    if (visited.has(a)) {
+      return visited.get(a) === b;
+    }
+    if (visited.has(b)) {
+      return visited.get(b) === a;
+    }
+    visited.set(a, b);
+    visited.set(b, a);
+
     const keys = Object.keys(a);
 
     if (keys.length !== Object.keys(b).length) {
+      visited.delete(a);
+      visited.delete(b);
       return false;
     }
 
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       if (!key || !Object.prototype.hasOwnProperty.call(b, key)) {
+        visited.delete(a);
+        visited.delete(b);
         return false;
       }
       if (optimizeForReact && key === '_owner' && '$$typeof' in a) {
@@ -100,17 +126,24 @@ export const makeIsDeepEqual = ({
         // and is not needed when comparing the actual elements (and not their owners)
         continue;
       }
+      const aValue = a[key as keyof typeof a];
+      const bValue = b[key as keyof typeof b];
       if (
         !internalIsDeepEqual(
-          a[key as keyof typeof a],
-          b[key as keyof typeof b],
+          aValue,
+          bValue,
           depth + 1,
+          visited,
         )
       ) {
+        visited.delete(a);
+        visited.delete(b);
         return false;
       }
     }
 
+    visited.delete(a);
+    visited.delete(b);
     return true;
   };
   return (a: unknown) => (b: unknown) => internalIsDeepEqual(a, b, 0);

@@ -105,4 +105,29 @@ describe('makeIsDeepEqual', () => {
   it('should return false if constructors are different', () => {
     expect(isDeepEqual(new Date())(new RegExp('2021-01-01'))).toBe(false);
   });
+  it('should handle circular references', () => {
+    const a: { self?: unknown } = {};
+    a.self = a;
+    const b: { self?: unknown } = {};
+    b.self = b;
+    expect(isDeepEqual(a)(b)).toBe(true);
+  });
+  it('should handle circular references with different structures', () => {
+    const a: { self?: unknown; value: number } = { value: 1 };
+    a.self = a;
+    const b: { self?: unknown; value: number } = { value: 2 };
+    b.self = b;
+    expect(isDeepEqual(a)(b)).toBe(false);
+  });
+  it('should handle nested circular references', () => {
+    const a: { nested?: { self?: unknown } } = { nested: {} };
+    if (a.nested) {
+      a.nested.self = a.nested;
+    }
+    const b: { nested?: { self?: unknown } } = { nested: {} };
+    if (b.nested) {
+      b.nested.self = b.nested;
+    }
+    expect(isDeepEqual(a)(b)).toBe(true);
+  });
 });
