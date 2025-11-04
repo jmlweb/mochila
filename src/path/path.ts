@@ -27,7 +27,7 @@ type PathResult<K extends string, O> = string extends K
 export const path =
   <K extends string>(key: K) =>
   <O>(o: O): PathResult<K, O> => {
-    const keys = key.split('.');
+    const keys = key.split('.').filter((k) => k.length > 0);
     if (keys.length === 0) {
       return undefined as PathResult<K, O>;
     }
