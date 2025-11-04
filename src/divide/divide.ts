@@ -8,5 +8,12 @@
  * const a = divide(4)(2); // 2
  * const b = divide(2)(4); // 0.5
  * ```
+ *
+ * @throws {Error} When the divisor is zero.
  */
-export const divide = (a: number) => (b: number) => a / b;
+export const divide = (a: number) => (b: number) => {
+  if (b === 0) {
+    throw new Error('Division by zero is not allowed');
+  }
+  return a / b;
+};
