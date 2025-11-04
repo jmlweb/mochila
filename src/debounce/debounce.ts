@@ -25,6 +25,7 @@ export const debounce = <Fn extends AnyFn>(duration: number, fn: Fn) => {
     resolve: (value: ReturnType<Fn>) => void;
     reject: AnyFn;
   }[] = [];
+  const MAX_PENDING = 1000;
   return (...args: Parameters<Fn>): Promise<ReturnType<Fn>> => {
     return new Promise((resolve, reject) => {
       clearTimeout(timeout);
@@ -36,6 +37,12 @@ export const debounce = <Fn extends AnyFn>(duration: number, fn: Fn) => {
           (error) => currentPending.forEach(({ reject }) => reject(error)),
         );
       }, duration);
+      if (pending.length >= MAX_PENDING) {
+        const oldest = pending.shift();
+        if (oldest) {
+          oldest.reject(new Error('Debounce: too many pending promises, oldest promise rejected'));
+        }
+      }
       pending.push({ resolve, reject });
     });
   };

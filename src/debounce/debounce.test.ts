@@ -31,4 +31,18 @@ describe('debounce', () => {
     expect(result).toEqual([10, 10, 10]);
     expect(double).toHaveBeenCalledTimes(1);
   });
+  test('should reject oldest promises when exceeding maximum pending limit', async () => {
+    jest.useFakeTimers();
+    const fn = jest.fn((x: number) => x);
+    const debouncedFn = debounce(200, fn);
+    const promises: Promise<number>[] = [];
+    for (let i = 0; i < 1001; i++) {
+      promises.push(debouncedFn(i));
+    }
+    await expect(promises[0]).rejects.toThrow('Debounce: too many pending promises, oldest promise rejected');
+    jest.advanceTimersByTime(250);
+    const lastResult = await promises[1000];
+    expect(lastResult).toBe(1000);
+    jest.useRealTimers();
+  });
 });
