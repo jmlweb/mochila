@@ -44,4 +44,18 @@ describe('throttle', () => {
     }).toThrow(error);
     expect(fn).toHaveBeenCalledTimes(1);
   });
+  test('should return defined value on first call', () => {
+    const fn = jest.fn((x: number) => x * 2);
+    const throttledDouble = throttle(200, fn);
+    const result = throttledDouble(5);
+    expect(result).toBe(10);
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+  test('should handle functions that return undefined', () => {
+    const fn = jest.fn(() => undefined);
+    const throttledFn = throttle(200, fn);
+    const result = throttledFn();
+    expect(result).toBeUndefined();
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
 });
