@@ -1,28 +1,28 @@
-# Revisión de Código - Puntos de Mejora
+# Code Review - Improvement Points
 
-## Resumen Ejecutivo
+## Executive Summary
 
-Esta revisión identifica áreas de mejora en la librería `mochila-ts`, una colección de utilidades TypeScript con enfoque en composición funcional y "data-last" design. El proyecto tiene buenas prácticas generales, pero existen oportunidades significativas de mejora en áreas críticas como manejo de errores, validación de entrada, y corrección de bugs.
+This review identifies areas for improvement in the `mochila-ts` library, a collection of TypeScript utilities focused on functional composition and "data-last" design. The project follows good general practices, but there are significant opportunities for improvement in critical areas such as error handling, input validation, and bug fixes.
 
 ---
 
-## 🔴 Críticos (Requieren atención inmediata)
+## 🔴 Critical (Require immediate attention)
 
-### 1. Bug en Subscription.unsubscribe()
+### 1. Bug in Subscription.unsubscribe()
 
-**Ubicación:** `src/subscription/subscription.ts:27-28`
+**Location:** `src/subscription/subscription.ts:27-28`
 
-**Problema:**
-El método `unsubscribe` no funciona correctamente. Usa `rejectValues` que retorna un nuevo array pero no modifica el array `subscribers` original.
+**Problem:**
+The `unsubscribe` method doesn't work correctly. It uses `rejectValues` which returns a new array but doesn't modify the original `subscribers` array.
 
 ```typescript
 const unsubscribe = (subscriber: Subscriber<V>) =>
   rejectValues([subscriber])(subscribers);
 ```
 
-**Impacto:** Los suscriptores nunca se eliminan realmente, causando memory leaks y comportamiento inesperado.
+**Impact:** Subscribers are never actually removed, causing memory leaks and unexpected behavior.
 
-**Solución sugerida:**
+**Suggested solution:**
 ```typescript
 const unsubscribe = (subscriber: Subscriber<V>) => {
   const index = subscribers.indexOf(subscriber);
@@ -32,20 +32,20 @@ const unsubscribe = (subscriber: Subscriber<V>) => {
 };
 ```
 
-### 2. División por cero sin validación
+### 2. Division by zero without validation
 
-**Ubicación:** `src/divide/divide.ts:12`
+**Location:** `src/divide/divide.ts:12`
 
-**Problema:**
-La función `divide` no valida división por cero, lo que retorna `Infinity` o `-Infinity` silenciosamente.
+**Problem:**
+The `divide` function doesn't validate division by zero, which silently returns `Infinity` or `-Infinity`.
 
 ```typescript
 export const divide = (a: number) => (b: number) => a / b;
 ```
 
-**Impacto:** Errores silenciosos difíciles de depurar en producción.
+**Impact:** Silent errors that are difficult to debug in production.
 
-**Solución sugerida:**
+**Suggested solution:**
 ```typescript
 export const divide = (a: number) => (b: number) => {
   if (b === 0) {
@@ -55,19 +55,19 @@ export const divide = (a: number) => (b: number) => {
 };
 ```
 
-**Alternativa:** Ofrecer una variante `divideSafe` que retorne `undefined` o usar el patrón Result del módulo `protect`.
+**Alternative:** Offer a `divideSafe` variant that returns `undefined` or use the Result pattern from the `protect` module.
 
-### 3. Throttle retorna valor potencialmente indefinido
+### 3. Throttle returns potentially undefined value
 
-**Ubicación:** `src/throttle/throttle.ts:26-35`
+**Location:** `src/throttle/throttle.ts:26-35`
 
-**Problema:**
-La función throttle puede retornar `undefined` en la primera llamada si el flujo de ejecución es muy rápido, ya que `latestResult` no tiene valor inicial.
+**Problem:**
+The throttle function can return `undefined` on the first call if execution flow is very fast, since `latestResult` has no initial value.
 
 ```typescript
 export const throttle = <Fn extends AnyFn>(duration: number, fn: Fn) => {
   let isBlocked = false;
-  let latestResult: ReturnType<Fn>; // ⚠️ Sin valor inicial
+  let latestResult: ReturnType<Fn>; // ⚠️ No initial value
 
   return (...args: Parameters<Fn>) => {
     if (!isBlocked) {
@@ -77,14 +77,14 @@ export const throttle = <Fn extends AnyFn>(duration: number, fn: Fn) => {
         isBlocked = false;
       }, duration);
     }
-    return latestResult; // ⚠️ Puede ser undefined
+    return latestResult; // ⚠️ Can be undefined
   };
 };
 ```
 
-**Impacto:** Comportamiento inesperado en la primera invocación.
+**Impact:** Unexpected behavior on first invocation.
 
-**Solución sugerida:**
+**Suggested solution:**
 ```typescript
 return (...args: Parameters<Fn>): ReturnType<Fn> => {
   if (!isBlocked) {
@@ -103,14 +103,14 @@ return (...args: Parameters<Fn>): ReturnType<Fn> => {
 
 ---
 
-## 🟠 Alta Prioridad
+## 🟠 High Priority
 
-### 4. Documentación incorrecta en throttle
+### 4. Incorrect documentation in throttle
 
-**Ubicación:** `src/throttle/throttle.ts:1-21`
+**Location:** `src/throttle/throttle.ts:1-21`
 
-**Problema:**
-La documentación JSDoc de `throttle` es una copia de `debounce` y no describe correctamente el comportamiento del throttle.
+**Problem:**
+The JSDoc documentation for `throttle` is a copy of `debounce` and doesn't correctly describe throttle behavior.
 
 ```typescript
 /**
@@ -120,19 +120,19 @@ La documentación JSDoc de `throttle` es una copia de `debounce` y no describe c
  * @category Promise
  * @category Cache
  *
- * @typeParam Fn - The type of the function to be debounced. // ⚠️ dice "debounced"
+ * @typeParam Fn - The type of the function to be debounced. // ⚠️ says "debounced"
 ```
 
-**Impacto:** Confusión para desarrolladores que usan la librería.
+**Impact:** Confusion for developers using the library.
 
-**Solución:** Actualizar la documentación para reflejar el comportamiento real del throttle.
+**Solution:** Update documentation to reflect actual throttle behavior.
 
-### 5. LRUCache: Cleanup ineficiente de items expirados
+### 5. LRUCache: Inefficient cleanup of expired items
 
-**Ubicación:** `src/lruCache/lruCache.ts:57-64`
+**Location:** `src/lruCache/lruCache.ts:57-64`
 
-**Problema:**
-El método `deleteExpiredItems` itera sobre todos los items en cada operación `get`, `set`, y `has`, lo cual es O(n) innecesariamente.
+**Problem:**
+The `deleteExpiredItems` method iterates over all items on every `get`, `set`, and `has` operation, which is unnecessarily O(n).
 
 ```typescript
 const deleteExpiredItems = () => {
@@ -145,94 +145,94 @@ const deleteExpiredItems = () => {
 };
 ```
 
-**Impacto:** Degradación de performance con caches grandes.
+**Impact:** Performance degradation with large caches.
 
-**Solución sugerida:**
-- Usar un heap/priority queue para items con TTL
-- O implementar lazy deletion solo en `get` para el item específico
-- O ejecutar cleanup periódico en lugar de en cada operación
+**Suggested solution:**
+- Use a heap/priority queue for items with TTL
+- Or implement lazy deletion only in `get` for the specific item
+- Or run periodic cleanup instead of on every operation
 
-### 6. Modulo con comportamiento confuso para números negativos
+### 6. Modulo with confusing behavior for negative numbers
 
-**Ubicación:** `src/modulo/modulo.ts:14`
+**Location:** `src/modulo/modulo.ts:14`
 
-**Problema:**
-El operador `%` en JavaScript tiene comportamiento confuso con números negativos (retorna `-0` en algunos casos).
+**Problem:**
+The `%` operator in JavaScript has confusing behavior with negative numbers (returns `-0` in some cases).
 
 ```typescript
 modulo(2)(-1) // 0
 modulo(-4)(2) // -0
 ```
 
-**Impacto:** Comportamiento inesperado que puede causar bugs sutiles.
+**Impact:** Unexpected behavior that can cause subtle bugs.
 
-**Solución sugerida:**
-Considerar implementar módulo matemático real:
+**Suggested solution:**
+Consider implementing true mathematical modulo:
 ```typescript
 export const modulo = (a: number) => (b: number) => ((a % b) + b) % b;
 ```
 
-### 7. Path: Manejo de edge cases
+### 7. Path: Edge case handling
 
-**Ubicación:** `src/path/path.ts:31-32`
+**Location:** `src/path/path.ts:31-32`
 
-**Problema:**
-El caso donde `keys.length === 0` (string vacío) nunca debería ocurrir pero se valida. Sin embargo, casos como paths con puntos dobles (`"a..b"`) no se manejan.
+**Problem:**
+The case where `keys.length === 0` (empty string) should never occur but is validated. However, cases like paths with double dots (`"a..b"`) are not handled.
 
 ```typescript
 const keys = key.split('.');
-if (keys.length === 0) { // Esto nunca ocurre con split('.')
+if (keys.length === 0) { // This never happens with split('.')
   return undefined as PathResult<K, O>;
 }
 ```
 
-**Impacto:** Comportamiento inesperado con inputs malformados.
+**Impact:** Unexpected behavior with malformed inputs.
 
-**Solución sugerida:**
-- Filtrar keys vacíos: `const keys = key.split('.').filter(k => k.length > 0);`
-- Validar el path de entrada
+**Suggested solution:**
+- Filter empty keys: `const keys = key.split('.').filter(k => k.length > 0);`
+- Validate input path
 
 ---
 
-## 🟡 Media Prioridad
+## 🟡 Medium Priority
 
-### 8. Falta de tests para edge cases
+### 8. Missing tests for edge cases
 
-**Análisis de tests:**
-- Total de archivos de test: 92
-- Cobertura configurada: 85% (funciones, líneas, statements), 50% (branches)
+**Test analysis:**
+- Total test files: 92
+- Configured coverage: 85% (functions, lines, statements), 50% (branches)
 
-**Problemas identificados:**
+**Issues identified:**
 
-#### a) División (src/divide/divide.test.ts)
+#### a) Division (src/divide/divide.test.ts)
 ```typescript
 it('should divide the first argument by the second', () => {
   expect(divide(4)(2)).toEqual(2);
 });
 ```
 
-**Casos faltantes:**
-- División por cero
-- División de números negativos
-- División de decimales
-- División que resulta en Infinity
+**Missing cases:**
+- Division by zero
+- Division of negative numbers
+- Division of decimals
+- Division resulting in Infinity
 
-#### b) Operaciones matemáticas generales
-Falta validación de:
+#### b) Mathematical operations in general
+Missing validation for:
 - `NaN` inputs
 - `Infinity` inputs
 - Overflow/Underflow
-- Precisión de punto flotante
+- Floating point precision
 
-**Solución sugerida:**
-Agregar test suites comprehensivos para edge cases matemáticos.
+**Suggested solution:**
+Add comprehensive test suites for mathematical edge cases.
 
-### 9. DeepEqual: Manejo de referencias circulares
+### 9. DeepEqual: Circular reference handling
 
-**Ubicación:** `src/deepEqual/makeIsDeepEqual.ts`
+**Location:** `src/deepEqual/makeIsDeepEqual.ts`
 
-**Problema:**
-Aunque se optimiza para React (que tiene referencias circulares en `_owner`), no hay protección general contra referencias circulares en objetos arbitrarios.
+**Problem:**
+While it optimizes for React (which has circular references in `_owner`), there's no general protection against circular references in arbitrary objects.
 
 ```typescript
 if (optimizeForReact && key === '_owner' && '$$typeof' in a) {
@@ -241,10 +241,10 @@ if (optimizeForReact && key === '_owner' && '$$typeof' in a) {
 }
 ```
 
-**Impacto:** Stack overflow con objetos circulares no-React.
+**Impact:** Stack overflow with non-React circular objects.
 
-**Solución sugerida:**
-Implementar un `WeakSet` para rastrear objetos visitados:
+**Suggested solution:**
+Implement a `WeakSet` to track visited objects:
 ```typescript
 const internalIsDeepEqual = (
   a: unknown,
@@ -259,12 +259,12 @@ const internalIsDeepEqual = (
 }
 ```
 
-### 10. Debounce: Potencial memory leak
+### 10. Debounce: Potential memory leak
 
-**Ubicación:** `src/debounce/debounce.ts:28-41`
+**Location:** `src/debounce/debounce.ts:28-41`
 
-**Problema:**
-Si se llama `debounce` repetidamente sin esperar la resolución, el array `pending` puede crecer indefinidamente.
+**Problem:**
+If `debounce` is called repeatedly without waiting for resolution, the `pending` array can grow indefinitely.
 
 ```typescript
 return (...args: Parameters<Fn>): Promise<ReturnType<Fn>> => {
@@ -275,66 +275,66 @@ return (...args: Parameters<Fn>): Promise<ReturnType<Fn>> => {
       pending = [];
       // ...
     }, duration);
-    pending.push({ resolve, reject }); // ⚠️ Crece ilimitadamente
+    pending.push({ resolve, reject }); // ⚠️ Grows unbounded
   });
 };
 ```
 
-**Impacto:** Memory leaks en escenarios de uso intensivo.
+**Impact:** Memory leaks in high-usage scenarios.
 
-**Solución sugerida:**
-Considerar un límite máximo de promesas pendientes o implementar una estrategia de cancelación.
+**Suggested solution:**
+Consider a maximum limit of pending promises or implement a cancellation strategy.
 
-### 11. Inconsistencias en exports
+### 11. Inconsistencies in exports
 
-**Ubicación:** `src/index.ts:63`
+**Location:** `src/index.ts:63`
 
-**Problema:**
-Falta exportar `reduceRight`:
+**Problem:**
+Missing export for `reduceRight`:
 ```typescript
 export * from './reduce';
 export * from './reject';
-// export * from './reduceRight'; // ⚠️ Falta esta línea
+// export * from './reduceRight'; // ⚠️ Missing this line
 ```
 
-**Verificación:**
+**Verification:**
 ```bash
 grep -r "reduceRight" src/index.ts
-# No se encuentra
+# Not found
 ```
 
-**Impacto:** La función `reduceRight` existe pero no está disponible para usuarios de la librería.
+**Impact:** The `reduceRight` function exists but is not available to library users.
 
 ---
 
-## 🟢 Baja Prioridad (Mejoras de calidad)
+## 🟢 Low Priority (Quality improvements)
 
-### 12. Type safety mejorable en algunos helpers
+### 12. Type safety could be improved in some helpers
 
-**Ejemplos:**
+**Examples:**
 
 #### a) Path type inference
-La inferencia de tipos en `path` es excelente, pero podría extenderse para manejar arrays:
+Type inference in `path` is excellent, but could be extended to handle arrays:
 ```typescript
-path('users.0.name')(obj) // No infiere correctamente índices de arrays
+path('users.0.name')(obj) // Doesn't correctly infer array indices
 ```
 
 #### b) Flow overloads
-El tipo `flow` tiene hasta 9 overloads, pero podría beneficiarse de tipos variádicos cuando estén más maduros en TypeScript.
+The `flow` type has up to 9 overloads, but could benefit from variadic types when they're more mature in TypeScript.
 
-### 13. Falta de validación en LRUCache options
+### 13. Missing validation in LRUCache options
 
-**Ubicación:** `src/lruCache/lruCache.ts:44`
+**Location:** `src/lruCache/lruCache.ts:44`
 
-**Problema:**
-No valida que `max` sea positivo o que `ttl` sea un número válido.
+**Problem:**
+Doesn't validate that `max` is positive or that `ttl` is a valid number.
 
 ```typescript
 export const LRUCache = <T>({ max, ttl, onRemove }: CacheOptions<T> = {}) => {
-  // No hay validación de inputs
+  // No input validation
 ```
 
-**Solución sugerida:**
+**Suggested solution:**
 ```typescript
 export const LRUCache = <T>({ max, ttl, onRemove }: CacheOptions<T> = {}) => {
   if (max !== undefined && (max <= 0 || !Number.isInteger(max))) {
@@ -346,12 +346,12 @@ export const LRUCache = <T>({ max, ttl, onRemove }: CacheOptions<T> = {}) => {
   // ...
 ```
 
-### 14. Protect: Type assertion podría mejorarse
+### 14. Protect: Type assertion could be improved
 
-**Ubicación:** `src/protect/protect.ts:53, 58, 64`
+**Location:** `src/protect/protect.ts:53, 58, 64`
 
-**Problema:**
-Uso extensivo de `as T` que podría enmascarar problemas de tipos.
+**Problem:**
+Extensive use of `as T` which could mask type issues.
 
 ```typescript
 return value
@@ -359,39 +359,39 @@ return value
   .catch((error) => ({ success: false, error })) as T;
 ```
 
-**Solución:** Aunque es complejo, podría explorarse una implementación sin type assertions.
+**Solution:** While complex, an implementation without type assertions could be explored.
 
-### 15. Documentación de categorías
+### 15. Category documentation
 
-**Problema:**
-Algunas funciones tienen categorías inconsistentes o múltiples categorías que no aportan valor.
+**Problem:**
+Some functions have inconsistent categories or multiple categories that don't add value.
 
-**Ejemplo:**
+**Example:**
 ```typescript
 /**
  * @category Function
  * @category Promise
- * @category Cache  // ⚠️ No es realmente Cache
+ * @category Cache  // ⚠️ Not really Cache
  */
 ```
 
-**Solución:** Revisar y normalizar las categorías en toda la librería.
+**Solution:** Review and normalize categories across the library.
 
-### 16. README: Ejemplo de LRUCache incorrecto
+### 16. README: Incorrect LRUCache example
 
-**Ubicación:** `README.md:27`
+**Location:** `README.md:27`
 
-**Problema:**
-El ejemplo usa `new LRUCache()` pero debería ser solo `LRUCache()` (no es un constructor).
+**Problem:**
+The example uses `new LRUCache()` but should be just `LRUCache()` (it's not a constructor).
 
 ```typescript
-const cache = new LRUCache({ // ⚠️ Incorrecto
+const cache = new LRUCache({ // ⚠️ Incorrect
   max: 100,
   ttl: 1000 * 60 * 60 * 24,
 });
 ```
 
-**Debería ser:**
+**Should be:**
 ```typescript
 const cache = LRUCache({
   max: 100,
@@ -401,79 +401,79 @@ const cache = LRUCache({
 
 ---
 
-## 📊 Métricas y Estadísticas
+## 📊 Metrics and Statistics
 
-- **Total de módulos:** ~80 utilidades
-- **Archivos de código:** 212 archivos .ts (sin contar tests)
-- **Archivos de test:** 92 archivos .test.ts
-- **Ratio test/código:** ~43% (bajo, debería estar más cerca de 100%)
-- **Cobertura objetivo:** 85% líneas, 50% branches
-- **Configuración TypeScript:** Strict mode ✅
-- **Linting:** ESLint con TypeScript ✅
-
----
-
-## 🎯 Recomendaciones Priorizadas
-
-### Corto Plazo (1-2 semanas)
-1. ✅ Corregir bug en `Subscription.unsubscribe()`
-2. ✅ Agregar validación de división por cero
-3. ✅ Corregir bug en `throttle` con valor inicial
-4. ✅ Actualizar documentación de `throttle`
-5. ✅ Agregar export de `reduceRight` en index.ts
-6. ✅ Corregir ejemplo en README
-
-### Medio Plazo (1 mes)
-1. Mejorar performance de `LRUCache`
-2. Agregar protección contra referencias circulares en `deepEqual`
-3. Implementar tests para edge cases matemáticos
-4. Revisar y mejorar validación de inputs en funciones críticas
-
-### Largo Plazo (3 meses)
-1. Auditoría completa de tipos y mejora de inferencia
-2. Implementar variantes "safe" de funciones que pueden fallar
-3. Normalizar documentación y categorías
-4. Mejorar cobertura de tests a >90%
-5. Considerar agregar benchmarks de performance
+- **Total modules:** ~80 utilities
+- **Code files:** 212 .ts files (excluding tests)
+- **Test files:** 92 .test.ts files
+- **Test/code ratio:** ~43% (low, should be closer to 100%)
+- **Target coverage:** 85% lines, 50% branches
+- **TypeScript configuration:** Strict mode ✅
+- **Linting:** ESLint with TypeScript ✅
 
 ---
 
-## 💡 Consideraciones Adicionales
+## 🎯 Prioritized Recommendations
 
-### Filosofía "data-last" y manejo de errores
-La filosofía funcional "data-last" de la librería es excelente para composición, pero dificulta el manejo de errores tradicional (try-catch). Considerar:
+### Short Term (1-2 weeks)
+1. ✅ Fix bug in `Subscription.unsubscribe()`
+2. ✅ Add division by zero validation
+3. ✅ Fix bug in `throttle` with initial value
+4. ✅ Update `throttle` documentation
+5. ✅ Add export of `reduceRight` in index.ts
+6. ✅ Fix example in README
 
-1. Documentar patrones recomendados para error handling
-2. Expandir el uso del módulo `protect` como patrón estándar
-3. Ofrecer variantes `*Safe` de funciones que pueden fallar
+### Medium Term (1 month)
+1. Improve `LRUCache` performance
+2. Add protection against circular references in `deepEqual`
+3. Implement tests for mathematical edge cases
+4. Review and improve input validation in critical functions
+
+### Long Term (3 months)
+1. Complete type audit and inference improvements
+2. Implement "safe" variants of functions that can fail
+3. Normalize documentation and categories
+4. Improve test coverage to >90%
+5. Consider adding performance benchmarks
+
+---
+
+## 💡 Additional Considerations
+
+### "data-last" philosophy and error handling
+The library's functional "data-last" philosophy is excellent for composition, but makes traditional error handling (try-catch) difficult. Consider:
+
+1. Document recommended patterns for error handling
+2. Expand use of the `protect` module as a standard pattern
+3. Offer `*Safe` variants of functions that can fail
 
 ### Performance
-La mayoría de las utilidades son wrappers ligeros, pero algunas (como `deepEqual` y `LRUCache`) podrían beneficiarse de optimizaciones específicas.
+Most utilities are lightweight wrappers, but some (like `deepEqual` and `LRUCache`) could benefit from specific optimizations.
 
 ### Tree-shaking
-El proyecto usa `tsup` y exporta todo desde un índice central. Verificar que el tree-shaking funcione correctamente en aplicaciones consumidoras.
+The project uses `tsup` and exports everything from a central index. Verify that tree-shaking works correctly in consuming applications.
 
 ---
 
-## 🔍 Herramientas Sugeridas
+## 🔍 Suggested Tools
 
-1. **Mutation Testing:** Usar Stryker para identificar gaps en tests
-2. **Type Coverage:** Usar `type-coverage` para medir type safety real
-3. **Bundle Analysis:** Usar `bundlephobia` para monitorear tamaño de bundle
-4. **Benchmarks:** Agregar benchmarks con `benchmark.js` o `tinybench`
-
----
-
-## Conclusión
-
-`mochila-ts` es una librería bien estructurada con buenas prácticas generales de TypeScript y testing. Sin embargo, existen bugs críticos (subscription, throttle) y áreas importantes de mejora en validación y manejo de edge cases.
-
-**Prioridad máxima:** Corregir los 3 bugs críticos identificados antes del siguiente release.
-
-**Recomendación general:** Implementar una política de validación de inputs más estricta, especialmente para operaciones matemáticas y funciones con side effects.
+1. **Mutation Testing:** Use Stryker to identify gaps in tests
+2. **Type Coverage:** Use `type-coverage` to measure real type safety
+3. **Bundle Analysis:** Use `bundlephobia` to monitor bundle size
+4. **Benchmarks:** Add benchmarks with `benchmark.js` or `tinybench`
 
 ---
 
-**Fecha de revisión:** 2025-11-04
-**Revisor:** Claude Code
-**Versión analizada:** 1.9.0
+## Conclusion
+
+`mochila-ts` is a well-structured library with good general TypeScript and testing practices. However, there are critical bugs (subscription, throttle) and important areas for improvement in validation and edge case handling.
+
+**Maximum priority:** Fix the 3 critical bugs identified before the next release.
+
+**General recommendation:** Implement a stricter input validation policy, especially for mathematical operations and functions with side effects.
+
+---
+
+**Review date:** 2025-11-04
+**Reviewer:** Claude Code
+**Version analyzed:** 1.9.0
