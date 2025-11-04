@@ -1,0 +1,9 @@
+# pnpm configuration
+# Use strict dependency resolution to prevent accidental dependencies
+shamefully-hoist=false
+
+# Enable lockfile only mode for CI
+# lockfile-only=false
+
+# Store integrity for security
+verify-store-integrity=true

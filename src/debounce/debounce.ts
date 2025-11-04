@@ -33,14 +33,20 @@ export const debounce = <Fn extends AnyFn>(duration: number, fn: Fn) => {
         const currentPending = [...pending];
         pending = [];
         Promise.resolve(fn(...args)).then(
-          (data) => currentPending.forEach(({ resolve }) => resolve(data)),
-          (error) => currentPending.forEach(({ reject }) => reject(error)),
+          (data: ReturnType<Fn>) =>
+            currentPending.forEach(({ resolve }) => resolve(data)),
+          (error: unknown) =>
+            currentPending.forEach(({ reject }) => reject(error)),
         );
       }, duration);
       if (pending.length >= MAX_PENDING) {
         const oldest = pending.shift();
         if (oldest) {
-          oldest.reject(new Error('Debounce: too many pending promises, oldest promise rejected'));
+          oldest.reject(
+            new Error(
+              'Debounce: too many pending promises, oldest promise rejected',
+            ),
+          );
         }
       }
       pending.push({ resolve, reject });

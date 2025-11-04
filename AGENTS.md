@@ -1,190 +1,198 @@
-# AGENTS.md - AI Guide for mochila-ts
+# mochila-ts AI Guide
 
-This guide helps AI tools understand how to work effectively with the mochila-ts codebase.
+80+ composable TypeScript utilities using **data-last curried pattern** for composability.
 
-## Project Overview
+## Quick Commands
 
-**mochila-ts** is a lightweight, zero-dependency TypeScript utility library providing 80+ composable functions for common programming tasks. See [README.md](./README.md) for full description.
-
-### Core Philosophy
-- **Data-last pattern**: Functions take configuration/predicate first, data last → enables easy composition
-- **Currying support**: Functions support partial application for functional programming
-- **Type-safe**: Full TypeScript support with proper generics and type inference
-- **Composition-friendly**: Designed to work seamlessly with `pipe()` and function composition
-
-## Architecture & Key Patterns
-
-### Data-Last Currying
-Every function follows this pattern:
-```typescript
-// Configuration/predicate FIRST, data LAST
-export const filter =
-  <V>(fn: (x: V) => boolean) =>     // Step 1: Predicate
-  <T extends V>(source: ReadonlyArray<T>) =>  // Step 2: Data
-    source.filter(fn) as T[];
-
-// Usage: filter(isEven)([1,2,3,4,5]) ✓ (not filter([1,2,3,4,5], isEven))
+```bash
+pnpm install && pnpm test    # Setup & verify
+pnpm test:coverage           # Check coverage (85%+ required)
+pnpm lint                    # Check formatting & types
+pnpm build                   # Build all formats (ESM/CJS/.d.ts)
 ```
 
-### Module Structure
-Each utility follows this pattern:
+## Project Structure
+
 ```
 src/
 ├── {utilityName}/
-│   ├── {utilityName}.ts      # Implementation
-│   ├── {utilityName}.test.ts # Tests (85%+ coverage required)
-│   └── index.ts              # Exports: export * from './{utilityName}' or export { name } from './{utilityName}'
-└── index.ts                  # Main entry: star exports all utilities
+│   ├── {utilityName}.ts      # Curried function implementation
+│   ├── {utilityName}.test.ts # Tests (85%+ lines/functions/statements)
+│   └── index.ts              # Re-exports
+├── types/                    # Shared types (guards, constraints)
+└── index.ts                  # Main exports (alphabetical order)
 ```
 
-**Note:** Module index files may use either `export * from` or named `export { } from` patterns depending on the module's needs.
+## Data-Last Curried Pattern
 
-### Type Organization
-Shared types live in `src/types/`:
-- `function.ts` - Function utilities (AnyFn, Constant)
-- `helpers.ts` - Type helpers
-- `array/`, `string.ts`, `number.ts`, `boolean.ts`, `object.ts` - Domain-specific types
-- `extends.ts` - Type constraint utilities
+All functions follow: **config/predicate FIRST → data LAST**
 
-## Codebase Navigation
+```typescript
+// ✓ Correct pattern
+export const filter = <V>(predicate: (x: V) => boolean) =>
+  <T extends V>(arr: ReadonlyArray<T>): T[] =>
+    arr.filter(predicate) as T[];
 
-### Key Entry Points
-| File | Purpose |
-|------|---------|
-| `src/index.ts` | Main entry - re-exports all 80+ utilities (note: `reduceRight` exists but is currently missing from exports - see CODE_REVIEW.md) |
-| `package.json` | Project metadata, scripts, exports config |
-| `tsconfig.json` | TypeScript configuration (strict mode, ES2020, noUncheckedIndexedAccess, Bundler resolution) |
-| `tsup.config.ts` | Build configuration (ESM + CJS + .d.ts) |
-| `jest.config.js` | Test configuration (85% coverage thresholds) |
+// Usage: compose with pipe()
+pipe(data, filter(isEven), map(double), sort(ascending))
+```
 
-### Finding Things
-- **Utilities**: `src/{utilityName}/` (e.g., `src/filter/filter.ts`)
-- **Utilities by category**: Check JSDoc `@category` tags in implementation
-- **Type definitions**: `src/types/` directory
-- **Tests**: `src/**/*.test.ts` files
-- **Documentation**: `README.md`, [TypeDoc online](https://jmlweb.github.io/mochila/modules.html)
+**Benefits:**
+- Partial application: `const filterEven = filter(isEven)`
+- Composition: Works naturally with `pipe()` and function composition
+- Type safety: Generics infer correctly without explicit type annotations
 
-## Development Workflow
+**Common pattern mistakes to avoid:**
+- ❌ Data-first: `filter(array, predicate)` - breaks composition
+- ❌ Forgetting `<T extends V>` - loses type narrowing
+- ❌ `as T[]` without cast - unsafe with covariance
 
-### Available Scripts
+## Code Standards (Strict Mode)
+
+| Rule | Why | Example |
+|------|-----|---------|
+| No explicit `any` | Use generics/`unknown` | `<T>(x: T) => T` not `(x: any)` |
+| Imports alphabetical | ESLint enforces `simple-import-sort` | `import { a } from 'x'` before `import { b } from 'y'` |
+| JSDoc on exports | Required for documentation | `/** @category Array */ export const filter...` |
+| 85%+ test coverage | Branches min 50% | Run `pnpm test:coverage` before commit |
+| Curried with generics | Type inference must work | Return function types properly constrained |
+
+## Adding a Utility (Step-by-Step)
+
+**1. Create structure:**
 ```bash
-pnpm run build          # Build ESM, CJS, and .d.ts (output: dist/)
-pnpm run dev           # Watch mode for development
-pnpm run test          # Run Jest tests
-pnpm run test:watch    # Watch mode for tests
-pnpm run test:coverage # Generate coverage report
-pnpm run lint          # ESLint check
-pnpm run doc           # Generate TypeDoc documentation
+mkdir -p src/{name}
+touch src/{name}/{name}.ts src/{name}/{name}.test.ts src/{name}/index.ts
 ```
 
-### Build Process
-Output formats: ESM (`.mjs`), CJS (`.js`), TypeScript (`.d.ts`) with source maps. Build outputs to `dist/` directory. See `tsup.config.ts` for configuration.
-
-### Testing
-Coverage thresholds: 85% (lines/functions/statements), 50% (branches). See `src/**/*.test.ts` files for test patterns. Tests must pass before commit with coverage maintained.
-
-## Working with Code
-
-### Adding a New Utility
-1. Create directory: `src/{utilityName}/`
-2. Implement in `{utilityName}.ts` with JSDoc including `@category`, `@example`, `@param`, `@returns`
-3. Create `index.ts` with `export * from './{utilityName}'` or `export { name } from './{utilityName}'` as needed
-4. Write tests in `{utilityName}.test.ts` (aim for 85%+ coverage)
-5. Add export to `src/index.ts` in alphabetical order
-6. Run: `pnpm run test` and `pnpm run build`
-
-### Modifying Existing Utilities
-1. Update implementation in `src/{utilityName}/{utilityName}.ts`
-2. Update tests in `{utilityName}.test.ts` - ensure coverage maintained
-3. Update JSDoc if behavior changed
-4. Run: `pnpm run test` and `pnpm run lint`
-
-### Fixing Bugs
-- Reference [CODE_REVIEW.md](./CODE_REVIEW.md) for known issues
-- Critical bugs: subscription memory leak, division by zero validation, throttle undefined return
-- Write test first that reproduces the bug, then fix
-
-## Code Quality Standards
-
-### TypeScript
-- **Strict mode**: Required (checked in tsconfig.json)
-- **Imports**: Must be sorted alphabetically (enforced by ESLint)
-- **No explicit `any`**: Avoid unless absolutely necessary
-
-### Testing
-- **Coverage**: 85% minimum for lines, functions, statements
-- **Branch coverage**: 50% minimum
-- **Test pattern**: Describe functionality, use clear assertions
-- **Run before commit**: `pnpm run test:coverage`
-
-### Code Style
-- **Formatter**: Prettier with 2-space tabs, single quotes, trailing commas
-- **Linter**: ESLint with @typescript-eslint, simple-import-sort, and eslint-plugin-tsdoc
-- **Check before commit**: `pnpm run lint`
-- See [.eslintrc.js](./.eslintrc.js) and [.prettierrc.json](./.prettierrc.json)
-
-### Documentation
-- **JSDoc required** for all functions
-- **Required tags**: `@category`, `@example`, `@param`, `@typeParam`, `@returns`
-- **Examples**: Show data-last usage pattern
-- **Generated by**: TypeDoc (config: `typedoc.json`)
-
-## Known Issues & Gotchas
-
-See [CODE_REVIEW.md](./CODE_REVIEW.md) for comprehensive review. Critical items:
-
-1. **Subscription.unsubscribe()** - Memory leak in unsubscribe implementation
-2. **Division by zero** - `divide()` lacks zero validation
-3. **Throttle undefined** - `throttle()` may return undefined in edge cases
-4. **Missing export** - `reduceRight` exists but is not exported in `src/index.ts` (see CODE_REVIEW.md issue #11)
-5. **README example** - LRUCache example uses `new LRUCache()` but should be `LRUCache()` (factory function, not constructor)
-
-## Quick Reference
-
-### Key Configuration Files
-| File | Purpose |
-|------|---------|
-| `tsconfig.json` | TypeScript strict mode configuration |
-| `tsup.config.ts` | Build output formats and settings |
-| `jest.config.js` | Test framework and coverage settings |
-| `.eslintrc.js` | Linting and code quality rules |
-| `.prettierrc.json` | Code formatting preferences |
-| `package.json` | Project metadata and exports |
-
-### Package Exports
-```json
-{
-  ".": {
-    "require": "./dist/index.js",      // CommonJS
-    "import": "./dist/index.mjs",      // ES Module
-    "types": "./dist/index.d.ts"       // TypeScript
-  }
-}
+**2. Implement with proper typing:**
+```typescript
+/**
+ * Brief description of what it does.
+ *
+ * @category Array|String|Function|etc
+ * @example
+ * ```
+ * myFn(config)(data) // show actual usage
+ * ```
+ * @param config - First parameter description
+ * @param data - Second parameter description
+ * @returns Return value type and meaning
+ * @typeParam V - Input value type
+ * @typeParam T - Output/constrained type
+ */
+export const myFn = <V>(config: SomeConfig) =>
+  <T extends V>(data: ReadonlyArray<T>): T[] => {
+    // implementation
+  };
 ```
 
-### Common Issues & Solutions
+**3. Write tests (85%+ coverage required):**
+```typescript
+describe('myFn', () => {
+  test('handles basic case', () => {
+    expect(myFn(config)([1, 2, 3])).toEqual([...]);
+  });
+  test('handles edge case: empty array', () => {
+    expect(myFn(config)([])).toEqual([]);
+  });
+  test('maintains type safety', () => {
+    const result: number[] = myFn(config)([1, 2]); // ✓ Type checks
+  });
+});
+```
+
+**4. Export from module & main:**
+```typescript
+// src/{name}/index.ts
+export * from './{name}';
+
+// src/index.ts (add in alphabetical order)
+export * from './{name}';
+```
+
+**5. Verify:**
+```bash
+pnpm test:coverage  # Must reach 85%
+pnpm lint           # Must pass
+pnpm build          # Must produce ESM/CJS/DTS
+```
+
+## Type System
+
+**Shared types in `src/types/`:**
+- `array/` - Array constraints and helpers
+- `extends.ts` - Type constraint utilities
+- `function.ts` - Function types (AnyFn, Constant)
+- `helpers.ts` - Generic helpers
+
+**Type guard patterns (for `is/` utilities):**
+```typescript
+export const isArray = (x: unknown): x is unknown[] => Array.isArray(x);
+```
+
+**Generic constraints (common pattern):**
+```typescript
+<T extends Record<string, unknown>>  // Object with any keys
+<K extends string | number>          // String or numeric keys
+<T extends readonly unknown[]>       // ReadonlyArray
+```
+
+**Intentional `any` type exceptions:**
+The codebase has strict `no explicit any` enforcement, with one documented exception:
+- `AnyFn` type in `src/types/function.ts` - Uses `(...args: any[]) => any` as a base utility type for general function composition where strict typing is intentionally relaxed for maximum flexibility in `pipe()` and similar utilities. This is necessary to allow composition of functions with different signatures. Alternative: use `unknown[]` with runtime type guards if stricter typing is needed.
+
+## Before Committing
+
+1. **Tests & lint pass:**
+   ```bash
+   pnpm test:coverage && pnpm lint
+   ```
+
+2. **Commit message format** (conventional commits):
+   ```
+   feat: add new utility function name
+   fix: resolve type inference bug in filter
+   docs: clarify data-last pattern in JSDoc
+   ```
+   - Husky pre-commit hook auto-formats code
+   - Commitlint validates message format
+
+3. **What gets committed:**
+   - Source files only (no `dist/`, coverage reports)
+   - Tests must maintain 85%+ coverage
+
+## Common AI Mistakes to Avoid
+
+| Mistake | Fix |
+|---------|-----|
+| Using `any` type | Use generics: `<T>(x: T) => T` |
+| Data-first functions | Always: config → data (curried) |
+| Missing JSDoc tags | Include: `@category`, `@example`, `@param`, `@returns` |
+| Unsorted imports | Run: `pnpm exec eslint --fix src/` |
+| Type inference breaks | Use `extends` constraints: `<T extends V>` |
+| Test coverage <85% | Add edge cases: empty arrays, null, type narrowing |
+
+## Troubleshooting
+
 | Issue | Solution |
 |-------|----------|
-| Build fails | Check `tsconfig.json` strict mode, no explicit `any` |
-| Tests fail coverage | Add test cases for uncovered branches |
-| Lint errors | Run `pnpm run lint` and check sorting/formatting |
-| Type errors in pipe() | Ensure proper generic type inference in function signatures |
-| Missing docs | Add JSDoc with `@category`, `@example`, required tags |
+| Tests fail or coverage low | `pnpm test:coverage` → add test cases |
+| Lint/format errors | `pnpm exec eslint --fix src/` (auto on commit) |
+| Type errors in build | Check `tsconfig.json` strict mode; avoid `any` |
+| Test type inference | Ensure `<T extends V>` and proper return types |
+| Commit rejected | Message must be: `feat:`, `fix:`, `docs:`, etc. |
 
-## Release Process
+## Key Files Reference
 
-Automated via GitHub Actions using semantic-release:
-- **Trigger**: Push to `main` branch
-- **Version**: Semantic versioning (MAJOR.MINOR.PATCH)
-- **Process**: Test → Build → Release → Deploy docs
-- **Artifacts**: npm package, GitHub release, TypeDoc deploy
+| File | Purpose |
+|------|---------|
+| `src/index.ts` | Main exports (alphabetical) |
+| `tsconfig.json` | TypeScript strict mode (ES2020, bundler resolution) |
+| `.eslintrc.js` | Linting (@typescript-eslint, tsdoc, import-sort) |
+| `.prettierrc.json` | Formatting (2-space, single quotes, trailing commas) |
+| `jest.config.js` | Test config (85% coverage threshold) |
+| `.husky/` | Pre-commit hooks (format + lint) |
+| `commitlint.config.cjs` | Commit message validation |
 
-See `release.config.cjs` for semantic-release configuration.
-
-## Resources
-
-- [README.md](./README.md) - Project overview and philosophy
-- [CODE_REVIEW.md](./CODE_REVIEW.md) - Known issues and improvement areas
-- [TypeDoc Documentation](https://jmlweb.github.io/mochila/modules.html) - Full API reference
-- `package.json` - Dependencies, scripts, exports
-- Source code comments - JSDoc and inline explanations
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for architecture details and advanced patterns.

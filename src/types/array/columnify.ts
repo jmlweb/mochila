@@ -18,16 +18,16 @@ type InjectIntoPosition<
 > = Acc['length'] extends S['length']
   ? Acc
   : P extends Acc['length']
-  ? InjectIntoPosition<
-      P,
-      S,
-      V,
-      [
-        ...Acc,
-        S[P][number] extends never ? readonly [V] : readonly [...S[P], V],
-      ]
-    >
-  : InjectIntoPosition<P, S, V, readonly [...Acc, S[Acc['length']]]>;
+    ? InjectIntoPosition<
+        P,
+        S,
+        V,
+        [
+          ...Acc,
+          S[P][number] extends never ? readonly [V] : readonly [...S[P], V],
+        ]
+      >
+    : InjectIntoPosition<P, S, V, readonly [...Acc, S[Acc['length']]]>;
 
 type ProcessColumnify<
   N extends number,
@@ -37,13 +37,13 @@ type ProcessColumnify<
 > = Counter['length'] extends N
   ? ProcessColumnify<N, S, Acc, []>
   : S extends [infer Head, ...infer Tail]
-  ? ProcessColumnify<
-      N,
-      Tail,
-      InjectIntoPosition<Counter['length'], Acc, Head>,
-      [...Counter, never]
-    >
-  : Readonly<Acc>;
+    ? ProcessColumnify<
+        N,
+        Tail,
+        InjectIntoPosition<Counter['length'], Acc, Head>,
+        [...Counter, never]
+      >
+    : Readonly<Acc>;
 
 /**
  * Converts a tuple type into a tuple of tuples, where each tuple is a column of
@@ -57,15 +57,13 @@ type ProcessColumnify<
  * //	^ = type T0 = [[1, 3, 5], [2, 4, 6]]
  * ```
  */
-export type Columnify<N extends number, S extends ReadonlyArray<unknown>> = Or<
-  IfExtends<N, 1>,
-  IsLessThan1<N>
-> extends true
-  ? readonly [S]
-  : IsWideNumber<N> extends true
-  ? ChunksFrom<S>
-  : S['length'] extends 0
-  ? FillWithChunks<N, readonly []>
-  : IsNonEmptyArray<S> extends true
-  ? ProcessColumnify<N, S>
-  : FillWithChunks<N, readonly [], ReadonlyArray<S[number]>>;
+export type Columnify<N extends number, S extends ReadonlyArray<unknown>> =
+  Or<IfExtends<N, 1>, IsLessThan1<N>> extends true
+    ? readonly [S]
+    : IsWideNumber<N> extends true
+      ? ChunksFrom<S>
+      : S['length'] extends 0
+        ? FillWithChunks<N, readonly []>
+        : IsNonEmptyArray<S> extends true
+          ? ProcessColumnify<N, S>
+          : FillWithChunks<N, readonly [], ReadonlyArray<S[number]>>;

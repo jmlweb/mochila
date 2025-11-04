@@ -4,7 +4,7 @@ describe('isObject', () => {
   test('must return true for plain objects', () => {
     const a: number | { a: string } = { a: 'b' };
     if (isObject(a)) {
-      a;
+      expect(a.a).toBe('b');
     }
     expect(isObject({})).toBe(true);
   });

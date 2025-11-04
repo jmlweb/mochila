@@ -15,9 +15,9 @@ export type At<
   IsWideNumber<P> extends true
     ? DefaultAt
     : IsNonEmptyArray<S> extends true
-    ? IsNegative<P> extends true
-      ? [never, ...Reverse<S>][Absolute<P>]
-      : S[P]
-    : DefaultAt,
+      ? IsNegative<P> extends true
+        ? [never, ...Reverse<S>][Absolute<P>]
+        : S[P]
+      : DefaultAt,
   DefaultAt
 >;

@@ -35,4 +35,22 @@ describe('path', () => {
     const result = path('')(obj);
     expect(result).toBeUndefined();
   });
+  it('handles null object', () => {
+    const result = path('a.b')(null);
+    expect(result).toBeUndefined();
+  });
+  it('handles undefined object', () => {
+    const result = path('a.b')(undefined);
+    expect(result).toBeUndefined();
+  });
+  it('handles primitive value in path', () => {
+    const obj = { a: 'string' };
+    const result = path('a.b')(obj);
+    expect(result).toBeUndefined();
+  });
+  it('handles number in path', () => {
+    const obj = { a: 42 };
+    const result = path('a.b')(obj);
+    expect(result).toBeUndefined();
+  });
 });

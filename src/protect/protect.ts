@@ -43,11 +43,11 @@ export const protect =
       const value = fn(...args);
       if (isPromise(value)) {
         return value
-          .then((data) => ({
+          .then((data: unknown) => ({
             success: true,
-            data,
+            data: data as Awaited<R>,
           }))
-          .catch((error) => ({
+          .catch((error: unknown) => ({
             success: false,
             error,
           })) as T;

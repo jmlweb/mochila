@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm:*)",
+      "Bash(cat:*)",
+      "Bash(npm --version:*)",
+      "Bash(node --version:*)",
+      "Bash(pnpm install)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm exec prettier:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm type-check:*)",
+      "Bash(pnpm size:*)",
+      "Bash(pnpm exec husky:*)",
+      "Bash(xargs:*)",
+      "Bash(for file in src/*/[^i]*.ts)",
+      "Bash(do [ ! -f \"$file%.ts.test.ts\" ])",
+      "Bash(echo:*)",
+      "Bash(done)",
+      "Bash(pnpm test:coverage:*)",
+      "Bash(find:*)",
+      "Bash(pnpm exec eslint:*)",
+      "Bash(node:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

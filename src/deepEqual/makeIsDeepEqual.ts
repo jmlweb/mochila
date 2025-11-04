@@ -13,10 +13,11 @@ import {
  * @category Guard
  * @see {@link https://jmlweb.github.io/mochila/functions/isDeepEqual.html}
  *
- * @param options - The options for deep equality comparison.
- * @param options.optimizeForReact - Whether to optimize for React elements. Default is true.
- * @param options.maxDepth - The maximum depth to traverse nested objects. Default is -1 (unlimited depth).
- * @param options.strictNullComparison - Whether to strictly compare null values. Default is true.
+ * @param options - The options for deep equality comparison
+ *   with properties:
+ *   - optimizeForReact: Whether to optimize for React elements. Default is true.
+ *   - maxDepth: The maximum depth to traverse nested objects. Default is -1 (unlimited depth).
+ *   - strictNullComparison: Whether to strictly compare null values. Default is true.
  * @returns A function that takes two values and returns true if they are deeply equal, false otherwise.
  *
  * @example
@@ -128,14 +129,7 @@ export const makeIsDeepEqual = ({
       }
       const aValue = a[key as keyof typeof a];
       const bValue = b[key as keyof typeof b];
-      if (
-        !internalIsDeepEqual(
-          aValue,
-          bValue,
-          depth + 1,
-          visited,
-        )
-      ) {
+      if (!internalIsDeepEqual(aValue, bValue, depth + 1, visited)) {
         visited.delete(a);
         visited.delete(b);
         return false;

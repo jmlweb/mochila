@@ -16,15 +16,14 @@ export type Filterable = string | number | boolean | null | undefined;
  *
  * @category Array
  */
-export type IsWideFilterable<R extends Filterable> = IsWideBoolean<
-  R extends boolean ? R : never
-> extends false
-  ? IsWideString<R extends string ? R : never> extends false
-    ? IsWideNumber<R extends number ? R : never> extends false
-      ? false
+export type IsWideFilterable<R extends Filterable> =
+  IsWideBoolean<R extends boolean ? R : never> extends false
+    ? IsWideString<R extends string ? R : never> extends false
+      ? IsWideNumber<R extends number ? R : never> extends false
+        ? false
+        : true
       : true
-    : true
-  : true;
+    : true;
 
 /**
  * Processes the values of `S` that are assignable to `V`.
@@ -42,8 +41,8 @@ export type ProcessFilterValues<
       ? ProcessFilterValues<V, Rest, readonly [...Acc, Head], Mode>
       : ProcessFilterValues<V, Rest, Acc, Mode>
     : Mode extends 'pick'
-    ? ProcessFilterValues<V, Rest, Acc, Mode>
-    : ProcessFilterValues<V, Rest, readonly [...Acc, Head], Mode>
+      ? ProcessFilterValues<V, Rest, Acc, Mode>
+      : ProcessFilterValues<V, Rest, readonly [...Acc, Head], Mode>
   : Readonly<Acc>;
 
 /**
@@ -54,8 +53,9 @@ export type ProcessFilterValues<
 export type FilterValues<
   V extends Filterable,
   S extends ReadonlyArray<unknown>,
-> = IsWideFilterable<V> extends true
-  ? ProtectIfNonEmptyArray<S, S[number]>
-  : IsNonEmptyArray<S> extends true
-  ? ProcessFilterValues<V, S>
-  : ProtectIfNonEmptyArray<S, Exclude<S[number], V>>;
+> =
+  IsWideFilterable<V> extends true
+    ? ProtectIfNonEmptyArray<S, S[number]>
+    : IsNonEmptyArray<S> extends true
+      ? ProcessFilterValues<V, S>
+      : ProtectIfNonEmptyArray<S, Exclude<S[number], V>>;

@@ -58,4 +58,33 @@ describe('throttle', () => {
     expect(result).toBeUndefined();
     expect(fn).toHaveBeenCalledTimes(1);
   });
+  test('should execute on first unblocked call even after block', () => {
+    jest.useFakeTimers();
+    const fn = jest.fn((x: number) => x * 2);
+    const throttledFn = throttle(200, fn);
+
+    // First call should execute immediately
+    let result = throttledFn(5);
+    expect(result).toBe(10);
+    expect(fn).toHaveBeenCalledTimes(1);
+
+    // During blocked period - should return previous result
+    result = throttledFn(10);
+    expect(result).toBe(10);
+    expect(fn).toHaveBeenCalledTimes(1);
+
+    // Advance time slightly, still in blocked period
+    jest.advanceTimersByTime(100);
+    result = throttledFn(15);
+    expect(result).toBe(10);
+    expect(fn).toHaveBeenCalledTimes(1);
+
+    // Advance to end of throttle period
+    jest.advanceTimersByTime(100);
+    result = throttledFn(20);
+    expect(result).toBe(40);
+    expect(fn).toHaveBeenCalledTimes(2);
+
+    jest.useRealTimers();
+  });
 });

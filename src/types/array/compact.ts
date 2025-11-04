@@ -18,5 +18,5 @@ export type Compact<S extends ReadonlyArray<unknown>> = S extends readonly [
 ]
   ? ProcessCompact<S>
   : S extends readonly [...unknown[]]
-  ? ReadonlyArray<NonNullable<S[number]>>
-  : NonNullable<S[number]>[];
+    ? ReadonlyArray<NonNullable<S[number]>>
+    : NonNullable<S[number]>[];

@@ -39,7 +39,9 @@ describe('debounce', () => {
     for (let i = 0; i < 1001; i++) {
       promises.push(debouncedFn(i));
     }
-    await expect(promises[0]).rejects.toThrow('Debounce: too many pending promises, oldest promise rejected');
+    await expect(promises[0]).rejects.toThrow(
+      'Debounce: too many pending promises, oldest promise rejected',
+    );
     jest.advanceTimersByTime(250);
     const lastResult = await promises[1000];
     expect(lastResult).toBe(1000);

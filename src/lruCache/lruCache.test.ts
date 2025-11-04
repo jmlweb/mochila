@@ -64,13 +64,23 @@ describe('LRUCache', () => {
   });
 
   it('should throw an error when max is not a positive integer', () => {
-    expect(() => LRUCache<string>({ max: 0 })).toThrow('max must be a positive integer');
-    expect(() => LRUCache<string>({ max: -1 })).toThrow('max must be a positive integer');
-    expect(() => LRUCache<string>({ max: 1.5 })).toThrow('max must be a positive integer');
+    expect(() => LRUCache<string>({ max: 0 })).toThrow(
+      'max must be a positive integer',
+    );
+    expect(() => LRUCache<string>({ max: -1 })).toThrow(
+      'max must be a positive integer',
+    );
+    expect(() => LRUCache<string>({ max: 1.5 })).toThrow(
+      'max must be a positive integer',
+    );
   });
 
   it('should throw an error when ttl is not a positive number', () => {
-    expect(() => LRUCache<string>({ ttl: 0 })).toThrow('ttl must be a positive number');
-    expect(() => LRUCache<string>({ ttl: -1 })).toThrow('ttl must be a positive number');
+    expect(() => LRUCache<string>({ ttl: 0 })).toThrow(
+      'ttl must be a positive number',
+    );
+    expect(() => LRUCache<string>({ ttl: -1 })).toThrow(
+      'ttl must be a positive number',
+    );
   });
 });

@@ -17,6 +17,6 @@ export type RejectValues<
   ? IsWideFilterable<V> extends true
     ? ProtectIfNonEmptyArray<S, S[number]>
     : IsNonEmptyArray<S> extends true
-    ? ProcessFilterValues<V, S, [], 'omit'>
-    : ProtectIfNonEmptyArray<S, Exclude<S[number], V>>
+      ? ProcessFilterValues<V, S, [], 'omit'>
+      : ProtectIfNonEmptyArray<S, Exclude<S[number], V>>
   : ProtectIfNonEmptyArray<S, S[number]>;
