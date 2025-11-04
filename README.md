@@ -24,7 +24,7 @@ Mochila not only provides robust support for TypeScript but also comes equipped 
 ```typescript
 import { LRUCache } from 'mochila-ts';
 
-const cache = new LRUCache({
+const cache = LRUCache({
   max: 100,
   ttl: 1000 * 60 * 60 * 24,
 });
