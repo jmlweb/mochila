@@ -31,4 +31,15 @@ describe('Subscription', () => {
     subscription.notify('test');
     expect(subscriber).not.toHaveBeenCalled();
   });
+  it('after unsubscribing, subscribers should not be notified', () => {
+    const subscription = Subscription();
+    const subscriber1 = jest.fn();
+    const subscriber2 = jest.fn();
+    subscription.subscribe(subscriber1);
+    subscription.subscribe(subscriber2);
+    subscription.unsubscribe(subscriber1);
+    subscription.notify('test');
+    expect(subscriber1).not.toHaveBeenCalled();
+    expect(subscriber2).toHaveBeenCalledWith('test');
+  });
 });

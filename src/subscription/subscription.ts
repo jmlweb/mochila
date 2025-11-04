@@ -1,5 +1,3 @@
-import { rejectValues } from '../reject';
-
 type Subscriber<V> = (data: V) => void;
 
 /**
@@ -24,8 +22,12 @@ export const Subscription = <V>(initialSubscribers: Subscriber<V>[] = []) => {
     subscribers.push(subscriber);
   };
 
-  const unsubscribe = (subscriber: Subscriber<V>) =>
-    rejectValues([subscriber])(subscribers);
+  const unsubscribe = (subscriber: Subscriber<V>) => {
+    const index = subscribers.indexOf(subscriber);
+    if (index > -1) {
+      subscribers.splice(index, 1);
+    }
+  };
 
   const notify = (data: V) => {
     subscribers.forEach((subscriber) => subscriber(data));
