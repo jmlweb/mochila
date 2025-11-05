@@ -48,6 +48,7 @@ describe('snakeCase', () => {
   test('handles consecutive separators', () => {
     expect(snakeCase('hello---world')).toBe('hello_world');
     expect(snakeCase('hello   world')).toBe('hello_world');
+    expect(snakeCase('hello___world')).toBe('hello_world');
   });
 
   test('handles numbers in strings', () => {
