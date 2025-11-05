@@ -23,7 +23,6 @@ export const memoize = <F extends AnyFn>(fn: F): F => {
   const cache = new Map<string, unknown>();
 
   return ((...args: unknown[]) => {
-    // eslint-disable-next-line no-magic-numbers
     const key = JSON.stringify(args);
 
     if (cache.has(key)) {
