@@ -3,6 +3,7 @@ import prettierConfig from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tsdoc from 'eslint-plugin-tsdoc';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default [
@@ -30,22 +31,8 @@ export default [
         project: './tsconfig.json',
       },
       globals: {
-        // Node.js globals
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly',
-        // ES6 globals
-        Promise: 'readonly',
-        Symbol: 'readonly',
-        WeakMap: 'readonly',
-        WeakSet: 'readonly',
-        Map: 'readonly',
-        Set: 'readonly',
+        ...globals.node,
+        ...globals.es2021,
       },
     },
     rules: {
