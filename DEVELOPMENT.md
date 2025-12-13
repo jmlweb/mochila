@@ -231,12 +231,28 @@ See `release.config.cjs` for configuration.
 | `tsconfig.json` | TypeScript strict mode (ES2020, Bundler resolution) |
 | `tsup.config.ts` | Build configuration |
 | `jest.config.js` | Test framework (85% coverage thresholds) |
-| `.eslintrc.js` | Linting rules (@typescript-eslint, prettier, tsdoc) |
+| `eslint.config.mjs` | ESLint 9 flat config (@typescript-eslint, prettier, tsdoc) |
 | `.prettierrc.json` | Formatting (2-space, single quotes, trailing commas) |
 | `package.json` | Scripts, exports, engines (Node >=20, pnpm >=9) |
 | `commitlint.config.cjs` | Commit message validation |
 | `.pnpmrc` | Strict dependency management |
 | `.size-limit.js` | Bundle size limits |
+
+### Ruler Configuration
+
+Rule management via Okigu Ruler:
+- Source files: `.ruler/*.md` (13 granular rule files)
+- Configuration: `.ruler/ruler.toml`
+- Generated outputs:
+  - `CLAUDE.md` (Claude Code)
+  - `.cursor/rules/ruler_cursor_instructions.mdc` (Cursor)
+- Update command: `ruler apply --agents cursor,claude`
+
+**Modifying AI instructions:**
+1. Edit relevant `.ruler/*.md` file (use numbered prefixes as guide)
+2. Run `ruler apply --agents cursor,claude`
+3. Review git diff for `CLAUDE.md` and `.cursor/` changes
+4. Commit both `.ruler/` source and generated files together
 
 ## Troubleshooting
 

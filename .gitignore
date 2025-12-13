@@ -3,3 +3,8 @@ dist
 docs
 coverage
 package-lock.json
+
+# START Ruler Generated Files
+/.cursor/rules/ruler_cursor_instructions.mdc.bak
+/CLAUDE.md.bak
+# END Ruler Generated Files
