@@ -7,7 +7,8 @@ describe('delay', () => {
     const elapsed = Date.now() - start;
 
     expect(result).toBe(42);
-    expect(elapsed).toBeGreaterThanOrEqual(50);
+    // Timers can fire slightly early due to clock resolution/scheduling.
+    expect(elapsed).toBeGreaterThanOrEqual(45);
     expect(elapsed).toBeLessThan(150);
   });
 

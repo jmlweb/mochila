@@ -94,7 +94,10 @@ export const LRUCache = <T>({ max, ttl, onRemove }: CacheOptions<T> = {}) => {
     const parsedTt = ttlOverride || ttl;
     const expiration = parsedTt ? Date.now() + parsedTt : undefined;
     keys.add(key);
-    items.set(key, { value, expiration });
+    items.set(
+      key,
+      expiration === undefined ? { value } : { value, expiration },
+    );
   };
 
   return {
