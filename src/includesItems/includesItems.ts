@@ -11,5 +11,5 @@
  * ```
  */
 export const includesItems =
-  (searched: ReadonlyArray<unknown>) => (source: ReadonlyArray<unknown>) =>
+  (searched: readonly unknown[]) => (source: readonly unknown[]) =>
     searched.every((item) => source.includes(item));

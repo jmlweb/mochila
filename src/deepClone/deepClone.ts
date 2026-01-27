@@ -1,10 +1,10 @@
 import { clone } from '../clone';
 import { isArray, isPlainObject } from '../is';
 
-interface DeepClone {
+type DeepClone = {
   <T>(value: T): T;
   <T>(value: T[]): T[];
-}
+};
 
 /**
  * Returns a deep copy of the provided value in the following way:

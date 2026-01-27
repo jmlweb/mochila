@@ -26,16 +26,16 @@ describe('every', () => {
   });
 
   test('must work with boolean predicates', () => {
-    const isTrue = every((x: boolean) => x === true);
+    const isTrue = every((x: boolean) => x);
     expect(isTrue([true, true, true])).toBe(true);
     expect(isTrue([true, false, true])).toBe(false);
   });
 
   test('must work with object predicates', () => {
-    interface User {
+    type User = {
       name: string;
       age: number;
-    }
+    };
     const isAdult = every((u: User) => u.age >= 18);
     expect(
       isAdult([
@@ -66,9 +66,9 @@ describe('every', () => {
   });
 
   test('must preserve array type through predicate', () => {
-    interface Item {
+    type Item = {
       id: number;
-    }
+    };
     const hasId = every((item: Item) => item.id > 0);
     const items: readonly Item[] = [{ id: 1 }, { id: 2 }];
     expect(hasId(items)).toBe(true);
@@ -100,11 +100,11 @@ describe('every', () => {
   });
 
   test('must work with complex predicates', () => {
-    interface Product {
+    type Product = {
       name: string;
       price: number;
       inStock: boolean;
-    }
+    };
     const isAvailable = every((p: Product) => p.price > 0 && p.inStock);
     expect(
       isAvailable([

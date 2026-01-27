@@ -11,5 +11,5 @@
  */
 export const slice =
   (start?: number, end?: number) =>
-  <T>(arr: ReadonlyArray<T>) =>
+  <T>(arr: readonly T[]) =>
     arr.slice(start, end);

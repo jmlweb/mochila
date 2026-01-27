@@ -1,7 +1,7 @@
 import { isTupleable } from '../is';
-import { Tupleable } from '../types';
+import { type Tupleable } from '../types';
 
-type AssertIsTupeable = <T>(x: ReadonlyArray<T>) => asserts x is Tupleable<T>;
+type AssertIsTupeable = <T>(x: readonly T[]) => asserts x is Tupleable<T>;
 
 /**
  * Asserts that the input is a tupleable array.

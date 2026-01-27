@@ -1,14 +1,14 @@
-import { And, Complement, Or } from '../boolean';
-import { IfElse, IfExtends } from '../extends';
-import { ChunksFrom, IsNonEmptyArray } from './arrayHelpers';
+import { type And, type Complement, type Or } from '../boolean';
+import { type IfElse, type IfExtends } from '../extends';
+import { type ChunksFrom, type IsNonEmptyArray } from './arrayHelpers';
 
 type ProcessChunks<
   N extends number,
-  S extends ReadonlyArray<unknown>,
+  S extends readonly unknown[],
   Acc extends ChunksFrom<S> = [],
 > = S extends readonly [infer First, ...infer Rest]
   ? Acc extends [
-      ...infer FilledGroups extends ReadonlyArray<Acc[number]>,
+      ...infer FilledGroups extends readonly Acc[number][],
       infer LastGroup extends Acc[number],
     ]
     ? N extends LastGroup['length']
@@ -26,10 +26,7 @@ type ProcessChunks<
  *
  * @category Array
  */
-export type Chunkify<
-  N extends number,
-  S extends ReadonlyArray<unknown>,
-> = IfElse<
+export type Chunkify<N extends number, S extends readonly unknown[]> = IfElse<
   Or<
     Complement<IsNonEmptyArray<S>>,
     And<IfExtends<S['length'], N>, IfExtends<0, N>>

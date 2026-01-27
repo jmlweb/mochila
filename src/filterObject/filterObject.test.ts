@@ -9,24 +9,21 @@ describe('filterObject', () => {
   });
 
   test('filters empty object', () => {
-    const isEven = (x: unknown) =>
-      typeof x === 'number' && (x as number) % 2 === 0;
+    const isEven = (x: unknown) => typeof x === 'number' && x % 2 === 0;
     const result = filterObject(isEven)({});
 
     expect(result).toEqual({});
   });
 
   test('filters with all matching', () => {
-    const isEven = (x: unknown) =>
-      typeof x === 'number' && (x as number) % 2 === 0;
+    const isEven = (x: unknown) => typeof x === 'number' && x % 2 === 0;
     const result = filterObject(isEven)({ a: 2, b: 4, c: 6 });
 
     expect(result).toEqual({ a: 2, b: 4, c: 6 });
   });
 
   test('filters with none matching', () => {
-    const isEven = (x: unknown) =>
-      typeof x === 'number' && (x as number) % 2 === 0;
+    const isEven = (x: unknown) => typeof x === 'number' && x % 2 === 0;
     const result = filterObject(isEven)({ a: 1, b: 3, c: 5 });
 
     expect(result).toEqual({});

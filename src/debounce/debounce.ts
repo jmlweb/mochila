@@ -1,4 +1,4 @@
-import { AnyFn } from '../types';
+import { type AnyFn } from '../types';
 
 /**
  * Debounces a function call, delaying its execution until a certain amount of time has passed without any new calls.
@@ -33,10 +33,14 @@ export const debounce = <Fn extends AnyFn>(duration: number, fn: Fn) => {
         const currentPending = [...pending];
         pending = [];
         Promise.resolve(fn(...args)).then(
-          (data: ReturnType<Fn>) =>
-            currentPending.forEach(({ resolve }) => resolve(data)),
-          (error: unknown) =>
-            currentPending.forEach(({ reject }) => reject(error)),
+          (data: ReturnType<Fn>) => {
+            currentPending.forEach(({ resolve }) => {
+              resolve(data);
+            });
+          },
+          (error: unknown) => {
+            currentPending.forEach(({ reject }) => reject(error));
+          },
         );
       }, duration);
       if (pending.length >= MAX_PENDING) {

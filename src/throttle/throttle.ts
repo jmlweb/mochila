@@ -1,4 +1,4 @@
-import { AnyFn } from '../types';
+import { type AnyFn } from '../types';
 
 /**
  * Limits the rate at which a function can be called.

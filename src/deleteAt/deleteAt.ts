@@ -1,5 +1,5 @@
 import { parsePosition } from '../parsePosition';
-import { DeleteAt } from '../types';
+import { type DeleteAt } from '../types';
 
 /**
  * Returns a new array with the element at the specified position removed.
@@ -21,7 +21,7 @@ import { DeleteAt } from '../types';
  */
 export const deleteAt =
   <P extends number>(position: P) =>
-  <S extends ReadonlyArray<unknown>>(source: S) => {
+  <S extends readonly unknown[]>(source: S) => {
     const parsedPosition = parsePosition(position)(source);
     return [
       ...source.slice(0, parsedPosition),

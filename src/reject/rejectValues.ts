@@ -1,4 +1,4 @@
-import { RejectValues } from '../types';
+import { type RejectValues } from '../types';
 
 /**
  * Filters the values in the source array that are not included in the values array.
@@ -13,8 +13,8 @@ import { RejectValues } from '../types';
  * ```
  */
 export const rejectValues =
-  <V>(values: ReadonlyArray<V>) =>
-  <S extends ReadonlyArray<unknown>>(source: S) =>
+  <V>(values: readonly V[]) =>
+  <S extends readonly unknown[]>(source: S) =>
     source.filter((value) => !values.includes(value as V)) as RejectValues<
       V,
       S

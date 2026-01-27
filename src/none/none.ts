@@ -15,5 +15,5 @@ import { some } from '../some';
  */
 export const none =
   <A>(fn: (value: A) => boolean) =>
-  <S extends ReadonlyArray<A>>(source: S) =>
+  <S extends readonly A[]>(source: S) =>
     complement(some(fn))(source);

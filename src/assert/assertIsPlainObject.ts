@@ -1,5 +1,5 @@
 import { isPlainObject } from '../is';
-import { Assertion, UnknownRecord } from '../types';
+import { type Assertion, type UnknownRecord } from '../types';
 
 /**
  * Asserts that the input is a plain object.

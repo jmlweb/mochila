@@ -1,5 +1,5 @@
 import { isString } from '../is';
-import { IsWideString, Stringifiable } from '../types';
+import { type IsWideString, type Stringifiable } from '../types';
 
 type AppendString<V extends Stringifiable, S extends string> =
   IsWideString<S | V> extends true ? string : `${S}${V}` & string;
@@ -7,8 +7,8 @@ type AppendString<V extends Stringifiable, S extends string> =
 type Append<
   V,
   S extends V extends Stringifiable
-    ? string | ReadonlyArray<unknown>
-    : ReadonlyArray<unknown>,
+    ? string | readonly unknown[]
+    : readonly unknown[],
 > = S extends string
   ? V extends Stringifiable
     ? AppendString<V, S>
@@ -35,8 +35,8 @@ export const append =
   <V>(value: V) =>
   <
     S extends V extends Stringifiable
-      ? string | ReadonlyArray<unknown>
-      : ReadonlyArray<unknown>,
+      ? string | readonly unknown[]
+      : readonly unknown[],
   >(
     source: S,
   ): Append<V, S> => {

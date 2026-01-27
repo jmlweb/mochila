@@ -1,5 +1,5 @@
 import { parsePosition } from '../parsePosition';
-import { At } from '../types';
+import { type At } from '../types';
 
 /**
  * Returns the element at the specified position in the source array.
@@ -18,7 +18,7 @@ import { At } from '../types';
  */
 export const atW =
   (position: number) =>
-  <S extends ReadonlyArray<unknown>>(source: S): S[number] | undefined => {
+  <S extends readonly unknown[]>(source: S): S[number] | undefined => {
     const parsedPosition = parsePosition(position)(source);
     return source[parsedPosition];
   };
@@ -42,5 +42,5 @@ export const atW =
  */
 export const at =
   <P extends number>(position: P) =>
-  <S extends ReadonlyArray<unknown>>(source: S): At<P, S> =>
+  <S extends readonly unknown[]>(source: S): At<P, S> =>
     atW(position)(source) as At<P, S>;

@@ -1,4 +1,4 @@
-import { ExtractItem } from '../types';
+import { type ExtractItem } from '../types';
 
 /**
  * Returns the minimum item from the given array.
@@ -14,9 +14,7 @@ import { ExtractItem } from '../types';
  * @param source - The array from which to find the minimum item.
  * @returns The minimum item from the array, or undefined if the array is empty.
  */
-export const minItem = <
-  S extends ReadonlyArray<number> | ReadonlyArray<string>,
->(
+export const minItem = <S extends readonly number[] | readonly string[]>(
   source: S,
 ): ExtractItem<S> => {
   if (source.length === 0) {
@@ -27,9 +25,9 @@ export const minItem = <
     throw new Error('All items must be of the same type');
   }
   if (typeof min === 'number') {
-    return Math.min(...(source as ReadonlyArray<number>)) as ExtractItem<S>;
+    return Math.min(...(source as readonly number[])) as ExtractItem<S>;
   }
-  return (source as ReadonlyArray<string>).reduce((acc, curr) =>
+  return (source as readonly string[]).reduce((acc, curr) =>
     acc.localeCompare(curr) > 0 ? curr : acc,
   ) as ExtractItem<S>;
 };

@@ -1,4 +1,4 @@
-import { Constant } from '../types';
+import { type Constant } from '../types';
 
 /**
  * Returns a function that always returns the provided value.

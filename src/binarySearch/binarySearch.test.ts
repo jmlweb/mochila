@@ -59,9 +59,9 @@ describe('binarySearch', () => {
   });
 
   test('works with objects using custom comparison', () => {
-    interface Item {
+    type Item = {
       id: number;
-    }
+    };
 
     const compare = (x: unknown) => (x as Item).id - 3;
     const result = binarySearch(compare)([

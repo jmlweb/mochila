@@ -13,7 +13,7 @@
  * @typeParam T - Value type
  */
 export const fromEntries = <T = unknown>(
-  entries: ReadonlyArray<readonly [string, T]>,
+  entries: readonly (readonly [string, T])[],
 ): Record<string, T> => {
   return Object.fromEntries(entries) as Record<string, T>;
 };

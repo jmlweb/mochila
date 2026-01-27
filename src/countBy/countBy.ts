@@ -1,5 +1,5 @@
 import { toString } from '../toString';
-import { Stringifiable, ToString } from '../types';
+import { type Stringifiable, type ToString } from '../types';
 
 /**
  * Counts the occurrences of each value in an array.
@@ -20,7 +20,7 @@ import { Stringifiable, ToString } from '../types';
  */
 export const countBy =
   <From, To extends Stringifiable>(fn: (item: From) => To) =>
-  (source: ReadonlyArray<From>) => {
+  (source: readonly From[]) => {
     const result = {} as Record<ToString<To>, number>;
     for (const item of source) {
       const key = toString(fn(item));

@@ -1,5 +1,5 @@
 import { isString } from '../is';
-import { Assertion } from '../types';
+import { type Assertion } from '../types';
 
 /**
  * Checks if the provided value is a string.

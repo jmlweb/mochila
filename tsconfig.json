@@ -1,23 +1,10 @@
 {
+  "extends": "@jmlweb/tsconfig-base",
   "compilerOptions": {
-    "declaration": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "lib": ["es2020"],
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "moduleResolution": "Bundler",
-    "noFallthroughCasesInSwitch": true,
+    "lib": ["ES2022"],
+    "allowJs": true,
     "noEmit": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "es2020",
-    "useUnknownInCatchVariables": true
+    "moduleDetection": "force"
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["coverage", "dist", "docs", "node_modules"]

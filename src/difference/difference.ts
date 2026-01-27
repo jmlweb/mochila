@@ -14,8 +14,8 @@
  * @typeParam T - Element type
  */
 export const difference =
-  <T>(exclude: ReadonlyArray<T>) =>
-  (source: ReadonlyArray<T>): T[] => {
+  <T>(exclude: readonly T[]) =>
+  (source: readonly T[]): T[] => {
     const excludeSet = new Set(exclude);
     const seen = new Set<T>();
     const result: T[] = [];

@@ -1,4 +1,4 @@
-import { UnknownRecord } from '../types';
+import { type UnknownRecord } from '../types';
 
 /**
  * Creates a new object by picking specific properties from an existing object.

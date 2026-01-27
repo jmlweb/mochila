@@ -15,42 +15,78 @@ import {
 
 describe('assertIsArray', () => {
   test('must throw for non-arrays', () => {
-    expect(() => assertIsArray(null)).toThrow('Expected an array');
-    expect(() => assertIsArray(undefined)).toThrow('Expected an array');
-    expect(() => assertIsArray({})).toThrow('Expected an array');
-    expect(() => assertIsArray('array')).toThrow('Expected an array');
-    expect(() => assertIsArray(123)).toThrow('Expected an array');
-    expect(() => assertIsArray(true)).toThrow('Expected an array');
+    expect(() => {
+      assertIsArray(null);
+    }).toThrow('Expected an array');
+    expect(() => {
+      assertIsArray(undefined);
+    }).toThrow('Expected an array');
+    expect(() => {
+      assertIsArray({});
+    }).toThrow('Expected an array');
+    expect(() => {
+      assertIsArray('array');
+    }).toThrow('Expected an array');
+    expect(() => {
+      assertIsArray(123);
+    }).toThrow('Expected an array');
+    expect(() => {
+      assertIsArray(true);
+    }).toThrow('Expected an array');
   });
 
   test('must not throw for arrays', () => {
-    expect(() => assertIsArray([])).not.toThrow();
-    expect(() => assertIsArray([1, 2, 3])).not.toThrow();
-    expect(() => assertIsArray(['a', 'b'])).not.toThrow();
-    expect(() => assertIsArray([{}])).not.toThrow();
+    expect(() => {
+      assertIsArray([]);
+    }).not.toThrow();
+    expect(() => {
+      assertIsArray([1, 2, 3]);
+    }).not.toThrow();
+    expect(() => {
+      assertIsArray(['a', 'b']);
+    }).not.toThrow();
+    expect(() => {
+      assertIsArray([{}]);
+    }).not.toThrow();
   });
 
   test('must narrow type to Array<unknown>', () => {
     const x: unknown = [1, 2, 3];
     assertIsArray(x);
-    const result: Array<unknown> = x;
+    const result: unknown[] = x;
     expect(result).toEqual([1, 2, 3]);
   });
 });
 
 describe('assertIsBoolean', () => {
   test('must throw for non-booleans', () => {
-    expect(() => assertIsBoolean(null)).toThrow('Expected a boolean');
-    expect(() => assertIsBoolean(undefined)).toThrow('Expected a boolean');
-    expect(() => assertIsBoolean(0)).toThrow('Expected a boolean');
-    expect(() => assertIsBoolean(1)).toThrow('Expected a boolean');
-    expect(() => assertIsBoolean('true')).toThrow('Expected a boolean');
-    expect(() => assertIsBoolean({})).toThrow('Expected a boolean');
+    expect(() => {
+      assertIsBoolean(null);
+    }).toThrow('Expected a boolean');
+    expect(() => {
+      assertIsBoolean(undefined);
+    }).toThrow('Expected a boolean');
+    expect(() => {
+      assertIsBoolean(0);
+    }).toThrow('Expected a boolean');
+    expect(() => {
+      assertIsBoolean(1);
+    }).toThrow('Expected a boolean');
+    expect(() => {
+      assertIsBoolean('true');
+    }).toThrow('Expected a boolean');
+    expect(() => {
+      assertIsBoolean({});
+    }).toThrow('Expected a boolean');
   });
 
   test('must not throw for booleans', () => {
-    expect(() => assertIsBoolean(true)).not.toThrow();
-    expect(() => assertIsBoolean(false)).not.toThrow();
+    expect(() => {
+      assertIsBoolean(true);
+    }).not.toThrow();
+    expect(() => {
+      assertIsBoolean(false);
+    }).not.toThrow();
   });
 
   test('must narrow type to boolean', () => {
@@ -63,16 +99,30 @@ describe('assertIsBoolean', () => {
 
 describe('assertIsDate', () => {
   test('must throw for non-Date objects', () => {
-    expect(() => assertIsDate(null)).toThrow('Expected a date');
-    expect(() => assertIsDate(undefined)).toThrow('Expected a date');
-    expect(() => assertIsDate('2024-01-01')).toThrow('Expected a date');
-    expect(() => assertIsDate(1704067200000)).toThrow('Expected a date');
-    expect(() => assertIsDate({})).toThrow('Expected a date');
+    expect(() => {
+      assertIsDate(null);
+    }).toThrow('Expected a date');
+    expect(() => {
+      assertIsDate(undefined);
+    }).toThrow('Expected a date');
+    expect(() => {
+      assertIsDate('2024-01-01');
+    }).toThrow('Expected a date');
+    expect(() => {
+      assertIsDate(1704067200000);
+    }).toThrow('Expected a date');
+    expect(() => {
+      assertIsDate({});
+    }).toThrow('Expected a date');
   });
 
   test('must not throw for Date objects', () => {
-    expect(() => assertIsDate(new Date())).not.toThrow();
-    expect(() => assertIsDate(new Date('2024-01-01'))).not.toThrow();
+    expect(() => {
+      assertIsDate(new Date());
+    }).not.toThrow();
+    expect(() => {
+      assertIsDate(new Date('2024-01-01'));
+    }).not.toThrow();
   });
 
   test('must narrow type to Date', () => {
@@ -85,17 +135,33 @@ describe('assertIsDate', () => {
 
 describe('assertIsFunction', () => {
   test('must throw for non-functions', () => {
-    expect(() => assertIsFunction(null)).toThrow('Expected a function');
-    expect(() => assertIsFunction(undefined)).toThrow('Expected a function');
-    expect(() => assertIsFunction(123)).toThrow('Expected a function');
-    expect(() => assertIsFunction('fn')).toThrow('Expected a function');
-    expect(() => assertIsFunction({})).toThrow('Expected a function');
+    expect(() => {
+      assertIsFunction(null);
+    }).toThrow('Expected a function');
+    expect(() => {
+      assertIsFunction(undefined);
+    }).toThrow('Expected a function');
+    expect(() => {
+      assertIsFunction(123);
+    }).toThrow('Expected a function');
+    expect(() => {
+      assertIsFunction('fn');
+    }).toThrow('Expected a function');
+    expect(() => {
+      assertIsFunction({});
+    }).toThrow('Expected a function');
   });
 
   test('must not throw for functions', () => {
-    expect(() => assertIsFunction(() => {})).not.toThrow();
-    expect(() => assertIsFunction(function () {})).not.toThrow();
-    expect(() => assertIsFunction(Math.random)).not.toThrow();
+    expect(() => {
+      assertIsFunction(() => {});
+    }).not.toThrow();
+    expect(() => {
+      assertIsFunction(function () {});
+    }).not.toThrow();
+    expect(() => {
+      assertIsFunction(Math.random);
+    }).not.toThrow();
   });
 
   test('must narrow type to function', () => {
@@ -108,15 +174,21 @@ describe('assertIsFunction', () => {
 
 describe('assertIsNonEmptyArray', () => {
   test('must throw for empty arrays', () => {
-    expect(() => assertIsNonEmptyArray([])).toThrow(
-      'Expected a non-empty array',
-    );
+    expect(() => {
+      assertIsNonEmptyArray([]);
+    }).toThrow('Expected a non-empty array');
   });
 
   test('must not throw for non-empty arrays', () => {
-    expect(() => assertIsNonEmptyArray([1])).not.toThrow();
-    expect(() => assertIsNonEmptyArray([1, 2, 3])).not.toThrow();
-    expect(() => assertIsNonEmptyArray(['a'])).not.toThrow();
+    expect(() => {
+      assertIsNonEmptyArray([1]);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNonEmptyArray([1, 2, 3]);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNonEmptyArray(['a']);
+    }).not.toThrow();
   });
 
   test('must narrow type to NonEmptyArray', () => {
@@ -130,20 +202,30 @@ describe('assertIsNonEmptyArray', () => {
 
 describe('assertIsNonNullable', () => {
   test('must throw for null and undefined', () => {
-    expect(() => assertIsNonNullable(null)).toThrow(
-      'Expected a non-nullable value',
-    );
-    expect(() => assertIsNonNullable(undefined)).toThrow(
-      'Expected a non-nullable value',
-    );
+    expect(() => {
+      assertIsNonNullable(null);
+    }).toThrow('Expected a non-nullable value');
+    expect(() => {
+      assertIsNonNullable(undefined);
+    }).toThrow('Expected a non-nullable value');
   });
 
   test('must not throw for non-nullable values', () => {
-    expect(() => assertIsNonNullable(0)).not.toThrow();
-    expect(() => assertIsNonNullable('')).not.toThrow();
-    expect(() => assertIsNonNullable(false)).not.toThrow();
-    expect(() => assertIsNonNullable({})).not.toThrow();
-    expect(() => assertIsNonNullable([])).not.toThrow();
+    expect(() => {
+      assertIsNonNullable(0);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNonNullable('');
+    }).not.toThrow();
+    expect(() => {
+      assertIsNonNullable(false);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNonNullable({});
+    }).not.toThrow();
+    expect(() => {
+      assertIsNonNullable([]);
+    }).not.toThrow();
   });
 
   test('must narrow type from nullable to non-nullable', () => {
@@ -156,18 +238,30 @@ describe('assertIsNonNullable', () => {
 
 describe('assertIsNullable', () => {
   test('must throw for non-nullable values', () => {
-    expect(() => assertIsNullable(0)).toThrow('Expected a non-nullable value');
-    expect(() => assertIsNullable('')).toThrow('Expected a non-nullable value');
-    expect(() => assertIsNullable(false)).toThrow(
-      'Expected a non-nullable value',
-    );
-    expect(() => assertIsNullable({})).toThrow('Expected a non-nullable value');
-    expect(() => assertIsNullable([])).toThrow('Expected a non-nullable value');
+    expect(() => {
+      assertIsNullable(0);
+    }).toThrow('Expected a non-nullable value');
+    expect(() => {
+      assertIsNullable('');
+    }).toThrow('Expected a non-nullable value');
+    expect(() => {
+      assertIsNullable(false);
+    }).toThrow('Expected a non-nullable value');
+    expect(() => {
+      assertIsNullable({});
+    }).toThrow('Expected a non-nullable value');
+    expect(() => {
+      assertIsNullable([]);
+    }).toThrow('Expected a non-nullable value');
   });
 
   test('must not throw for null and undefined', () => {
-    expect(() => assertIsNullable(null)).not.toThrow();
-    expect(() => assertIsNullable(undefined)).not.toThrow();
+    expect(() => {
+      assertIsNullable(null);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNullable(undefined);
+    }).not.toThrow();
   });
 
   test('must narrow type to nullable', () => {
@@ -180,20 +274,42 @@ describe('assertIsNullable', () => {
 
 describe('assertIsNumber', () => {
   test('must throw for non-numbers', () => {
-    expect(() => assertIsNumber(null)).toThrow('Expected a number');
-    expect(() => assertIsNumber(undefined)).toThrow('Expected a number');
-    expect(() => assertIsNumber('123')).toThrow('Expected a number');
-    expect(() => assertIsNumber(true)).toThrow('Expected a number');
-    expect(() => assertIsNumber({})).toThrow('Expected a number');
+    expect(() => {
+      assertIsNumber(null);
+    }).toThrow('Expected a number');
+    expect(() => {
+      assertIsNumber(undefined);
+    }).toThrow('Expected a number');
+    expect(() => {
+      assertIsNumber('123');
+    }).toThrow('Expected a number');
+    expect(() => {
+      assertIsNumber(true);
+    }).toThrow('Expected a number');
+    expect(() => {
+      assertIsNumber({});
+    }).toThrow('Expected a number');
   });
 
   test('must not throw for numbers', () => {
-    expect(() => assertIsNumber(0)).not.toThrow();
-    expect(() => assertIsNumber(123)).not.toThrow();
-    expect(() => assertIsNumber(-456)).not.toThrow();
-    expect(() => assertIsNumber(3.14)).not.toThrow();
-    expect(() => assertIsNumber(Infinity)).not.toThrow();
-    expect(() => assertIsNumber(NaN)).not.toThrow();
+    expect(() => {
+      assertIsNumber(0);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNumber(123);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNumber(-456);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNumber(3.14);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNumber(Infinity);
+    }).not.toThrow();
+    expect(() => {
+      assertIsNumber(NaN);
+    }).not.toThrow();
   });
 
   test('must narrow type to number', () => {
@@ -206,18 +322,36 @@ describe('assertIsNumber', () => {
 
 describe('assertIsObject', () => {
   test('must throw for non-objects', () => {
-    expect(() => assertIsObject(null)).toThrow('Expected an object');
-    expect(() => assertIsObject(undefined)).toThrow('Expected an object');
-    expect(() => assertIsObject(123)).toThrow('Expected an object');
-    expect(() => assertIsObject('string')).toThrow('Expected an object');
-    expect(() => assertIsObject(true)).toThrow('Expected an object');
+    expect(() => {
+      assertIsObject(null);
+    }).toThrow('Expected an object');
+    expect(() => {
+      assertIsObject(undefined);
+    }).toThrow('Expected an object');
+    expect(() => {
+      assertIsObject(123);
+    }).toThrow('Expected an object');
+    expect(() => {
+      assertIsObject('string');
+    }).toThrow('Expected an object');
+    expect(() => {
+      assertIsObject(true);
+    }).toThrow('Expected an object');
   });
 
   test('must not throw for objects', () => {
-    expect(() => assertIsObject({})).not.toThrow();
-    expect(() => assertIsObject({ a: 1 })).not.toThrow();
-    expect(() => assertIsObject([])).not.toThrow();
-    expect(() => assertIsObject(new Date())).not.toThrow();
+    expect(() => {
+      assertIsObject({});
+    }).not.toThrow();
+    expect(() => {
+      assertIsObject({ a: 1 });
+    }).not.toThrow();
+    expect(() => {
+      assertIsObject([]);
+    }).not.toThrow();
+    expect(() => {
+      assertIsObject(new Date());
+    }).not.toThrow();
   });
 
   test('must narrow type to object', () => {
@@ -230,24 +364,36 @@ describe('assertIsObject', () => {
 
 describe('assertIsPlainObject', () => {
   test('must throw for non-plain objects', () => {
-    expect(() => assertIsPlainObject(null)).toThrow('Expected a plain object');
-    expect(() => assertIsPlainObject(undefined)).toThrow(
-      'Expected a plain object',
-    );
-    expect(() => assertIsPlainObject(123)).toThrow('Expected a plain object');
-    expect(() => assertIsPlainObject('string')).toThrow(
-      'Expected a plain object',
-    );
-    expect(() => assertIsPlainObject([])).toThrow('Expected a plain object');
-    expect(() => assertIsPlainObject(new Date())).toThrow(
-      'Expected a plain object',
-    );
+    expect(() => {
+      assertIsPlainObject(null);
+    }).toThrow('Expected a plain object');
+    expect(() => {
+      assertIsPlainObject(undefined);
+    }).toThrow('Expected a plain object');
+    expect(() => {
+      assertIsPlainObject(123);
+    }).toThrow('Expected a plain object');
+    expect(() => {
+      assertIsPlainObject('string');
+    }).toThrow('Expected a plain object');
+    expect(() => {
+      assertIsPlainObject([]);
+    }).toThrow('Expected a plain object');
+    expect(() => {
+      assertIsPlainObject(new Date());
+    }).toThrow('Expected a plain object');
   });
 
   test('must not throw for plain objects', () => {
-    expect(() => assertIsPlainObject({})).not.toThrow();
-    expect(() => assertIsPlainObject({ a: 1 })).not.toThrow();
-    expect(() => assertIsPlainObject({ nested: { obj: true } })).not.toThrow();
+    expect(() => {
+      assertIsPlainObject({});
+    }).not.toThrow();
+    expect(() => {
+      assertIsPlainObject({ a: 1 });
+    }).not.toThrow();
+    expect(() => {
+      assertIsPlainObject({ nested: { obj: true } });
+    }).not.toThrow();
   });
 
   test('must narrow type to plain object', () => {
@@ -260,17 +406,33 @@ describe('assertIsPlainObject', () => {
 
 describe('assertIsString', () => {
   test('must throw for non-strings', () => {
-    expect(() => assertIsString(null)).toThrow('Expected a string');
-    expect(() => assertIsString(undefined)).toThrow('Expected a string');
-    expect(() => assertIsString(123)).toThrow('Expected a string');
-    expect(() => assertIsString(true)).toThrow('Expected a string');
-    expect(() => assertIsString({})).toThrow('Expected a string');
+    expect(() => {
+      assertIsString(null);
+    }).toThrow('Expected a string');
+    expect(() => {
+      assertIsString(undefined);
+    }).toThrow('Expected a string');
+    expect(() => {
+      assertIsString(123);
+    }).toThrow('Expected a string');
+    expect(() => {
+      assertIsString(true);
+    }).toThrow('Expected a string');
+    expect(() => {
+      assertIsString({});
+    }).toThrow('Expected a string');
   });
 
   test('must not throw for strings', () => {
-    expect(() => assertIsString('')).not.toThrow();
-    expect(() => assertIsString('hello')).not.toThrow();
-    expect(() => assertIsString('123')).not.toThrow();
+    expect(() => {
+      assertIsString('');
+    }).not.toThrow();
+    expect(() => {
+      assertIsString('hello');
+    }).not.toThrow();
+    expect(() => {
+      assertIsString('123');
+    }).not.toThrow();
   });
 
   test('must narrow type to string', () => {
@@ -283,14 +445,24 @@ describe('assertIsString', () => {
 
 describe('assertIsTupleable', () => {
   test('must throw for arrays with length < 2', () => {
-    expect(() => assertIsTupleable([])).toThrow('Expected a tupeable');
-    expect(() => assertIsTupleable([1])).toThrow('Expected a tupeable');
+    expect(() => {
+      assertIsTupleable([]);
+    }).toThrow('Expected a tupeable');
+    expect(() => {
+      assertIsTupleable([1]);
+    }).toThrow('Expected a tupeable');
   });
 
   test('must not throw for arrays with length >= 2', () => {
-    expect(() => assertIsTupleable([1, 2])).not.toThrow();
-    expect(() => assertIsTupleable([1, 2, 3])).not.toThrow();
-    expect(() => assertIsTupleable(['a', 'b'])).not.toThrow();
+    expect(() => {
+      assertIsTupleable([1, 2]);
+    }).not.toThrow();
+    expect(() => {
+      assertIsTupleable([1, 2, 3]);
+    }).not.toThrow();
+    expect(() => {
+      assertIsTupleable(['a', 'b']);
+    }).not.toThrow();
   });
 
   test('must narrow type to Tupleable', () => {

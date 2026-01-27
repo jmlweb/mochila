@@ -1,4 +1,4 @@
-import { NonEmptyArray } from '../types';
+import { type NonEmptyArray } from '../types';
 
 /**
  * Applies a transformation function over each element of an array and returns a new array with the transformed elements.
@@ -13,7 +13,7 @@ import { NonEmptyArray } from '../types';
  * ```
  */
 export const mapWith =
-  <From, Source extends ReadonlyArray<From>>(source: Source) =>
+  <From, Source extends readonly From[]>(source: Source) =>
   <To>(transformation: (x: Source[number]) => To) =>
     source.map(transformation) as Source extends NonEmptyArray<Source[number]>
       ? {

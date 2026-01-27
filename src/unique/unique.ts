@@ -12,5 +12,4 @@
  * unique([1, 2, 3, 2, 1]) // [1, 2, 3]
  * ```
  */
-export const unique = <V>(source: ReadonlyArray<V>) =>
-  Array.from(new Set(source));
+export const unique = <V>(source: readonly V[]) => Array.from(new Set(source));

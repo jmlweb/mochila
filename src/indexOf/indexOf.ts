@@ -12,5 +12,5 @@
  * ```
  */
 export const indexOf =
-  (value: unknown, fromIndex?: number) => (source: ReadonlyArray<unknown>) =>
+  (value: unknown, fromIndex?: number) => (source: readonly unknown[]) =>
     source.indexOf(value, fromIndex);

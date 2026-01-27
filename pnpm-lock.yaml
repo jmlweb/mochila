@@ -8,12 +8,21 @@ importers:
 
   .:
     devDependencies:
-      '@commitlint/config-conventional':
-        specifier: ^20.0.0
-        version: 20.0.0
       '@eslint/js':
         specifier: ^9.39.1
         version: 9.39.1
+      '@jmlweb/commitlint-config':
+        specifier: ^3.0.1
+        version: 3.0.1(@commitlint/cli@20.1.0(@types/node@22.19.0)(typescript@5.9.3))(@commitlint/config-conventional@20.0.0)
+      '@jmlweb/eslint-config-base':
+        specifier: ^2.0.10
+        version: 2.0.10(@eslint/js@9.39.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@2.6.1)))(eslint-plugin-simple-import-sort@12.1.1(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))(typescript-eslint@8.46.3(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))
+      '@jmlweb/prettier-config-base':
+        specifier: ^1.0.6
+        version: 1.0.6(prettier@3.6.2)
+      '@jmlweb/tsconfig-base':
+        specifier: ^1.0.5
+        version: 1.0.5
       '@mxssfd/typedoc-theme':
         specifier: ^1.1.3
         version: 1.1.6(typedoc@0.27.9(typescript@5.9.3))
@@ -32,12 +41,6 @@ importers:
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.0
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^8.0.0
-        version: 8.46.3(@typescript-eslint/parser@8.46.3(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/parser':
-        specifier: ^8.0.0
-        version: 8.46.3(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       commitlint:
         specifier: ^20.1.0
         version: 20.1.0(@types/node@22.19.0)(typescript@5.9.3)
@@ -47,12 +50,6 @@ importers:
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.39.1(jiti@2.6.1))
-      eslint-formatter-unix:
-        specifier: ^9.0.1
-        version: 9.0.1
-      eslint-plugin-prettier:
-        specifier: ^5.5.4
-        version: 5.5.4(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))(prettier@3.6.2)
       eslint-plugin-simple-import-sort:
         specifier: ^12.1.1
         version: 12.1.1(eslint@9.39.1(jiti@2.6.1))
@@ -640,6 +637,42 @@ packages:
     resolution: {integrity: sha512-u3UPsIilWKOM3F9CXtrG8LEJmNxwoCQC/XVj4IKYXvvpx7QIi/Kg1LI5uDmDpKlac62NUtX7eLjRh+jVZcLOzw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
+  '@jmlweb/commitlint-config@3.0.1':
+    resolution: {integrity: sha512-yZMn8spTCuv6n2O9JV3imMAW+ADPwS/snDEIMR+0wHC7kv83joVwFkLBuwzvPV1o9TtE3PxWqZopwxftpjr+gA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@commitlint/cli': '>=19.0.0'
+      '@commitlint/config-conventional': '>=19.0.0'
+
+  '@jmlweb/eslint-config-base-js@1.0.6':
+    resolution: {integrity: sha512-HeRwCkqJgwWigFK6uU3XDpzPACm2GTBMxHM3MfmQIR+t29ooHTk+1I0oq1X93GaF9a4DAnyhcwNtg67O5ZEn2A==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@eslint/js': ^9.0.0
+      eslint: ^9.0.0
+      eslint-config-prettier: ^9.1.0 || ^10.0.0
+      eslint-plugin-simple-import-sort: ^12.0.0
+
+  '@jmlweb/eslint-config-base@2.0.10':
+    resolution: {integrity: sha512-OmiFH5Ovenm4VH0UrXk7afr2iSs9aQQIAZ/sE/p6UNyMsINZx9X6wqa4OTS/6fDthODm2ZWk2i6cVjzCCMAriA==}
+    engines: {node: '>=20.11.0'}
+    peerDependencies:
+      '@eslint/js': ^9.0.0
+      eslint: ^9.0.0
+      eslint-config-prettier: ^9.1.0 || ^10.0.0
+      eslint-plugin-simple-import-sort: ^12.0.0
+      typescript-eslint: ^8.0.0
+
+  '@jmlweb/prettier-config-base@1.0.6':
+    resolution: {integrity: sha512-0XLciYotZLNQKhylW2Uxk0rQlo+wIE/EdUQUb6bWFF278oxLS4IYvvEvVyIfygTPxdFu3YO2n5qEoJVLWgwXrw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      prettier: ^3.0.0
+
+  '@jmlweb/tsconfig-base@1.0.5':
+    resolution: {integrity: sha512-cwDx/mPRuuEJmnv5Z9J1JcDSYaMtovu42Zrn2+ESVAQCWi1PKPWf1Wo0p0g4pi56QkdjaUCcc30Nh+9V25RU3g==}
+    engines: {node: '>=18.0.0'}
+
   '@jridgewell/gen-mapping@0.3.5':
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
     engines: {node: '>=6.0.0'}
@@ -736,10 +769,6 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
-
-  '@pkgr/core@0.2.9':
-    resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
-    engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
   '@pnpm/config.env-replace@1.1.0':
     resolution: {integrity: sha512-htyl8TWnKL7K/ESFa1oW2UB5lVDxuF5DpM7tBi6Hu2LNL3mWkIzNLG6N4zoCUP1lCKNxWy/3iu8mS8MvToGd6w==}
@@ -1557,24 +1586,6 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
-  eslint-formatter-unix@9.0.1:
-    resolution: {integrity: sha512-6trzj/OL0Q2B5mw3dqryAmQWzo5vVfL9YkaJdw3laouSgbs83TsSz9GFN+1/7lMUlUkBY+8mVEWelkAQoKnlcA==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  eslint-plugin-prettier@5.5.4:
-    resolution: {integrity: sha512-swNtI95SToIz05YINMA6Ox5R057IMAmWZ26GqPxusAp1TZzj+IdY9tXNWWD3vkF/wEqydCONcwjTFpxybBqZsg==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    peerDependencies:
-      '@types/eslint': '>=8.0.0'
-      eslint: '>=8.0.0'
-      eslint-config-prettier: '>= 7.0.0 <10.0.0 || >=10.1.0'
-      prettier: '>=3.0.0'
-    peerDependenciesMeta:
-      '@types/eslint':
-        optional: true
-      eslint-config-prettier:
-        optional: true
-
   eslint-plugin-simple-import-sort@12.1.1:
     resolution: {integrity: sha512-6nuzu4xwQtE3332Uz0to+TxDQYRLTKRESSc2hefVT48Zc8JthmN23Gx9lnYhu0FtkRSL1oxny3kJ2aveVhmOVA==}
     peerDependencies:
@@ -1655,9 +1666,6 @@ packages:
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
-
-  fast-diff@1.3.0:
-    resolution: {integrity: sha512-VxPP4NqbUjj6MaAOafWeUn2cXWLcCtljklUtZf0Ind4XQ+QPtmA0b18zZy0jIQx+ExRVCR/ZQpBmik5lXshNsw==}
 
   fast-glob@3.3.2:
     resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
@@ -2820,10 +2828,6 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier-linter-helpers@1.0.0:
-    resolution: {integrity: sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==}
-    engines: {node: '>=6.0.0'}
-
   prettier@3.6.2:
     resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
     engines: {node: '>=14'}
@@ -3141,10 +3145,6 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
-
-  synckit@0.11.11:
-    resolution: {integrity: sha512-MeQTA1r0litLUf0Rp/iisCaL8761lKAZHaimlbGK4j0HysC4PLfqygQj9srcs0m2RdtDYnF8UuYyKpbjHYp7Jw==}
-    engines: {node: ^14.18.0 || >=16.0.0}
 
   temp-dir@3.0.0:
     resolution: {integrity: sha512-nHc6S/bwIilKHNRgK/3jlhDoIHcp45YgyiwcAk46Tr0LfEqGBVpmiAyuiuxeVE44m3mXnEeVhaipLOEWmH+Njw==}
@@ -4125,6 +4125,33 @@ snapshots:
       '@types/yargs': 17.0.32
       chalk: 4.1.2
 
+  '@jmlweb/commitlint-config@3.0.1(@commitlint/cli@20.1.0(@types/node@22.19.0)(typescript@5.9.3))(@commitlint/config-conventional@20.0.0)':
+    dependencies:
+      '@commitlint/cli': 20.1.0(@types/node@22.19.0)(typescript@5.9.3)
+      '@commitlint/config-conventional': 20.0.0
+
+  '@jmlweb/eslint-config-base-js@1.0.6(@eslint/js@9.39.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@2.6.1)))(eslint-plugin-simple-import-sort@12.1.1(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))':
+    dependencies:
+      '@eslint/js': 9.39.1
+      eslint: 9.39.1(jiti@2.6.1)
+      eslint-config-prettier: 10.1.8(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.39.1(jiti@2.6.1))
+
+  '@jmlweb/eslint-config-base@2.0.10(@eslint/js@9.39.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@2.6.1)))(eslint-plugin-simple-import-sort@12.1.1(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))(typescript-eslint@8.46.3(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))':
+    dependencies:
+      '@eslint/js': 9.39.1
+      '@jmlweb/eslint-config-base-js': 1.0.6(@eslint/js@9.39.1)(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@2.6.1)))(eslint-plugin-simple-import-sort@12.1.1(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))
+      eslint: 9.39.1(jiti@2.6.1)
+      eslint-config-prettier: 10.1.8(eslint@9.39.1(jiti@2.6.1))
+      eslint-plugin-simple-import-sort: 12.1.1(eslint@9.39.1(jiti@2.6.1))
+      typescript-eslint: 8.46.3(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+
+  '@jmlweb/prettier-config-base@1.0.6(prettier@3.6.2)':
+    dependencies:
+      prettier: 3.6.2
+
+  '@jmlweb/tsconfig-base@1.0.5': {}
+
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
       '@jridgewell/set-array': 1.2.1
@@ -4229,8 +4256,6 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
-
-  '@pkgr/core@0.2.9': {}
 
   '@pnpm/config.env-replace@1.1.0': {}
 
@@ -5097,17 +5122,6 @@ snapshots:
     dependencies:
       eslint: 9.39.1(jiti@2.6.1)
 
-  eslint-formatter-unix@9.0.1: {}
-
-  eslint-plugin-prettier@5.5.4(eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@2.6.1)))(eslint@9.39.1(jiti@2.6.1))(prettier@3.6.2):
-    dependencies:
-      eslint: 9.39.1(jiti@2.6.1)
-      prettier: 3.6.2
-      prettier-linter-helpers: 1.0.0
-      synckit: 0.11.11
-    optionalDependencies:
-      eslint-config-prettier: 10.1.8(eslint@9.39.1(jiti@2.6.1))
-
   eslint-plugin-simple-import-sort@12.1.1(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       eslint: 9.39.1(jiti@2.6.1)
@@ -5239,8 +5253,6 @@ snapshots:
       jest-util: 29.7.0
 
   fast-deep-equal@3.1.3: {}
-
-  fast-diff@1.3.0: {}
 
   fast-glob@3.3.2:
     dependencies:
@@ -6407,10 +6419,6 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-linter-helpers@1.0.0:
-    dependencies:
-      fast-diff: 1.3.0
-
   prettier@3.6.2: {}
 
   pretty-format@29.7.0:
@@ -6763,10 +6771,6 @@ snapshots:
       supports-color: 7.2.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
-
-  synckit@0.11.11:
-    dependencies:
-      '@pkgr/core': 0.2.9
 
   temp-dir@3.0.0: {}
 

@@ -1,5 +1,5 @@
 import { isFunction } from '../is';
-import { AnyFn, Assertion } from '../types';
+import { type AnyFn, type Assertion } from '../types';
 
 /**
  * Asserts that the given value is a function.

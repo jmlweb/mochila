@@ -13,5 +13,5 @@
  */
 export const reduceRight =
   <V, T>(starter: V, reducer: (acc: V, curr: T) => V) =>
-  (source: ReadonlyArray<T>): V =>
+  (source: readonly T[]): V =>
     source.reduceRight(reducer, starter);

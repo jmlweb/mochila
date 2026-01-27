@@ -1,7 +1,10 @@
-import { IsWideBoolean } from '../boolean';
-import { IsWideNumber } from '../number';
-import { IsWideString } from '../string';
-import { IsNonEmptyArray, ProtectIfNonEmptyArray } from './arrayHelpers';
+import { type IsWideBoolean } from '../boolean';
+import { type IsWideNumber } from '../number';
+import { type IsWideString } from '../string';
+import {
+  type IsNonEmptyArray,
+  type ProtectIfNonEmptyArray,
+} from './arrayHelpers';
 
 /**
  * Represents a type that can be filtered.
@@ -32,8 +35,8 @@ export type IsWideFilterable<R extends Filterable> =
  */
 export type ProcessFilterValues<
   V extends Filterable,
-  S extends ReadonlyArray<unknown>,
-  Acc extends ReadonlyArray<unknown> = [],
+  S extends readonly unknown[],
+  Acc extends readonly unknown[] = [],
   Mode extends 'pick' | 'omit' = 'pick',
 > = S extends readonly [infer Head, ...infer Rest]
   ? Head extends V
@@ -50,10 +53,7 @@ export type ProcessFilterValues<
  *
  * @category Array
  */
-export type FilterValues<
-  V extends Filterable,
-  S extends ReadonlyArray<unknown>,
-> =
+export type FilterValues<V extends Filterable, S extends readonly unknown[]> =
   IsWideFilterable<V> extends true
     ? ProtectIfNonEmptyArray<S, S[number]>
     : IsNonEmptyArray<S> extends true

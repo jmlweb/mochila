@@ -1,7 +1,7 @@
 /**
  * Configuration for retry behavior
  */
-export interface RetryConfig {
+export type RetryConfig = {
   /**
    * Maximum number of attempts (default: 3)
    */
@@ -18,7 +18,7 @@ export interface RetryConfig {
    * Maximum delay in milliseconds (default: 30000)
    */
   maxDelayMs?: number;
-}
+};
 
 /**
  * Retries an async function with exponential backoff.

@@ -72,10 +72,10 @@ describe('asyncMap', () => {
   });
 
   test('works with objects', async () => {
-    interface User {
+    type User = {
       id: number;
       name: string;
-    }
+    };
 
     const fn = async (user: User): Promise<string> => user.name.toUpperCase();
     const users: User[] = [

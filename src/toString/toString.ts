@@ -1,4 +1,4 @@
-import { Stringifiable, ToString } from '../types';
+import { type Stringifiable, type ToString } from '../types';
 
 /**
  * Returns a string representation of the input value trying to respect the string typing

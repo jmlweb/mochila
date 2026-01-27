@@ -1,5 +1,5 @@
 import { clone } from '../clone';
-import { Reverse } from '../types';
+import { type Reverse } from '../types';
 
 /**
  * Immutable version of array reverse.
@@ -15,5 +15,5 @@ import { Reverse } from '../types';
  * reverse(source) // [3, 2, 1]
  * ```
  */
-export const reverse = <T, V extends ReadonlyArray<T>>(value: V): Reverse<V> =>
+export const reverse = <T, V extends readonly T[]>(value: V): Reverse<V> =>
   (clone(value) as unknown as T[]).reverse() as unknown as Reverse<V>;

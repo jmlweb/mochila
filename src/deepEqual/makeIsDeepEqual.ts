@@ -114,8 +114,7 @@ export const makeIsDeepEqual = ({
       return false;
     }
 
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
+    for (const key of keys) {
       if (!key || !Object.prototype.hasOwnProperty.call(b, key)) {
         visited.delete(a);
         visited.delete(b);

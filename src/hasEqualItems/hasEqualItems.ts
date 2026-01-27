@@ -1,4 +1,4 @@
-type HasEqualItems<S extends ReadonlyArray<unknown>> = S['length'] extends 0
+type HasEqualItems<S extends readonly unknown[]> = S['length'] extends 0
   ? true
   : boolean;
 
@@ -16,6 +16,6 @@ type HasEqualItems<S extends ReadonlyArray<unknown>> = S['length'] extends 0
  * areEqualItems([]) // true with literal type
  * ```
  */
-export const hasEqualItems = <S extends ReadonlyArray<unknown>>(
+export const hasEqualItems = <S extends readonly unknown[]>(
   source: S,
 ): HasEqualItems<S> => (new Set(source).size === 1) as HasEqualItems<S>;

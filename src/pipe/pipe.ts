@@ -1,4 +1,4 @@
-import { AnyFn } from '../types';
+import { type AnyFn } from '../types';
 
 /**
  * Composes multiple functions into a single function that can be called with multiple arguments.

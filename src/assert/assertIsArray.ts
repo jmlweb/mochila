@@ -1,5 +1,5 @@
 import { isArray } from '../is';
-import { Assertion } from '../types';
+import { type Assertion } from '../types';
 
 /**
  * Asserts that the input is an array.
@@ -17,7 +17,7 @@ import { Assertion } from '../types';
  * };
  * ```
  */
-export const assertIsArray: Assertion<Array<unknown>> = (x) => {
+export const assertIsArray: Assertion<unknown[]> = (x) => {
   if (!isArray(x)) {
     throw new Error('Expected an array');
   }

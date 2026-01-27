@@ -1,6 +1,6 @@
 type ProcessCompact<
-  S extends ReadonlyArray<unknown>,
-  Acc extends ReadonlyArray<unknown> = [],
+  S extends readonly unknown[],
+  Acc extends readonly unknown[] = [],
 > = S extends readonly [infer Head, ...infer Tail]
   ? Head extends null | undefined
     ? ProcessCompact<Tail, Acc>
@@ -12,11 +12,11 @@ type ProcessCompact<
  *
  * @category Array
  */
-export type Compact<S extends ReadonlyArray<unknown>> = S extends readonly [
+export type Compact<S extends readonly unknown[]> = S extends readonly [
   unknown,
   ...unknown[],
 ]
   ? ProcessCompact<S>
   : S extends readonly [...unknown[]]
-    ? ReadonlyArray<NonNullable<S[number]>>
+    ? readonly NonNullable<S[number]>[]
     : NonNullable<S[number]>[];

@@ -17,6 +17,6 @@
  */
 export const asyncMap =
   <T, U>(fn: (item: T) => Promise<U>) =>
-  async (array: ReadonlyArray<T>): Promise<U[]> => {
+  async (array: readonly T[]): Promise<U[]> => {
     return Promise.all(array.map(fn));
   };

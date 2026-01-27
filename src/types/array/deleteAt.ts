@@ -1,12 +1,15 @@
-import { And, Complement, Or } from '../boolean';
-import { IfElse, IfExtends } from '../extends';
-import { Absolute, IsNegative } from '../number';
-import { IsNonEmptyArray, ProtectIfNonEmptyArray } from './arrayHelpers';
+import { type And, type Complement, type Or } from '../boolean';
+import { type IfElse, type IfExtends } from '../extends';
+import { type Absolute, type IsNegative } from '../number';
+import {
+  type IsNonEmptyArray,
+  type ProtectIfNonEmptyArray,
+} from './arrayHelpers';
 
 type ProcessPositive<
   N extends number,
-  S extends ReadonlyArray<unknown>,
-  Acc extends ReadonlyArray<unknown> = [],
+  S extends readonly unknown[],
+  Acc extends readonly unknown[] = [],
   Counter extends never[] = [],
 > = S extends readonly [infer First, ...infer Tail]
   ? N extends unknown
@@ -18,8 +21,8 @@ type ProcessPositive<
 
 type ProcessNegative<
   N extends number,
-  S extends ReadonlyArray<unknown>,
-  Acc extends ReadonlyArray<unknown> = [],
+  S extends readonly unknown[],
+  Acc extends readonly unknown[] = [],
 > = S extends readonly [infer First, ...infer Tail]
   ? N extends unknown
     ? Absolute<N> extends S['length']
@@ -33,10 +36,7 @@ type ProcessNegative<
  *
  * @category Array
  */
-export type DeleteAt<
-  N extends number,
-  S extends ReadonlyArray<unknown>,
-> = IfElse<
+export type DeleteAt<N extends number, S extends readonly unknown[]> = IfElse<
   Or<
     Complement<IsNonEmptyArray<S>>,
     And<IfExtends<S['length'], N>, IfExtends<0, N>>

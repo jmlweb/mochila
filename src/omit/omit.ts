@@ -1,4 +1,4 @@
-import { IsWide, Or, UnknownRecord } from '../types';
+import { type IsWide, type Or, type UnknownRecord } from '../types';
 
 /**
  * Returns a new object with the specified keys omitted.

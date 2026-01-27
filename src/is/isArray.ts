@@ -13,6 +13,6 @@
  * isArray('abc'); // => false
  * ```
  */
-export const isArray = (x: unknown): x is ReadonlyArray<unknown> => {
+export const isArray = (x: unknown): x is readonly unknown[] => {
   return Array.isArray(x);
 };

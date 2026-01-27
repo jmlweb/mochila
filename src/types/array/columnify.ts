@@ -1,13 +1,13 @@
-import { Or } from '../boolean';
-import { IfExtends } from '../extends';
-import { IsLessThan1, IsWideNumber } from '../number';
-import { ChunksFrom, IsNonEmptyArray } from './arrayHelpers';
-import { BiReadonlyArray } from './types';
+import { type Or } from '../boolean';
+import { type IfExtends } from '../extends';
+import { type IsLessThan1, type IsWideNumber } from '../number';
+import { type ChunksFrom, type IsNonEmptyArray } from './arrayHelpers';
+import { type BiReadonlyArray } from './types';
 
 type FillWithChunks<
   N extends number,
-  S extends ReadonlyArray<ReadonlyArray<unknown>>,
-  V extends ReadonlyArray<unknown> = readonly [],
+  S extends readonly (readonly unknown[])[],
+  V extends readonly unknown[] = readonly [],
 > = S['length'] extends N ? S : FillWithChunks<N, readonly [...S, V], V>;
 
 type InjectIntoPosition<
@@ -31,11 +31,11 @@ type InjectIntoPosition<
 
 type ProcessColumnify<
   N extends number,
-  S extends ReadonlyArray<unknown>,
+  S extends readonly unknown[],
   Acc extends BiReadonlyArray<unknown> = FillWithChunks<N, readonly []>,
-  Counter extends ReadonlyArray<unknown> = [],
+  Counter extends readonly unknown[] = [],
 > = Counter['length'] extends N
-  ? ProcessColumnify<N, S, Acc, []>
+  ? ProcessColumnify<N, S, Acc>
   : S extends [infer Head, ...infer Tail]
     ? ProcessColumnify<
         N,
@@ -57,7 +57,7 @@ type ProcessColumnify<
  * //	^ = type T0 = [[1, 3, 5], [2, 4, 6]]
  * ```
  */
-export type Columnify<N extends number, S extends ReadonlyArray<unknown>> =
+export type Columnify<N extends number, S extends readonly unknown[]> =
   Or<IfExtends<N, 1>, IsLessThan1<N>> extends true
     ? readonly [S]
     : IsWideNumber<N> extends true
@@ -66,4 +66,4 @@ export type Columnify<N extends number, S extends ReadonlyArray<unknown>> =
         ? FillWithChunks<N, readonly []>
         : IsNonEmptyArray<S> extends true
           ? ProcessColumnify<N, S>
-          : FillWithChunks<N, readonly [], ReadonlyArray<S[number]>>;
+          : FillWithChunks<N, readonly [], readonly S[number][]>;

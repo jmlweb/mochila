@@ -1,5 +1,5 @@
 import { clone } from '../clone';
-import { NonReadonly, ProtectIfNonEmptyArray } from '../types';
+import { type NonReadonly, type ProtectIfNonEmptyArray } from '../types';
 
 /**
  * Returns a new sorted array, providing the sortFn as the first argument.
@@ -18,5 +18,5 @@ import { NonReadonly, ProtectIfNonEmptyArray } from '../types';
  */
 export const sortWith =
   <V>(sortFn?: (a: V, b: V) => number) =>
-  <S extends ReadonlyArray<V>>(source: S) =>
+  <S extends readonly V[]>(source: S) =>
     (clone(source) as NonReadonly<S>).sort(sortFn) as ProtectIfNonEmptyArray<S>;

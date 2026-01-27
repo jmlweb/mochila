@@ -1,4 +1,4 @@
-import { AnyFn } from '../types';
+import { type AnyFn } from '../types';
 
 /**
  * Returns the complement of a function.

@@ -1,4 +1,8 @@
-import { BiReadonlyArray, NonEmptyArray, Tupleable } from './types';
+import {
+  type BiReadonlyArray,
+  type NonEmptyArray,
+  type Tupleable,
+} from './types';
 
 /**
  * Determines if the given type is an array whose length is greater than zero.
@@ -7,7 +11,7 @@ import { BiReadonlyArray, NonEmptyArray, Tupleable } from './types';
  *
  * @category Array
  */
-export type IsNonEmptyArray<S extends ReadonlyArray<unknown>> =
+export type IsNonEmptyArray<S extends readonly unknown[]> =
   S extends NonEmptyArray<S[number]> ? true : false;
 
 /**
@@ -17,7 +21,7 @@ export type IsNonEmptyArray<S extends ReadonlyArray<unknown>> =
  *
  * @category Array
  */
-export type IsTupleable<S extends ReadonlyArray<unknown>> =
+export type IsTupleable<S extends readonly unknown[]> =
   S extends Tupleable<S[number]> ? true : false;
 
 /**
@@ -27,7 +31,7 @@ export type IsTupleable<S extends ReadonlyArray<unknown>> =
  *
  * @category Array
  */
-export type Reverse<T extends ReadonlyArray<unknown>> = T extends readonly [
+export type Reverse<T extends readonly unknown[]> = T extends readonly [
   infer Head,
   ...infer Rest,
 ]
@@ -38,25 +42,23 @@ export type Reverse<T extends ReadonlyArray<unknown>> = T extends readonly [
  * @category Array
  */
 export type ProtectIfNonEmptyArray<
-  T extends ReadonlyArray<unknown>,
+  T extends readonly unknown[],
   V = T[number],
-> = T extends readonly [x: unknown, ...rest: unknown[]]
-  ? ReadonlyArray<V>
-  : V[];
+> = T extends readonly [x: unknown, ...rest: unknown[]] ? readonly V[] : V[];
 
 /**
  * Extracts the type of the items in the given array type and returns an array of arrays
  *
  * @category Array
  */
-export type ChunksFrom<S extends ReadonlyArray<unknown>> = BiReadonlyArray<
+export type ChunksFrom<S extends readonly unknown[]> = BiReadonlyArray<
   S[number]
 >;
 
 /**
  * @category Array
  */
-export type ExtractItem<S extends ReadonlyArray<unknown>> =
+export type ExtractItem<S extends readonly unknown[]> =
   S[number] extends undefined
     ? undefined
     : S[number] extends infer V

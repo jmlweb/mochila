@@ -1,5 +1,5 @@
 import { isNumber } from '../is';
-import { Assertion } from '../types';
+import { type Assertion } from '../types';
 
 /**
  * Asserts that the given value is a number.

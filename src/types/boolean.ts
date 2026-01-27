@@ -1,4 +1,4 @@
-import { IfExtends } from './extends';
+import { type IfExtends } from './extends';
 
 /**
  * Represents the complement of a boolean type.
@@ -7,7 +7,7 @@ import { IfExtends } from './extends';
  *
  * @category Boolean
  */
-export type Complement<B extends boolean> = IfExtends<B, false, true, false>;
+export type Complement<B extends boolean> = IfExtends<B, false>;
 
 /**
  * Type alias that represents the logical OR operation between two boolean types.

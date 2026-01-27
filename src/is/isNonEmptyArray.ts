@@ -1,4 +1,4 @@
-import { NonEmptyArray } from '../types';
+import { type NonEmptyArray } from '../types';
 
 /**
  * Determines if an array is not empty.
@@ -19,6 +19,5 @@ import { NonEmptyArray } from '../types';
  * isNonEmptyArray([]); // => false
  * ```
  */
-export const isNonEmptyArray = <T>(
-  x: ReadonlyArray<T>,
-): x is NonEmptyArray<T> => x.length > 0;
+export const isNonEmptyArray = <T>(x: readonly T[]): x is NonEmptyArray<T> =>
+  x.length > 0;

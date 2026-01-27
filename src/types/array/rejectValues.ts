@@ -1,8 +1,11 @@
-import { IsNonEmptyArray, ProtectIfNonEmptyArray } from './arrayHelpers';
 import {
-  Filterable,
-  IsWideFilterable,
-  ProcessFilterValues,
+  type IsNonEmptyArray,
+  type ProtectIfNonEmptyArray,
+} from './arrayHelpers';
+import {
+  type Filterable,
+  type IsWideFilterable,
+  type ProcessFilterValues,
 } from './filterValues';
 
 /**
@@ -10,10 +13,7 @@ import {
  *
  * @category Array
  */
-export type RejectValues<
-  V,
-  S extends ReadonlyArray<unknown>,
-> = V extends Filterable
+export type RejectValues<V, S extends readonly unknown[]> = V extends Filterable
   ? IsWideFilterable<V> extends true
     ? ProtectIfNonEmptyArray<S, S[number]>
     : IsNonEmptyArray<S> extends true

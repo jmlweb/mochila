@@ -1,4 +1,4 @@
-import { IsWide } from './extends';
+import { type IsWide } from './extends';
 
 /**
  * Represents a type that can be converted to a string.

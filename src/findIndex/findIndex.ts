@@ -14,5 +14,5 @@
  */
 export const findIndex =
   <Item>(predicate: (item: Item) => boolean) =>
-  (source: ReadonlyArray<Item>) =>
+  (source: readonly Item[]) =>
     source.findIndex(predicate);

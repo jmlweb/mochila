@@ -1,9 +1,7 @@
-interface Filter {
-  <T>(
-    fn: (x: unknown) => x is T,
-  ): <U>(source: ReadonlyArray<U>) => Extract<U, T>[];
-  <V>(fn: (x: V) => boolean): <T extends V>(source: ReadonlyArray<V>) => T[];
-}
+type Filter = {
+  <T>(fn: (x: unknown) => x is T): <U>(source: readonly U[]) => Extract<U, T>[];
+  <V>(fn: (x: V) => boolean): <T extends V>(source: readonly V[]) => T[];
+};
 
 /**
  * Filters an array based on a predicate function.
@@ -19,5 +17,5 @@ interface Filter {
  */
 export const filter: Filter =
   <V>(fn: (x: V) => boolean) =>
-  <T extends V>(source: ReadonlyArray<T>) =>
-    source.filter(fn) as T[];
+  <T extends V>(source: readonly T[]) =>
+    source.filter(fn);
