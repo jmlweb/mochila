@@ -72,8 +72,8 @@ describe('fromEntries', () => {
     ];
     const result = fromEntries(entries);
 
-    expect(result.user).toBe(obj1);
-    expect(result.config).toEqual({ theme: 'dark' });
+    expect(result['user']).toBe(obj1);
+    expect(result['config']).toEqual({ theme: 'dark' });
   });
 
   test('handles numeric string keys', () => {
