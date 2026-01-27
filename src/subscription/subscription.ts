@@ -30,7 +30,9 @@ export const Subscription = <V>(initialSubscribers: Subscriber<V>[] = []) => {
   };
 
   const notify = (data: V) => {
-    subscribers.forEach((subscriber) => subscriber(data));
+    subscribers.forEach((subscriber) => {
+      subscriber(data);
+    });
   };
 
   const reset = () => {

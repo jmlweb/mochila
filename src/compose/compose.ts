@@ -14,7 +14,7 @@
  * @returns Composed function
  * @typeParam T - Input and output type
  */
-export const compose = <T>(...fns: Array<(x: T) => T>): ((x: T) => T) => {
+export const compose = <T>(...fns: ((x: T) => T)[]): ((x: T) => T) => {
   return (value: T): T => {
     return fns.reduceRight((acc, fn) => fn(acc), value);
   };

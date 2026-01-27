@@ -10,5 +10,5 @@
  */
 export const join =
   <S extends string>(separator: S) =>
-  <T>(list: ReadonlyArray<T>) =>
+  <T>(list: readonly T[]) =>
     list.join(separator);

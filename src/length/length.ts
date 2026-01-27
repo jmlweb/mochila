@@ -14,5 +14,4 @@
  * ```
  *
  */
-export const length = (source: string | ReadonlyArray<unknown>) =>
-  source.length;
+export const length = (source: string | readonly unknown[]) => source.length;

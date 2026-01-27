@@ -13,4 +13,4 @@
  * ```
  */
 export const values = <V>(source: Record<PropertyKey, V>) =>
-  Object.values(source) as ReadonlyArray<V>;
+  Object.values(source) as readonly V[];

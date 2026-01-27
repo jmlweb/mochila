@@ -26,11 +26,7 @@ import { slice } from '../slice';
 
 export const endsWith =
   <V>(search: V, endIndex?: number) =>
-  (
-    source: V extends string
-      ? V | ReadonlyArray<unknown>
-      : ReadonlyArray<unknown>,
-  ) => {
+  (source: V extends string ? V | readonly unknown[] : readonly unknown[]) => {
     if (isString(source)) {
       return isString(search) && source.endsWith(search, endIndex);
     }

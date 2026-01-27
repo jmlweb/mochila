@@ -20,7 +20,7 @@ export type ValueOf<O extends UnknownRecord> = O[keyof O];
  *
  * @category Object
  */
-export type NonReadonly<A extends ReadonlyArray<unknown> | UnknownRecord> = {
+export type NonReadonly<A extends readonly unknown[] | UnknownRecord> = {
   -readonly [K in keyof A]: A[K];
 };
 

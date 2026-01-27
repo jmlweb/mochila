@@ -14,8 +14,8 @@
  * @typeParam T - Element type
  */
 export const union =
-  <T>(other: ReadonlyArray<T>) =>
-  (source: ReadonlyArray<T>): T[] => {
+  <T>(other: readonly T[]) =>
+  (source: readonly T[]): T[] => {
     const seen = new Set<T>();
     const result: T[] = [];
 

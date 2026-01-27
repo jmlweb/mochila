@@ -12,5 +12,5 @@
  */
 export const some =
   <A>(fn: (value: A) => boolean) =>
-  <S extends ReadonlyArray<A>>(source: S) =>
+  <S extends readonly A[]>(source: S) =>
     source.some(fn);

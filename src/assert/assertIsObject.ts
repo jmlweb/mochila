@@ -1,5 +1,5 @@
 import { isObject } from '../is';
-import { Assertion } from '../types';
+import { type Assertion } from '../types';
 
 /**
  * Asserts that the input is an object.

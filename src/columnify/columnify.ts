@@ -1,4 +1,4 @@
-import { Columnify, ProtectIfNonEmptyArray } from '../types';
+import { type Columnify, type ProtectIfNonEmptyArray } from '../types';
 
 /**
  * Takes an array and returns an array of arrays with a length of `columnsNumber`.

@@ -1,4 +1,4 @@
-import { AnyFn } from '../types';
+import { type AnyFn } from '../types';
 
 /**
  * Determines if a value is a function.

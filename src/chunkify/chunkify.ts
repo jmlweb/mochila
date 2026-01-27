@@ -1,4 +1,4 @@
-import { Chunkify } from '../types';
+import { type Chunkify } from '../types';
 
 /**
  * Returns an array of arrays, where each subarray contains a maximum of `chunkSize` elements from the input `source` array.
@@ -18,7 +18,7 @@ import { Chunkify } from '../types';
  */
 export const chunkify =
   <N extends number>(chunkSize: N) =>
-  <S extends ReadonlyArray<unknown>>(source: S): Chunkify<N, S> => {
+  <S extends readonly unknown[]>(source: S): Chunkify<N, S> => {
     const parsedChunkSize = chunkSize <= 0 ? source.length : chunkSize;
     const chunks: S[number][][] = [];
     for (let i = 0; i < source.length; i += parsedChunkSize) {

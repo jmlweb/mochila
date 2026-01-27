@@ -16,9 +16,7 @@ import { isString } from '../is';
 export const includes =
   <V>(search: V, startIndex?: number) =>
   (
-    source: V extends string
-      ? string | ReadonlyArray<unknown>
-      : ReadonlyArray<unknown>,
+    source: V extends string ? string | readonly unknown[] : readonly unknown[],
   ) => {
     if (isString(source)) {
       return isString(search) && source.includes(search, startIndex);

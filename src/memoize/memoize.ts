@@ -1,4 +1,4 @@
-import { AnyFn } from '../types/function';
+import { type AnyFn } from '../types/function';
 
 /**
  * Memoizes a function, caching results based on arguments.

@@ -1,4 +1,4 @@
-import { Filterable, FilterValues } from '../types';
+import { type Filterable, type FilterValues } from '../types';
 
 /**
  * Return a new array with all elements that are included in the given values.
@@ -14,6 +14,6 @@ import { Filterable, FilterValues } from '../types';
  * ```
  */
 export const filterValues =
-  <V extends Filterable>(values: ReadonlyArray<V>) =>
-  <S extends ReadonlyArray<unknown>>(source: S) =>
+  <V extends Filterable>(values: readonly V[]) =>
+  <S extends readonly unknown[]>(source: S) =>
     source.filter((value) => values.includes(value as V)) as FilterValues<V, S>;

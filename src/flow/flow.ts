@@ -1,4 +1,4 @@
-import { AnyFn } from '../types';
+import { type AnyFn } from '../types';
 
 /**
  * Performs a series of function calls on a value, passing the result of each function call to the next.

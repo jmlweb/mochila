@@ -14,6 +14,6 @@
  */
 export const entries = <T extends Record<string, unknown>>(
   obj: T,
-): Array<[string, unknown]> => {
+): [string, unknown][] => {
   return Object.entries(obj);
 };

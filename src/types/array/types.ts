@@ -3,7 +3,7 @@
  *
  * @category Array
  */
-export type BiReadonlyArray<T> = ReadonlyArray<ReadonlyArray<T>>;
+export type BiReadonlyArray<T> = readonly (readonly T[])[];
 
 /**
  * A readonly array containing at least one element

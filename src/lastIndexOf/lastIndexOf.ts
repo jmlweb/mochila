@@ -14,8 +14,8 @@ import { reverse } from '../reverse';
  * lastIndexOf(2, 3)(arr); // 4
  */
 export const lastIndexOf =
-  (value: unknown, fromIndex?: number) => (source: ReadonlyArray<unknown>) => {
-    if (source.indexOf(value, fromIndex) === -1) {
+  (value: unknown, fromIndex?: number) => (source: readonly unknown[]) => {
+    if (!source.includes(value, fromIndex)) {
       return -1;
     }
     const position = reverse(source).indexOf(

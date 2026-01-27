@@ -1,4 +1,4 @@
-import { At } from '../types';
+import { type At } from '../types';
 
 /**
  * Returns the last item of an array.
@@ -16,5 +16,5 @@ import { At } from '../types';
  * lastItem([]); // undefined
  * ```
  */
-export const lastItem = <V, S extends ReadonlyArray<V>>(source: S) =>
+export const lastItem = <V, S extends readonly V[]>(source: S) =>
   source[source.length - 1] as At<-1, S>;

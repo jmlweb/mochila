@@ -12,5 +12,5 @@
  * hasRepeatedItems([1, 2, 3, 1]); // => true
  * ```
  */
-export const hasRepeatedItems = (source: ReadonlyArray<unknown>) =>
+export const hasRepeatedItems = (source: readonly unknown[]) =>
   new Set(source).size !== source.length;

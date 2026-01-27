@@ -2,32 +2,28 @@ import { rejectObject } from './rejectObject';
 
 describe('rejectObject', () => {
   test('rejects object by predicate', () => {
-    const isEven = (x: unknown) =>
-      typeof x === 'number' && (x as number) % 2 === 0;
+    const isEven = (x: unknown) => typeof x === 'number' && x % 2 === 0;
     const result = rejectObject(isEven)({ a: 1, b: 2, c: 3, d: 4 });
 
     expect(result).toEqual({ a: 1, c: 3 });
   });
 
   test('rejects empty object', () => {
-    const isEven = (x: unknown) =>
-      typeof x === 'number' && (x as number) % 2 === 0;
+    const isEven = (x: unknown) => typeof x === 'number' && x % 2 === 0;
     const result = rejectObject(isEven)({});
 
     expect(result).toEqual({});
   });
 
   test('rejects with all matching', () => {
-    const isEven = (x: unknown) =>
-      typeof x === 'number' && (x as number) % 2 === 0;
+    const isEven = (x: unknown) => typeof x === 'number' && x % 2 === 0;
     const result = rejectObject(isEven)({ a: 2, b: 4, c: 6 });
 
     expect(result).toEqual({});
   });
 
   test('rejects with none matching', () => {
-    const isEven = (x: unknown) =>
-      typeof x === 'number' && (x as number) % 2 === 0;
+    const isEven = (x: unknown) => typeof x === 'number' && x % 2 === 0;
     const result = rejectObject(isEven)({ a: 1, b: 3, c: 5 });
 
     expect(result).toEqual({ a: 1, b: 3, c: 5 });
@@ -79,8 +75,7 @@ describe('rejectObject', () => {
 
   test('does not mutate original', () => {
     const obj = { a: 1, b: 2, c: 3 };
-    const isEven = (x: unknown) =>
-      typeof x === 'number' && (x as number) % 2 === 0;
+    const isEven = (x: unknown) => typeof x === 'number' && x % 2 === 0;
     rejectObject(isEven)(obj);
 
     expect(obj).toEqual({ a: 1, b: 2, c: 3 });
@@ -88,7 +83,7 @@ describe('rejectObject', () => {
 
   test('works with complex predicates', () => {
     const predicate = (x: unknown) =>
-      typeof x === 'number' && (x as number) % 2 === 0 && x > 2;
+      typeof x === 'number' && x % 2 === 0 && x > 2;
     const result = rejectObject(predicate)({
       a: 1,
       b: 2,

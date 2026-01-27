@@ -1,4 +1,4 @@
-import { Compact } from '../types';
+import { type Compact } from '../types';
 
 /**
  * Removes all nullable values from an array.
@@ -16,6 +16,5 @@ import { Compact } from '../types';
  * console.log(b); // [1, 2, 3, 4, 5, 6]
  * ```
  */
-export const compact = <S extends ReadonlyArray<unknown>>(
-  source: S,
-): Compact<S> => source.filter((x) => x != null) as Compact<S>;
+export const compact = <S extends readonly unknown[]>(source: S): Compact<S> =>
+  source.filter((x) => x != null) as Compact<S>;

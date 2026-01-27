@@ -1,12 +1,12 @@
-import { IsNonEmptyArray } from './arrayHelpers';
+import { type IsNonEmptyArray } from './arrayHelpers';
 
-type FlattenValue<T> = T extends Array<infer U> ? FlattenValue<U> : T;
+type FlattenValue<T> = T extends (infer U)[] ? FlattenValue<U> : T;
 
-type ProcessFlatten<S extends ReadonlyArray<unknown>> = S extends readonly [
+type ProcessFlatten<S extends readonly unknown[]> = S extends readonly [
   infer Head,
   ...infer Tail,
 ]
-  ? Head extends ReadonlyArray<unknown>
+  ? Head extends readonly unknown[]
     ? readonly [...ProcessFlatten<Head>, ...ProcessFlatten<Tail>]
     : readonly [Head, ...ProcessFlatten<Tail>]
   : S;
@@ -16,5 +16,5 @@ type ProcessFlatten<S extends ReadonlyArray<unknown>> = S extends readonly [
  *
  * @category Array
  */
-export type Flatten<S extends ReadonlyArray<unknown>> =
+export type Flatten<S extends readonly unknown[]> =
   IsNonEmptyArray<S> extends true ? ProcessFlatten<S> : FlattenValue<S>[];

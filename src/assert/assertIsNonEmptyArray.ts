@@ -1,8 +1,8 @@
 import { isNonEmptyArray } from '../is';
-import { NonEmptyArray } from '../types';
+import { type NonEmptyArray } from '../types';
 
 type AssertIsNonEmptyArray = <T>(
-  x: ReadonlyArray<T>,
+  x: readonly T[],
 ) => asserts x is NonEmptyArray<T>;
 
 /**

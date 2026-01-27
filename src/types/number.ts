@@ -1,5 +1,5 @@
-import { Complement } from './boolean';
-import { IfExtends } from './extends';
+import { type Complement } from './boolean';
+import { type IfExtends } from './extends';
 
 /**
  * Checks if a number includes the negative sign.

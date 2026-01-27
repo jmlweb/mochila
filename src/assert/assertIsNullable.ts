@@ -1,5 +1,5 @@
 import { isNullable } from '../is';
-import { Assertion } from '../types';
+import { type Assertion } from '../types';
 
 /**
  * Asserts that a value is either null or undefined.

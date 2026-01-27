@@ -9,8 +9,8 @@ describe('memoize', () => {
     };
     const memoized = memoize(fn);
 
-    expect(memoized(2, 3) as number).toBe(5);
-    expect(memoized(2, 3) as number).toBe(5);
+    expect(memoized(2, 3)).toBe(5);
+    expect(memoized(2, 3)).toBe(5);
     expect(callCount).toBe(1);
   });
 
@@ -22,9 +22,9 @@ describe('memoize', () => {
     };
     const memoized = memoize(fn);
 
-    expect(memoized(2, 3) as number).toBe(5);
-    expect(memoized(3, 4) as number).toBe(7);
-    expect(memoized(2, 3) as number).toBe(5);
+    expect(memoized(2, 3)).toBe(5);
+    expect(memoized(3, 4)).toBe(7);
+    expect(memoized(2, 3)).toBe(5);
     expect(callCount).toBe(2);
   });
 
@@ -36,8 +36,8 @@ describe('memoize', () => {
     };
     const memoized = memoize(fn);
 
-    expect(memoized(5) as number).toBe(10);
-    expect(memoized(5) as number).toBe(10);
+    expect(memoized(5)).toBe(10);
+    expect(memoized(5)).toBe(10);
     expect(callCount).toBe(1);
   });
 
@@ -49,8 +49,8 @@ describe('memoize', () => {
     };
     const memoized = memoize(fn);
 
-    expect(memoized() as number).toBe(42);
-    expect(memoized() as number).toBe(42);
+    expect(memoized()).toBe(42);
+    expect(memoized()).toBe(42);
     expect(callCount).toBe(1);
   });
 
@@ -62,8 +62,8 @@ describe('memoize', () => {
     };
     const memoized = memoize(fn);
 
-    expect(memoized('hello') as string).toBe('HELLO');
-    expect(memoized('hello') as string).toBe('HELLO');
+    expect(memoized('hello')).toBe('HELLO');
+    expect(memoized('hello')).toBe('HELLO');
     expect(callCount).toBe(1);
   });
 
@@ -78,8 +78,8 @@ describe('memoize', () => {
     const obj1 = { a: 1, b: 2 };
     const obj2 = { a: 1, b: 2 };
 
-    expect(memoized(obj1) as string).toBe('{"a":1,"b":2}');
-    expect(memoized(obj2) as string).toBe('{"a":1,"b":2}');
+    expect(memoized(obj1)).toBe('{"a":1,"b":2}');
+    expect(memoized(obj2)).toBe('{"a":1,"b":2}');
     expect(callCount).toBe(1);
   });
 
@@ -91,11 +91,11 @@ describe('memoize', () => {
     };
     const memoized = memoize(fn);
 
-    expect(memoized('test', 42, true) as string).toBe('test-42-true');
-    expect(memoized('test', 42, true) as string).toBe('test-42-true');
+    expect(memoized('test', 42, true)).toBe('test-42-true');
+    expect(memoized('test', 42, true)).toBe('test-42-true');
     expect(callCount).toBe(1);
 
-    expect(memoized('test', 42, false) as string).toBe('test-42-false');
+    expect(memoized('test', 42, false)).toBe('test-42-false');
     expect(callCount).toBe(2);
   });
 
@@ -104,7 +104,7 @@ describe('memoize', () => {
     const memoized = memoize(fn);
 
     expect(typeof memoized).toBe('function');
-    expect(memoized('hello') as string).toBe('[hello]');
+    expect(memoized('hello')).toBe('[hello]');
   });
 
   test('returns cached undefined values', () => {
@@ -141,11 +141,11 @@ describe('memoize', () => {
     };
     const memoized = memoize(fn);
 
-    expect(memoized([1, 2, 3]) as number).toBe(6);
-    expect(memoized([1, 2, 3]) as number).toBe(6);
+    expect(memoized([1, 2, 3])).toBe(6);
+    expect(memoized([1, 2, 3])).toBe(6);
     expect(callCount).toBe(1);
 
-    expect(memoized([1, 2, 3, 4]) as number).toBe(10);
+    expect(memoized([1, 2, 3, 4])).toBe(10);
     expect(callCount).toBe(2);
   });
 
@@ -163,8 +163,8 @@ describe('memoize', () => {
     const memoized1 = memoize(fn1);
     const memoized2 = memoize(fn2);
 
-    expect(memoized1(5) as number).toBe(10);
-    expect(memoized2(5) as number).toBe(10);
+    expect(memoized1(5)).toBe(10);
+    expect(memoized2(5)).toBe(10);
     expect(count1).toBe(1);
     expect(count2).toBe(1);
   });

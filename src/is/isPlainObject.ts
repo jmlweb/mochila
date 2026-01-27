@@ -1,4 +1,4 @@
-import { UnknownRecord } from '../types';
+import { type UnknownRecord } from '../types';
 import { isObject } from './isObject';
 
 /**

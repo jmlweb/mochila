@@ -1,4 +1,8 @@
-import { Stringifiable, ToString, UnknownRecord } from '../types';
+import {
+  type Stringifiable,
+  type ToString,
+  type UnknownRecord,
+} from '../types';
 
 /**
  * Returns an array of string keys from an object.

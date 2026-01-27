@@ -17,5 +17,7 @@ export const delay =
   <T>(milliseconds: number) =>
   (value: T): Promise<T> =>
     new Promise((resolve) => {
-      setTimeout(() => resolve(value), milliseconds);
+      setTimeout(() => {
+        resolve(value);
+      }, milliseconds);
     });

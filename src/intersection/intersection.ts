@@ -14,8 +14,8 @@
  * @typeParam T - Element type
  */
 export const intersection =
-  <T>(other: ReadonlyArray<T>) =>
-  (source: ReadonlyArray<T>): T[] => {
+  <T>(other: readonly T[]) =>
+  (source: readonly T[]): T[] => {
     const otherSet = new Set(other);
     const seen = new Set<T>();
     const result: T[] = [];

@@ -91,7 +91,7 @@ export const LRUCache = <T>({ max, ttl, onRemove }: CacheOptions<T> = {}) => {
       const firstKey = keys.values().next().value;
       deleteItem(firstKey);
     }
-    const parsedTt = ttlOverride || ttl;
+    const parsedTt = ttlOverride ?? ttl;
     const expiration = parsedTt ? Date.now() + parsedTt : undefined;
     keys.add(key);
     items.set(key, { value, expiration });

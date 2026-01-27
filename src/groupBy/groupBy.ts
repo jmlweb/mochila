@@ -1,5 +1,9 @@
 import { toString } from '../toString';
-import { ProtectIfNonEmptyArray, Stringifiable, ToString } from '../types';
+import {
+  type ProtectIfNonEmptyArray,
+  type Stringifiable,
+  type ToString,
+} from '../types';
 
 /**
  * Groups an array of items by a key returned by a mapping function.
@@ -14,7 +18,7 @@ import { ProtectIfNonEmptyArray, Stringifiable, ToString } from '../types';
  */
 export const groupBy =
   <From, To extends Stringifiable>(fn: (item: From) => To) =>
-  <S extends ReadonlyArray<From>>(source: S) => {
+  <S extends readonly From[]>(source: S) => {
     const result = {} as Record<ToString<To>, ProtectIfNonEmptyArray<S>>;
     for (const item of source) {
       const key = toString(fn(item));

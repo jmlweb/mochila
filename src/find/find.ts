@@ -14,5 +14,5 @@
  */
 export const find =
   <Item>(predicate: (item: Item) => boolean) =>
-  (source: ReadonlyArray<Item>) =>
+  (source: readonly Item[]) =>
     source.find(predicate);

@@ -13,5 +13,5 @@
  * ```
  */
 export const parsePosition =
-  (position: number) => (source: ReadonlyArray<unknown>) =>
+  (position: number) => (source: readonly unknown[]) =>
     position < 0 ? source.length + position : position;

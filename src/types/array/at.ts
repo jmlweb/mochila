@@ -1,6 +1,6 @@
-import { SubTypeOr } from '../extends';
-import { Absolute, IsNegative, IsWideNumber } from '../number';
-import { IsNonEmptyArray, Reverse } from './arrayHelpers';
+import { type SubTypeOr } from '../extends';
+import { type Absolute, type IsNegative, type IsWideNumber } from '../number';
+import { type IsNonEmptyArray, type Reverse } from './arrayHelpers';
 
 /**
  * Returns the element at index `P` in `S`.
@@ -9,7 +9,7 @@ import { IsNonEmptyArray, Reverse } from './arrayHelpers';
  */
 export type At<
   P extends number,
-  S extends ReadonlyArray<unknown>,
+  S extends readonly unknown[],
   DefaultAt = S[number] | undefined,
 > = SubTypeOr<
   IsWideNumber<P> extends true

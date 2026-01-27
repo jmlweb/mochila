@@ -17,7 +17,7 @@ import { unique } from './unique';
  * ```
  */
 export const uniqueRight = pipe(
-  <V>(source: ReadonlyArray<V>) => reverse(source),
+  <V>(source: readonly V[]) => reverse(source),
   unique,
   reverse,
 );

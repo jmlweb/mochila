@@ -2,7 +2,7 @@ import { fromEntries } from './fromEntries';
 
 describe('fromEntries', () => {
   test('converts entries to object', () => {
-    const entries: Array<[string, number]> = [
+    const entries: [string, number][] = [
       ['a', 1],
       ['b', 2],
       ['c', 3],
@@ -25,7 +25,7 @@ describe('fromEntries', () => {
   });
 
   test('handles string values', () => {
-    const entries: Array<[string, string]> = [
+    const entries: [string, string][] = [
       ['name', 'Alice'],
       ['city', 'NY'],
     ];
@@ -35,7 +35,7 @@ describe('fromEntries', () => {
   });
 
   test('handles mixed value types', () => {
-    const entries: Array<[string, unknown]> = [
+    const entries: [string, unknown][] = [
       ['str', 'hello'],
       ['num', 42],
       ['bool', true],
@@ -54,7 +54,7 @@ describe('fromEntries', () => {
   });
 
   test('overwrites duplicate keys with last value', () => {
-    const entries: Array<[string, number]> = [
+    const entries: [string, number][] = [
       ['a', 1],
       ['a', 2],
       ['a', 3],
@@ -66,7 +66,7 @@ describe('fromEntries', () => {
 
   test('handles object values', () => {
     const obj1 = { id: 1 };
-    const entries: Array<[string, Record<string, unknown>]> = [
+    const entries: [string, Record<string, unknown>][] = [
       ['user', obj1],
       ['config', { theme: 'dark' }],
     ];
@@ -77,7 +77,7 @@ describe('fromEntries', () => {
   });
 
   test('handles numeric string keys', () => {
-    const entries: Array<[string, string]> = [
+    const entries: [string, string][] = [
       ['1', 'a'],
       ['2', 'b'],
       ['10', 'c'],
@@ -88,7 +88,7 @@ describe('fromEntries', () => {
   });
 
   test('works with undefined values', () => {
-    const entries: Array<[string, unknown]> = [
+    const entries: [string, unknown][] = [
       ['a', undefined],
       ['b', 2],
     ];
@@ -98,10 +98,10 @@ describe('fromEntries', () => {
   });
 
   test('can compose with entries', () => {
-    interface User {
+    type User = {
       name: string;
       age: number;
-    }
+    };
 
     const user: User = { name: 'Alice', age: 30 };
     const ent = Object.entries(user);

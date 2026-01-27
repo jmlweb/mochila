@@ -1,4 +1,4 @@
-import { ProtectIfNonEmptyArray } from '../types';
+import { type ProtectIfNonEmptyArray } from '../types';
 
 /**
  * Partitions an array into two arrays based on a given predicate function.
@@ -16,7 +16,7 @@ import { ProtectIfNonEmptyArray } from '../types';
  */
 export const partition =
   <T>(fn: (arg: T) => boolean) =>
-  <A extends ReadonlyArray<T>>(arr: A) => {
+  <A extends readonly T[]>(arr: A) => {
     const left: T[] = [];
     const right: T[] = [];
     for (const item of arr) {
