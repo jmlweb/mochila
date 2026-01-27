@@ -4,7 +4,8 @@
     "lib": ["ES2022"],
     "allowJs": true,
     "noEmit": true,
-    "moduleDetection": "force"
+    "moduleDetection": "force",
+    "verbatimModuleSyntax": false
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["coverage", "dist", "docs", "node_modules"]
