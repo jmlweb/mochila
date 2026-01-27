@@ -5,5 +5,7 @@
     "allowJs": true,
     "noEmit": true,
     "moduleDetection": "force"
-  }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["coverage", "dist", "docs", "node_modules"]
 }
