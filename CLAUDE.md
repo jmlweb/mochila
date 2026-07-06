@@ -1,696 +1,238 @@
+# mochila-ts — Operating Manual
 
+97 composable TypeScript utilities, published to npm as `mochila-ts`. Data-last
+curried pattern, zero runtime dependencies, semantic-release. This file is the
+contract: follow it exactly, and when it conflicts with the actual code, the
+code wins — then flag the drift.
 
-<!-- Source: AGENTS.md -->
+## Non-negotiable invariants
 
-# mochila-ts AI Guide
+1. **Zero runtime dependencies.** `package.json` has only `devDependencies`.
+   Never add a runtime dependency. Ask before adding even a dev dependency.
+2. **Data-last currying.** Config/predicate first, data last:
+   `myFn(config)(data)`. Never `myFn(data, config)`.
+3. **Commits drive releases.** Every commit message on `main` is parsed by
+   semantic-release: `feat:` → minor, `fix:` → patch, `BREAKING CHANGE:` →
+   major, published to npm automatically. A mislabeled commit ships a wrong
+   version to the public registry.
+4. **No explicit `any`** except `AnyFn` in `src/types/function.ts` (documented
+   exception for composition primitives like `pipe`).
+5. **PR flow.** Work on a branch, never commit directly to `main`. PRs are
+   squash-merged, so the PR title must itself be a valid conventional commit —
+   it becomes the commit that semantic-release reads.
 
-80+ composable TypeScript utilities using **data-last curried pattern** for composability.
+## Ground rule: read neighbors before writing
 
-## Quick Commands
+Documentation examples in this repo have drifted before. The authoritative
+pattern is the existing source. **Before implementing or modifying any
+utility, read two similar existing utilities in full** (implementation + test
 
-```bash
-pnpm install && pnpm test    # Setup & verify
-pnpm test:coverage           # Check coverage (85%+ required)
-pnpm lint                    # Check formatting & types
-pnpm build                   # Build all formats (ESM/CJS/.d.ts)
-```
+- index) and imitate them. Good reference points:
 
-## Project Structure
+* `src/filter/filter.ts` — overloaded type with a type-guard overload
+* `src/groupBy/groupBy.ts` — cross-utility imports, advanced type helpers
+* `src/pipe/pipe.ts` — arity via explicit overload list
+* `src/lruCache/lruCache.ts` — options object, input validation, factory shape
 
-```
-src/
-├── {utilityName}/
-│   ├── {utilityName}.ts      # Curried function implementation
-│   ├── {utilityName}.test.ts # Tests (85%+ lines/functions/statements)
-│   └── index.ts              # Re-exports
-├── types/                    # Shared types (guards, constraints)
-└── index.ts                  # Main exports (alphabetical order)
-```
-
-## Data-Last Curried Pattern
-
-All functions follow: **config/predicate FIRST → data LAST**
-
-```typescript
-// ✓ Correct pattern
-export const filter = <V>(predicate: (x: V) => boolean) =>
-  <T extends V>(arr: ReadonlyArray<T>): T[] =>
-    arr.filter(predicate) as T[];
-
-// Usage: compose with pipe()
-pipe(data, filter(isEven), map(double), sort(ascending))
-```
-
-**Benefits:**
-- Partial application: `const filterEven = filter(isEven)`
-- Composition: Works naturally with `pipe()` and function composition
-- Type safety: Generics infer correctly without explicit type annotations
-
-**Common pattern mistakes to avoid:**
-- ❌ Data-first: `filter(array, predicate)` - breaks composition
-- ❌ Forgetting `<T extends V>` - loses type narrowing
-- ❌ `as T[]` without cast - unsafe with covariance
-
-## Code Standards (Strict Mode)
-
-| Rule | Why | Example |
-|------|-----|---------|
-| No explicit `any` | Use generics/`unknown` | `<T>(x: T) => T` not `(x: any)` |
-| Imports alphabetical | ESLint enforces `simple-import-sort` | `import { a } from 'x'` before `import { b } from 'y'` |
-| JSDoc on exports | Required for documentation | `/** @category Array */ export const filter...` |
-| 85%+ test coverage | Branches min 50% | Run `pnpm test:coverage` before commit |
-| Curried with generics | Type inference must work | Return function types properly constrained |
-
-## Adding a Utility (Step-by-Step)
-
-**1. Create structure:**
-```bash
-mkdir -p src/{name}
-touch src/{name}/{name}.ts src/{name}/{name}.test.ts src/{name}/index.ts
-```
-
-**2. Implement with proper typing:**
-```typescript
-/**
- * Brief description of what it does.
- *
- * @category Array|String|Function|etc
- * @example
- * ```
- * myFn(config)(data) // show actual usage
- * ```
- * @param config - First parameter description
- * @param data - Second parameter description
- * @returns Return value type and meaning
- * @typeParam V - Input value type
- * @typeParam T - Output/constrained type
- */
-export const myFn = <V>(config: SomeConfig) =>
-  <T extends V>(data: ReadonlyArray<T>): T[] => {
-    // implementation
-  };
-```
-
-**3. Write tests (85%+ coverage required):**
-```typescript
-describe('myFn', () => {
-  test('handles basic case', () => {
-    expect(myFn(config)([1, 2, 3])).toEqual([...]);
-  });
-  test('handles edge case: empty array', () => {
-    expect(myFn(config)([])).toEqual([]);
-  });
-  test('maintains type safety', () => {
-    const result: number[] = myFn(config)([1, 2]); // ✓ Type checks
-  });
-});
-```
-
-**4. Export from module & main:**
-```typescript
-// src/{name}/index.ts
-export * from './{name}';
-
-// src/index.ts (add in alphabetical order)
-export * from './{name}';
-```
-
-**5. Verify:**
-```bash
-pnpm test:coverage  # Must reach 85%
-pnpm lint           # Must pass
-pnpm build          # Must produce ESM/CJS/DTS
-```
-
-## Type System
-
-**Shared types in `src/types/`:**
-- `array/` - Array constraints and helpers
-- `extends.ts` - Type constraint utilities
-- `function.ts` - Function types (AnyFn, Constant)
-- `helpers.ts` - Generic helpers
-
-**Type guard patterns (for `is/` utilities):**
-```typescript
-export const isArray = (x: unknown): x is unknown[] => Array.isArray(x);
-```
-
-**Generic constraints (common pattern):**
-```typescript
-<T extends Record<string, unknown>>  // Object with any keys
-<K extends string | number>          // String or numeric keys
-<T extends readonly unknown[]>       // ReadonlyArray
-```
-
-**Intentional `any` type exceptions:**
-The codebase has strict `no explicit any` enforcement, with one documented exception:
-- `AnyFn` type in `src/types/function.ts` - Uses `(...args: any[]) => any` as a base utility type for general function composition where strict typing is intentionally relaxed for maximum flexibility in `pipe()` and similar utilities. This is necessary to allow composition of functions with different signatures. Alternative: use `unknown[]` with runtime type guards if stricter typing is needed.
-
-## Before Committing
-
-1. **Tests & lint pass:**
-   ```bash
-   pnpm test:coverage && pnpm lint
-   ```
-
-2. **Commit message format** (conventional commits):
-   ```
-   feat: add new utility function name
-   fix: resolve type inference bug in filter
-   docs: clarify data-last pattern in JSDoc
-   ```
-   - Husky pre-commit hook auto-formats code
-   - Commitlint validates message format
-
-3. **What gets committed:**
-   - Source files only (no `dist/`, coverage reports)
-   - Tests must maintain 85%+ coverage
-
-## Common AI Mistakes to Avoid
-
-| Mistake | Fix |
-|---------|-----|
-| Using `any` type | Use generics: `<T>(x: T) => T` |
-| Data-first functions | Always: config → data (curried) |
-| Missing JSDoc tags | Include: `@category`, `@example`, `@param`, `@returns` |
-| Unsorted imports | Run: `pnpm exec eslint --fix src/` |
-| Type inference breaks | Use `extends` constraints: `<T extends V>` |
-| Test coverage <85% | Add edge cases: empty arrays, null, type narrowing |
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Tests fail or coverage low | `pnpm test:coverage` → add test cases |
-| Lint/format errors | `pnpm exec eslint --fix src/` (auto on commit) |
-| Type errors in build | Check `tsconfig.json` strict mode; avoid `any` |
-| Test type inference | Ensure `<T extends V>` and proper return types |
-| Commit rejected | Message must be: `feat:`, `fix:`, `docs:`, etc. |
-
-## Key Files Reference
-
-| File | Purpose |
-|------|---------|
-| `src/index.ts` | Main exports (alphabetical) |
-| `tsconfig.json` | TypeScript strict mode (ES2020, bundler resolution) |
-| `.eslintrc.js` | Linting (@typescript-eslint, tsdoc, import-sort) |
-| `.prettierrc.json` | Formatting (2-space, single quotes, trailing commas) |
-| `jest.config.js` | Test config (85% coverage threshold) |
-| `.husky/` | Pre-commit hooks (format + lint) |
-| `commitlint.config.cjs` | Commit message validation |
-
-See [DEVELOPMENT.md](./DEVELOPMENT.md) for architecture details and advanced patterns.
-
-
-
-<!-- Source: .ruler/01-project-overview.md -->
-
-# mochila-ts AI Guide
-
-80+ composable TypeScript utilities using **data-last curried pattern** for composability.
-
-## Quick Commands
-
-```bash
-pnpm install && pnpm test    # Setup & verify
-pnpm test:coverage           # Check coverage (85%+ required)
-pnpm lint                    # Check formatting & types
-pnpm build                   # Build all formats (ESM/CJS/.d.ts)
-```
-
-## Project Structure
+## Repository map
 
 ```
 src/
 ├── {utilityName}/
-│   ├── {utilityName}.ts      # Curried function implementation
-│   ├── {utilityName}.test.ts # Tests (85%+ lines/functions/statements)
-│   └── index.ts              # Re-exports
-├── types/                    # Shared types (guards, constraints)
-└── index.ts                  # Main exports (alphabetical order)
+│   ├── {utilityName}.ts       # implementation
+│   ├── {utilityName}.test.ts  # tests
+│   └── index.ts               # export * from './{utilityName}'
+├── is/                        # EXCEPTION: flat layout — isArray.ts,
+│   │                          # isArray.test.ts, … all directly in src/is/
+│   └── index.ts               # named exports, one line per guard
+├── types/                     # shared types (array/, function.ts, extends.ts,
+│                              # helpers.ts, string.ts, number.ts, object.ts, boolean.ts)
+└── index.ts                   # export * from './…' — strictly alphabetical
 ```
 
+Other load-bearing files:
 
+| File                                  | Purpose                                                                                                             |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `scripts/generate-utilities-table.js` | README table generator with a **hardcoded `CATEGORIES` map** — new utilities must be added there                    |
+| `.ruler/*.md` + `.ruler/ruler.toml`   | Source files for AI instructions; `ruler apply --agents cursor,claude` regenerates `CLAUDE.md` and `.cursor/rules/` |
+| `eslint.config.mjs`                   | ESLint 9 flat config extending `@jmlweb/eslint-config-base`. There is no `.eslintrc.*`                              |
+| `package.json#prettier`               | Prettier config = `@jmlweb/prettier-config-base`. There is no `.prettierrc.json`                                    |
+| `tsconfig.json`                       | Extends `@jmlweb/tsconfig-base`; `verbatimModuleSyntax: false` is deliberate (CJS build breaks otherwise)           |
+| `tsup.config.ts`                      | ESM + CJS + d.ts, target es2020                                                                                     |
+| `jest.config.js`                      | Coverage thresholds: 85% lines/functions/statements, 50% branches (global)                                          |
+| `.github/workflows/release.yml`       | Push to main → test → semantic-release → npm publish → docs to GitHub Pages                                         |
 
-<!-- Source: .ruler/02-architecture-core.md -->
+## Conventions
 
-# Data-Last Curried Pattern
-
-All functions follow: **config/predicate FIRST → data LAST**
+### Function shape
 
 ```typescript
-// ✓ Correct pattern
-export const filter = <V>(predicate: (x: V) => boolean) =>
-  <T extends V>(arr: ReadonlyArray<T>): T[] =>
-    arr.filter(predicate) as T[];
-
-// Usage: compose with pipe()
-pipe(data, filter(isEven), map(double), sort(ascending))
-```
-
-## Benefits
-
-- Partial application: `const filterEven = filter(isEven)`
-- Composition: Works naturally with `pipe()` and function composition
-- Type safety: Generics infer correctly without explicit type annotations
-
-## Common Pattern Mistakes to Avoid
-
-- ❌ Data-first: `filter(array, predicate)` - breaks composition
-- ❌ Forgetting `<T extends V>` - loses type narrowing
-- ❌ `as T[]` without cast - unsafe with covariance
-
-
-
-<!-- Source: .ruler/03-code-standards.md -->
-
-# Code Standards (Strict Mode)
-
-| Rule | Why | Example |
-|------|-----|---------|
-| No explicit `any` | Use generics/`unknown` | `<T>(x: T) => T` not `(x: any)` |
-| Curried with generics | Type inference must work | Return function types properly constrained |
-
-## Intentional `any` Type Exceptions
-
-The codebase has strict `no explicit any` enforcement, with one documented exception:
-
-- `AnyFn` type in `src/types/function.ts` - Uses `(...args: any[]) => any` as a base utility type for general function composition where strict typing is intentionally relaxed for maximum flexibility in `pipe()` and similar utilities. This is necessary to allow composition of functions with different signatures. Alternative: use `unknown[]` with runtime type guards if stricter typing is needed.
-
-
-
-<!-- Source: .ruler/04-import-sorting.md -->
-
-# Import Sorting
-
-## Requirements
-
-- **Imports alphabetical**: ESLint enforces `simple-import-sort`
-- Example: `import { a } from 'x'` before `import { b } from 'y'`
-
-## ESLint Rules
-
-- `simple-import-sort/imports`: error
-- `simple-import-sort/exports`: error
-
-## Auto-Fix Command
-
-If you have unsorted imports, run:
-
-```bash
-pnpm exec eslint --fix src/
-```
-
-This will automatically sort all imports alphabetically.
-
-
-
-<!-- Source: .ruler/05-jsdoc-requirements.md -->
-
-# JSDoc Requirements
-
-## Required for All Exports
-
-JSDoc on exports is required for documentation.
-
-## Required Tags
-
-- `@category` - Feature area (Array, String, Function, Guard, etc.)
-- `@example` - Usage showing data-last pattern
-- `@param` - Parameter descriptions
-- `@returns` - Return value description
-- `@typeParam` - Generic type parameters
-
-## Template
-
-```typescript
-/**
- * Brief description of what it does.
- *
- * @category Array|String|Function|etc
- * @example
- * ```
- * myFn(config)(data) // show actual usage
- * ```
- * @param config - First parameter description
- * @param data - Second parameter description
- * @returns Return value type and meaning
- * @typeParam V - Input value type
- * @typeParam T - Output/constrained type
- */
-export const myFn = <V>(config: SomeConfig) =>
-  <T extends V>(data: ReadonlyArray<T>): T[] => {
+export const myFn =
+  <From, To extends Constraint>(config: (item: From) => To) =>
+  <S extends readonly From[]>(source: S) => {
     // implementation
   };
 ```
 
-## ESLint Rule
+- Accept `readonly T[]` / `ReadonlyArray<T>`, return mutable results.
+- Use `<T extends V>` on the data parameter so element types narrow.
+- When a predicate can be a type guard, provide an overloaded type (see
+  `Filter` in `src/filter/filter.ts`) so `filter(isString)` narrows the result.
+- Import shared types with inline `type` specifier:
+  `import { type AnyFn } from '../types';`
+- Utilities may reuse sibling utilities — import the module directly
+  (`import { toString } from '../toString';`), **never** from `../index` or
+  `src/index` (circular imports).
+- Named exports only. No default exports. No classes unless the utility is a
+  stateful factory (e.g. `LRUCache`), and even then export a factory function.
+- Validate impossible inputs by throwing `Error` with a specific message
+  (`'max must be a positive integer'`), not by returning silently.
 
-- `tsdoc/syntax`: warn - Validates TSDoc syntax
+### JSDoc (required on every export)
 
+Tags, all of them: `@category`, `@example`, `@param`, `@returns`, `@typeParam`
+(when generics exist). Categories in use — reuse one, don't invent:
+`Array`, `String`, `Object`, `Function`, `Number`, `Guard`, `Assertion`,
+`Type Helper`, `Boolean`, `Promise`, `Cache`, `Subscription`, `Logic`, `Date`.
 
+The `@example` block must be copy-paste-runnable against the real signature —
+write it last, after the implementation is final, and trace it mentally.
 
-<!-- Source: .ruler/06-file-structure.md -->
+### Imports and formatting
 
-# File Structure Conventions
+- `simple-import-sort` enforces order; run `pnpm exec eslint --fix src/` rather
+  than sorting by hand.
+- Prettier runs on staged files via husky/lint-staged — don't hand-format.
 
-## Module Structure
+### Commits
 
-Each utility has this structure:
+Conventional commits, enforced by commitlint. Types: `feat` `fix` `docs`
+`style` `refactor` `perf` `test` `chore` `ci`. Never commit `dist/`,
+`coverage/`, or `docs/` output.
 
-```
-src/{utilityName}/
-├── {utilityName}.ts      # Implementation (data-last curried function)
-├── {utilityName}.test.ts # Unit tests (85%+ coverage required)
-└── index.ts              # Exports
-```
+## Named failure modes and the rule that prevents each
 
-## Module Exports
+| #   | Failure mode                                                                                                                                                                                                     | Prevention rule                                                                                                                                                                                                                 |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Copying stale doc examples.** Old docs showed `filter` with an `as T[]` cast; the real code uses an overloaded type.                                                                                           | Never implement from a doc example. Read the actual source of two neighbor utilities first.                                                                                                                                     |
+| 2   | **Forgetting the README table map.** New utility works, but `scripts/generate-utilities-table.js` `CATEGORIES` doesn't list it, so the README drifts.                                                            | Adding a utility = editing that script in the same PR. It's a checklist item below.                                                                                                                                             |
+| 3   | **Editing CLAUDE.md or `.cursor/rules/` directly when `.ruler/` is the source.** Next `ruler apply` clobbers the edit.                                                                                           | To change AI instructions, edit `.ruler/*.md`, run `ruler apply --agents cursor,claude`, commit sources + generated output together.                                                                                            |
+| 4   | **Importing from the barrel.** `import { map } from '../index'` compiles but creates a circular import that breaks tree-shaking and can break the build.                                                         | Cross-utility imports go module-to-module: `../map`.                                                                                                                                                                            |
+| 5   | **Data-first signature.** `myFn(data, config)` passes tests but breaks `pipe` composition and the library's entire contract.                                                                                     | Signature review before writing tests: does `myFn(config)` return a function that takes only data?                                                                                                                              |
+| 6   | **Wrong semver via commit type.** Labeling an API change `fix:` publishes a patch that breaks consumers.                                                                                                         | If any exported signature, name, or observable behavior changes incompatibly: `BREAKING CHANGE:` footer, and escalate first (see below). Renames and removals are always breaking.                                              |
+| 7   | **Tests pass, types regressed.** Runtime tests can't catch inference breaking (e.g. result widening to `unknown[]`).                                                                                             | Every new/changed utility gets a type-level assertion in its test (`const r: number[] = myFn(cfg)([1, 2]);`) and `pnpm type-check` must stay ≥95%.                                                                              |
+| 8   | **"Fixing" deliberate config.** `verbatimModuleSyntax: false`, the relaxed `no-unsafe-*` ESLint rules, and `AnyFn` all look like mistakes. They are not.                                                         | Don't touch `tsconfig.json`, `eslint.config.mjs` rule relaxations, or `src/types/function.ts` unless the task is explicitly about them.                                                                                         |
+| 9   | **Export chain half-done.** Utility exists but isn't in its own `index.ts`, or is appended to the bottom of `src/index.ts`.                                                                                      | Two exports per utility: `src/{name}/index.ts` and `src/index.ts` in strict alphabetical position. Verify with the checklist.                                                                                                   |
+| 10  | **Treating `src/is/` like the other modules.** Creating `src/is/isFoo/isFoo.ts` breaks the established flat layout.                                                                                              | New type guards go directly in `src/is/` as `isFoo.ts` + `isFoo.test.ts`, with a named export line added to `src/is/index.ts`.                                                                                                  |
+| 11  | **Global coverage masking gaps.** The 85% threshold is global — a new utility can be badly under-tested while the suite still passes.                                                                            | Judge coverage per-file: `pnpm test:coverage` and read the row for your utility. New code targets ~100% lines, all branches you wrote.                                                                                          |
+| 12  | **Silent bundle growth.** Nothing in `pnpm test`/`lint` checks size.                                                                                                                                             | Run `pnpm size` after adding code. Limit is 30 kB; current output is ~3 kB, so any large jump is a bug (accidental import, polyfill, dependency).                                                                               |
+| 13  | **Guessing edge-case behavior.** Utilities here have shipped bugs on division by zero, negative-number modulo, circular references, consecutive underscores in snakeCase, memory leaks in debounce/subscription. | Every implementation must state (in tests) its behavior for: empty input, single element, `null`/`undefined` where the type allows, boundary numbers (0, negative, NaN, Infinity) if numeric, and non-ASCII if string-handling. |
 
-Module exports can use either pattern:
+## Quality bar — checkable, per deliverable
 
-- `export * from './{utilityName}'` - Export all
-- `export { name } from './{utilityName}'` - Named exports only
+### New utility — done when ALL of these are true
 
-## Main Exports
+- [ ] Files exist: `src/{name}/{name}.ts`, `{name}.test.ts`, `index.ts`
+      (or flat in `src/is/` for guards)
+- [ ] Signature is data-last curried; partial application shown in `@example`
+- [ ] JSDoc has `@category` (from the list above), `@example`, `@param`,
+      `@returns`, `@typeParam` for each generic
+- [ ] Input is `readonly`; generics use `extends` constraints; no `any`
+- [ ] Tests include: basic case, empty input, at least one edge case from
+      failure mode #13, and a type-level assertion
+- [ ] Exported from `src/{name}/index.ts` AND `src/index.ts` (alphabetical)
+- [ ] Added to `CATEGORIES` in `scripts/generate-utilities-table.js`
+- [ ] `pnpm test:coverage` passes and the new file's own row is ≥95% lines
+- [ ] `pnpm lint` → 0 errors; `pnpm type-check` → ≥95%; `pnpm build` succeeds;
+      `pnpm size` under limit
+- [ ] Commit/PR title: `feat: add {name} utility`
 
-All utilities must be exported from `src/index.ts` in **alphabetical order**:
+### Bug fix — done when
 
-```typescript
-// src/index.ts (add in alphabetical order)
-export * from './{name}';
-```
+- [ ] A test reproducing the bug exists and **failed before the fix**
+      (run it against the unfixed code, or stash the fix, to prove it)
+- [ ] The fix changes no exported signatures (else it's not a `fix:`)
+- [ ] All prior tests still pass unmodified — if an existing test had to
+      change, the old assertion was either wrong (say so in the PR) or this is
+      a breaking change (escalate)
+- [ ] JSDoc updated if documented behavior changed
+- [ ] Commit: `fix: {what was wrong}` — not `fix: update {file}`
 
-## Shared Types
+### Refactor — done when
 
-Shared types in `src/types/`:
+- [ ] Zero changes to exported names, signatures, or runtime behavior
+- [ ] No test assertions modified (test-file moves/renames OK)
+- [ ] Full gate green: `pnpm test:coverage && pnpm lint && pnpm type-check &&
+    pnpm build && pnpm size`
+- [ ] Commit: `refactor:` (or `perf:` if measured faster — include the
+      measurement in the PR)
 
-- `array/` - Array constraints and helpers
-- `extends.ts` - Type constraint utilities
-- `function.ts` - Function types (AnyFn, Constant)
-- `helpers.ts` - Generic helpers
-- `string.ts`, `number.ts`, `boolean.ts`, `object.ts` - Domain-specific types
+### Docs change — done when
 
+- [ ] Every code example was checked against the current source signature it
+      documents (open the file; don't trust the old doc)
+- [ ] AI-instruction changes went through `.ruler/` + `ruler apply`, and
+      generated files are committed together with sources
+- [ ] Commit: `docs:`
 
+### Any PR — done when
 
-<!-- Source: .ruler/07-adding-utilities.md -->
+- [ ] Title is a valid conventional commit that matches the real semver impact
+- [ ] Branch is not `main`; no `dist/`, `coverage/`, `docs/` output staged
+- [ ] Full verify gate green locally before pushing
 
-# Adding a Utility (Step-by-Step)
+## Escalation rules — exact
 
-## 1. Create Structure
+**Stop and ask the user before:**
 
-```bash
-mkdir -p src/{name}
-touch src/{name}/{name}.ts src/{name}/{name}.test.ts src/{name}/index.ts
-```
+1. Adding any dependency, runtime or dev.
+2. Changing, renaming, or removing any exported API — anything that would
+   require `BREAKING CHANGE:`.
+3. Editing `.github/workflows/*`, `release.config.cjs`, `package.json`
+   `exports`/`engines`/`files`, or publish-related config.
+4. Writing `any` (outside `AnyFn`), `@ts-expect-error`, `@ts-ignore`, or an
+   `eslint-disable` comment — if the types don't work without these, the
+   design is wrong or the decision is the user's.
+5. Loosening any threshold (coverage, type-coverage, size-limit) or skipping
+   a failing check to get green.
+6. Deleting a utility or test, or modifying an existing test's assertions to
+   make your change pass.
+7. Pushing, merging, or anything that touches `main` directly.
 
-## 2. Implement with Proper Typing
+**Proceed without asking when:**
 
-```typescript
-/**
- * Brief description of what it does.
- *
- * @category Array|String|Function|etc
- * @example
- * ```
- * myFn(config)(data) // show actual usage
- * ```
- * @param config - First parameter description
- * @param data - Second parameter description
- * @returns Return value type and meaning
- * @typeParam V - Input value type
- * @typeParam T - Output/constrained type
- */
-export const myFn = <V>(config: SomeConfig) =>
-  <T extends V>(data: ReadonlyArray<T>): T[] => {
-    // implementation
-  };
-```
+- The task is additive and every decision can be resolved by imitating an
+  existing utility. Pick the nearest neighbor and copy its conventions.
+- A doc contradicts the code: follow the code, note the drift in your summary.
+- Tests fail because of your change: fix your change, don't ask.
 
-## 3. Write Tests (85%+ Coverage Required)
+**When two conventions conflict** (e.g. doc example vs. real source): code >
+config files > DEVELOPMENT.md > this file's examples. Report the conflict
+either way.
 
-```typescript
-describe('myFn', () => {
-  test('handles basic case', () => {
-    expect(myFn(config)([1, 2, 3])).toEqual([...]);
-  });
-  test('handles edge case: empty array', () => {
-    expect(myFn(config)([])).toEqual([]);
-  });
-  test('maintains type safety', () => {
-    const result: number[] = myFn(config)([1, 2]); // ✓ Type checks
-  });
-});
-```
-
-## 4. Export from Module & Main
-
-```typescript
-// src/{name}/index.ts
-export * from './{name}';
-
-// src/index.ts (add in alphabetical order)
-export * from './{name}';
-```
-
-## 5. Verify
-
-```bash
-pnpm test:coverage  # Must reach 85%
-pnpm lint           # Must pass
-pnpm build          # Must produce ESM/CJS/DTS
-```
-
-
-
-<!-- Source: .ruler/08-type-system.md -->
-
-# Type System
-
-## Shared Types in `src/types/`
-
-- `array/` - Array constraints and helpers
-- `extends.ts` - Type constraint utilities
-- `function.ts` - Function types (AnyFn, Constant)
-- `helpers.ts` - Generic helpers
-
-## Type Guard Patterns (for `is/` Utilities)
-
-```typescript
-export const isArray = (x: unknown): x is unknown[] => Array.isArray(x);
-```
-
-## Generic Constraints (Common Pattern)
-
-```typescript
-<T extends Record<string, unknown>>  // Object with any keys
-<K extends string | number>          // String or numeric keys
-<T extends readonly unknown[]>       // ReadonlyArray
-```
-
-## Type Inference Requirements
-
-- Type inference must work correctly in generic functions
-- Use proper type inference in function signatures
-- Use `extends` constraints appropriately
-- Test with different type combinations
-
-
-
-<!-- Source: .ruler/09-testing-requirements.md -->
-
-# Testing Requirements
-
-## Coverage Minimum
-
-- **85%+ test coverage** required (lines, functions, statements)
-- **50% minimum** for branches
-- Run `pnpm test:coverage` before commit
-
-## Test Pattern
-
-```typescript
-describe('myFn', () => {
-  test('handles basic case', () => {
-    expect(myFn(config)([1, 2, 3])).toEqual([...]);
-  });
-  test('handles edge case: empty array', () => {
-    expect(myFn(config)([])).toEqual([]);
-  });
-  test('maintains type safety', () => {
-    const result: number[] = myFn(config)([1, 2]); // ✓ Type checks
-  });
-});
-```
-
-## Edge Cases to Test
-
-- Empty arrays
-- Null/undefined values
-- Type narrowing
-- Boundary conditions
-
-## Verification
+## Command reference
 
 ```bash
-pnpm test           # Run all tests
-pnpm test:watch     # Watch mode
-pnpm test:coverage  # Coverage report (must pass 85% threshold)
+pnpm install                 # setup
+pnpm test                    # jest
+pnpm test:watch              # watch mode
+pnpm test:coverage           # coverage, thresholds 85/85/85/50
+pnpm lint                    # eslint (flat config, includes prettier check)
+pnpm exec eslint --fix src/  # auto-fix imports/format
+pnpm type-check              # type-coverage, must stay ≥95%
+pnpm build                   # tsup → dist/ (ESM + CJS + d.ts)
+pnpm size                    # size-limit, 30 kB budget
+pnpm doc                     # typedoc → docs/
+node scripts/generate-utilities-table.js  # regenerate README table
 ```
 
-
-
-<!-- Source: .ruler/10-eslint-config.md -->
-
-# ESLint Configuration
-
-## Configuration File
-
-**IMPORTANT**: The project uses ESLint 9 flat config format.
-
-- **File location**: `eslint.config.mjs` (NOT `.eslintrc.js`)
-- **Format**: ESLint 9 flat config (modern format)
-
-## Plugins
-
-- `@typescript-eslint` - TypeScript linting
-- `simple-import-sort` - Automatic import sorting
-- `tsdoc` - TSDoc syntax validation
-- `prettier` - Code formatting integration
-
-## Rules
-
-```javascript
-{
-  'prettier/prettier': 'error',
-  'simple-import-sort/imports': 'error',
-  'simple-import-sort/exports': 'error',
-  'tsdoc/syntax': 'warn',
-}
-```
-
-## Parser Configuration
-
-- Parser: `typescript-eslint`
-- Project reference: `./tsconfig.json`
-- Globals: Node.js + ES2021
-
-## Running ESLint
+Full verify gate (run before every commit):
 
 ```bash
-pnpm lint                    # Check for errors
-pnpm exec eslint --fix src/  # Auto-fix issues
+pnpm test:coverage && pnpm lint && pnpm type-check && pnpm build && pnpm size
 ```
 
-## Pre-commit Hook
-
-Husky pre-commit hook automatically runs:
-- ESLint with `--fix` flag
-- Prettier with `--write` flag
-
-This ensures all committed code follows project standards.
-
-
-
-<!-- Source: .ruler/11-commit-workflow.md -->
-
-# Commit Workflow
-
-## Before Committing
-
-1. **Tests & lint pass:**
-   ```bash
-   pnpm test:coverage && pnpm lint
-   ```
-
-2. **What gets committed:**
-   - Source files only (no `dist/`, coverage reports)
-   - Tests must maintain 85%+ coverage
-
-## Commit Message Format (Conventional Commits)
-
-```
-feat: add new utility function name
-fix: resolve type inference bug in filter
-docs: clarify data-last pattern in JSDoc
-```
-
-### Commit Types
-
-- `feat:` - New feature (MINOR version bump)
-- `fix:` - Bug fix (PATCH version bump)
-- `docs:` - Documentation
-- `style:` - Code style (formatting)
-- `refactor:` - Code refactoring
-- `perf:` - Performance improvement
-- `test:` - Test additions/changes
-- `chore:` - Build, dependencies, tooling
-- `BREAKING CHANGE:` - Breaking change (MAJOR version bump)
-
-## Pre-commit Hooks
-
-Husky pre-commit hook automatically:
-- Runs ESLint fix and Prettier write on staged TypeScript files
-- Prevents committing unformatted code
-- Validates commit message format (conventional commits)
-
-## Semantic Release
-
-Automated via GitHub Actions:
-- Push to `main` triggers release process
-- Auto-determines version bump based on commit messages
-- Creates GitHub release
-- Publishes to npm
-- Deploys docs to GitHub Pages
-
-
-
-<!-- Source: .ruler/12-common-mistakes.md -->
-
-# Common AI Mistakes to Avoid
-
-| Mistake | Fix |
-|---------|-----|
-| Using `any` type | Use generics: `<T>(x: T) => T` |
-| Data-first functions | Always: config → data (curried) |
-| Missing JSDoc tags | Include: `@category`, `@example`, `@param`, `@returns` |
-| Unsorted imports | Run: `pnpm exec eslint --fix src/` |
-| Type inference breaks | Use `extends` constraints: `<T extends V>` |
-| Test coverage <85% | Add edge cases: empty arrays, null, type narrowing |
-| Wrong ESLint config file | Use `eslint.config.mjs`, NOT `.eslintrc.js` |
-| Forgetting data-last pattern | Predicate/config FIRST, data LAST |
-| Skipping type parameters | Always include `<T extends V>` for type narrowing |
-| Not testing edge cases | Test: empty arrays, null, undefined, boundaries |
-
-
-
-<!-- Source: .ruler/13-troubleshooting.md -->
-
-# Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Tests fail or coverage low | `pnpm test:coverage` → add test cases |
-| Lint/format errors | `pnpm exec eslint --fix src/` (auto on commit) |
-| Type errors in build | Check `tsconfig.json` strict mode; avoid `any` |
-| Test type inference | Ensure `<T extends V>` and proper return types |
-| Commit rejected | Message must be: `feat:`, `fix:`, `docs:`, etc. |
-| Build fails with type errors | Check TypeScript strict mode, avoid explicit `any` |
-| ESLint config not found | Use `eslint.config.mjs`, NOT `.eslintrc.js` |
-| Imports not sorting | Run `pnpm exec eslint --fix src/` |
-| Coverage threshold not met | Add edge case tests (empty arrays, null, etc.) |
-| Type inference breaks | Use generic constraints: `<T extends V>` |
-
-## Key Files Reference
-
-| File | Purpose |
-|------|---------|
-| `src/index.ts` | Main exports (alphabetical) |
-| `tsconfig.json` | TypeScript strict mode (ES2020, bundler resolution) |
-| `eslint.config.mjs` | ESLint 9 flat config (linting rules) |
-| `.prettierrc.json` | Formatting (2-space, single quotes, trailing commas) |
-| `jest.config.js` | Test config (85% coverage threshold) |
-| `.husky/` | Pre-commit hooks (format + lint) |
-| `commitlint.config.cjs` | Commit message validation |
-
-See [DEVELOPMENT.md](./DEVELOPMENT.md) for architecture details and advanced patterns.
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for architecture background and
+[ROADMAP.md](./ROADMAP.md) for planned modernization (Vitest evaluation,
+ES2022 target).
