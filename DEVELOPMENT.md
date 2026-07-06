@@ -7,17 +7,23 @@ Detailed development documentation for contributors and maintainers.
 ### Core Philosophy
 
 **Data-Last Pattern**: Functions take configuration/predicate first, data last
+
 ```typescript
 // Configuration FIRST, data LAST
 export const filter =
-  <V>(fn: (x: V) => boolean) =>     // Step 1: Predicate
-  <T extends V>(source: ReadonlyArray<T>) =>  // Step 2: Data
+  <V>(
+    fn: (x: V) => boolean, // Step 1: Predicate
+  ) =>
+  <T extends V>(
+    source: ReadonlyArray<T>, // Step 2: Data
+  ) =>
     source.filter(fn) as T[];
 
 // Usage: filter(isEven)([1,2,3,4,5]) ✓
 ```
 
 Benefits:
+
 - Easy composition with `pipe()` and function composition
 - Partial application for functional programming
 - Clear intent: predicate/config determines behavior
@@ -25,6 +31,7 @@ Benefits:
 ### Module Structure
 
 Each utility has this structure:
+
 ```
 src/{utilityName}/
 ├── {utilityName}.ts      # Implementation (data-last curried function)
@@ -33,12 +40,14 @@ src/{utilityName}/
 ```
 
 Module exports can use either pattern:
+
 - `export * from './{utilityName}'` - Export all
 - `export { name } from './{utilityName}'` - Named exports only
 
 ### Type Organization
 
 Shared types in `src/types/`:
+
 - `function.ts` - Function utilities (AnyFn, Constant)
 - `helpers.ts` - Type helpers
 - `array/`, `string.ts`, `number.ts`, `boolean.ts`, `object.ts` - Domain-specific types
@@ -49,12 +58,14 @@ Shared types in `src/types/`:
 ### Adding a New Utility
 
 1. **Create directory structure:**
+
    ```bash
    mkdir -p src/{utilityName}
    ```
 
 2. **Implement function** (`{utilityName}.ts`):
-   ```typescript
+
+   ````typescript
    /**
     * Brief description.
     *
@@ -68,11 +79,14 @@ Shared types in `src/types/`:
     * @param source - Array to filter
     * @returns Filtered array
     */
-   export const filter = <V>(fn: (x: V) => boolean) =>
-     <T extends V>(source: ReadonlyArray<T>) => source.filter(fn) as T[];
-   ```
+   export const filter =
+     <V>(fn: (x: V) => boolean) =>
+     <T extends V>(source: ReadonlyArray<T>) =>
+       source.filter(fn) as T[];
+   ````
 
 3. **Create tests** (`{utilityName}.test.ts`):
+
    ```typescript
    describe('filter', () => {
      test('must filter array elements', () => {
@@ -80,15 +94,18 @@ Shared types in `src/types/`:
      });
    });
    ```
+
    Target: 85%+ coverage (lines, functions, statements)
 
 4. **Export from index:**
+
    ```typescript
    // src/{utilityName}/index.ts
    export * from './{utilityName}';
    ```
 
 5. **Add to main exports:**
+
    ```typescript
    // src/index.ts (keep alphabetical)
    export * from './{utilityName}';
@@ -169,6 +186,7 @@ pnpm doc                # Generate TypeDoc
 ### Build Process
 
 **tsup** outputs three formats:
+
 - **ESM** (`.mjs`) - Modern ES modules
 - **CJS** (`.js`) - CommonJS for older Node versions
 - **DTS** (`.d.ts`, `.d.mts`) - TypeScript type definitions
@@ -195,6 +213,7 @@ Configured via husky + lint-staged:
    - Integrated with semantic-release for automated versioning
 
 **Conventional Commit Types:**
+
 - `feat:` - New feature
 - `fix:` - Bug fix
 - `docs:` - Documentation
@@ -218,6 +237,7 @@ Automated via GitHub Actions:
    - Deploy docs to GitHub Pages
 
 **Version Bumping:**
+
 - `feat:` → MINOR version bump
 - `fix:` → PATCH version bump
 - `BREAKING CHANGE:` → MAJOR version bump
@@ -226,71 +246,74 @@ See `release.config.cjs` for configuration.
 
 ## Configuration Files
 
-| File | Purpose |
-|------|---------|
-| `tsconfig.json` | TypeScript strict mode (ES2020, Bundler resolution) |
-| `tsup.config.ts` | Build configuration |
-| `jest.config.js` | Test framework (85% coverage thresholds) |
-| `eslint.config.mjs` | ESLint 9 flat config (@typescript-eslint, prettier, tsdoc) |
-| `.prettierrc.json` | Formatting (2-space, single quotes, trailing commas) |
-| `package.json` | Scripts, exports, engines (Node >=20, pnpm >=9) |
-| `commitlint.config.cjs` | Commit message validation |
-| `.pnpmrc` | Strict dependency management |
-| `.size-limit.js` | Bundle size limits |
+| File                    | Purpose                                                    |
+| ----------------------- | ---------------------------------------------------------- |
+| `tsconfig.json`         | TypeScript strict mode (ES2020, Bundler resolution)        |
+| `tsup.config.ts`        | Build configuration                                        |
+| `jest.config.js`        | Test framework (85% coverage thresholds)                   |
+| `eslint.config.mjs`     | ESLint 9 flat config (@typescript-eslint, prettier, tsdoc) |
+| `.prettierrc.json`      | Formatting (2-space, single quotes, trailing commas)       |
+| `package.json`          | Scripts, exports, engines (Node >=20, pnpm >=9)            |
+| `commitlint.config.cjs` | Commit message validation                                  |
+| `.pnpmrc`               | Strict dependency management                               |
+| `.size-limit.js`        | Bundle size limits                                         |
 
-### Ruler Configuration
+### AI Instructions
 
-Rule management via Okigu Ruler:
-- Source files: `.ruler/*.md` (13 granular rule files)
-- Configuration: `.ruler/ruler.toml`
-- Generated outputs:
-  - `CLAUDE.md` (Claude Code)
-  - `.cursor/rules/ruler_cursor_instructions.mdc` (Cursor)
-- Update command: `ruler apply --agents cursor,claude`
+AI coding instructions live in a single file: `AGENTS.md` (the operating
+manual). `CLAUDE.md` is a symlink to it, so tools that look for either name
+read the same content.
 
 **Modifying AI instructions:**
-1. Edit relevant `.ruler/*.md` file (use numbered prefixes as guide)
-2. Run `ruler apply --agents cursor,claude`
-3. Review git diff for `CLAUDE.md` and `.cursor/` changes
-4. Commit both `.ruler/` source and generated files together
+
+1. Edit `AGENTS.md` directly
+2. Keep the symlink intact (`test -L CLAUDE.md` must succeed)
 
 ## Troubleshooting
 
 **Build fails with type errors:**
+
 - Check `tsconfig.json` strict mode enabled
 - Avoid explicit `any` types
 - Ensure generics properly constrained
 
 **Tests fail coverage:**
+
 - Add test cases for uncovered branches
 - Check coverage report: `pnpm test:coverage`
 
 **Lint errors:**
+
 - Auto-fix: `pnpm exec eslint --fix src/`
 - Format: `pnpm exec prettier --write src/`
 
 **Type errors in generics:**
+
 - Ensure proper type inference in function signatures
 - Use `extends` constraints appropriately
 - Test with different type combinations
 
 **Commit rejected:**
+
 - Message must follow conventional format
 - Example: `feat: add new utility function`
 
 ## Performance & Optimization
 
 **Bundle size:**
+
 - Target: <30 kB (ESM + CJS)
 - Current: 2.53 kB ESM, 3.4 kB CJS
 - Monitor with: `pnpm size`
 
 **Type coverage:**
+
 - Target: >95%
 - Current: 99.75%
 - Check with: `pnpm type-check`
 
 **Runtime:**
+
 - All utilities are lightweight wrappers
 - Zero dependencies (by design)
 - Leverage TypeScript's type system for optimization

@@ -75,10 +75,9 @@ Fast repo-consistency sweeps:
    ```
 2. **README table map**: every new utility on this branch appears in
    `CATEGORIES` in `scripts/generate-utilities-table.js`.
-3. **Ruler sync**: if the branch touched `CLAUDE.md` or `.cursor/rules/`
-   without touching `.ruler/`, warn — Ruler regeneration will clobber it.
-   If it touched `.ruler/` without regenerated outputs, run
-   `ruler apply --agents cursor,claude` (if installed) or tell the user to.
+3. **Instructions symlink**: `CLAUDE.md` must remain a symlink to `AGENTS.md`
+   (`test -L CLAUDE.md`). If the branch replaced it with a regular file,
+   restore the link and move the content into `AGENTS.md`.
 4. **JSDoc presence** on every new export (`@category`, `@example`, `@param`,
    `@returns`, `@typeParam`).
 
