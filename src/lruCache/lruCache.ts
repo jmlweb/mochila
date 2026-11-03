@@ -20,6 +20,9 @@ type Item<T> = {
  * - `set`: Sets an item in the cache.
  * - `refresh`: Deletes all items from the cache.
  *
+ * Reading a live item with `get` or `has` marks it as most recently used, so
+ * when the cache is full `set` evicts the least recently used item.
+ *
  * @category Cache
  *
  * @typeParam T - The type of the cached items.
@@ -67,23 +70,24 @@ export const LRUCache = <T>({ max, ttl, onRemove }: CacheOptions<T> = {}) => {
     }
   };
 
-  const has = (key: unknown) => {
+  // A live hit re-inserts the key so Set iteration order tracks recency of use.
+  const getLiveItem = (key: unknown) => {
     const item = items.get(key);
-    if (item?.expiration && item.expiration < Date.now()) {
-      deleteItem(key);
-      return false;
+    if (!item) {
+      return undefined;
     }
-    return items.has(key);
-  };
-
-  const get = (key: unknown) => {
-    const item = items.get(key);
-    if (item?.expiration && item.expiration < Date.now()) {
+    if (item.expiration && item.expiration < Date.now()) {
       deleteItem(key);
       return undefined;
     }
-    return item?.value;
+    keys.delete(key);
+    keys.add(key);
+    return item;
   };
+
+  const has = (key: unknown) => getLiveItem(key) !== undefined;
+
+  const get = (key: unknown) => getLiveItem(key)?.value;
 
   const set = (key: unknown, value: T, ttlOverride?: number) => {
     keys.delete(key);
