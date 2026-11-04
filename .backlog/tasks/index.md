@@ -4,7 +4,7 @@
 
 | Status | Count |
 |--------|-------|
-| Pending | 2 |
+| Pending | 5 |
 | Active | 0 |
 | Blocked | 0 |
 | Complete | 1 |
@@ -19,6 +19,9 @@ _No active tasks._
 |----|-------|----------|------|---------|
 | TSK-002 | Fix: memoize cache key collides for undefined/null/NaN/Infinity arguments | P3 |  | 2026-10-31 |
 | TSK-003 | Fix: Release workflow masks npm publish failures as success | P3 |  | 2026-10-31 |
+| TSK-004 | Fix: debounce sync throw in fn escapes as uncaught exception and pending promises never settle | P2 | debounce, bug | 2026-11-03 |
+| TSK-005 | Fix: Subscription subscriber that unsubscribes during notify causes the next subscriber to be skipped | P3 | subscription, bug | 2026-11-03 |
+| TSK-006 | Fix: retry maxAttempts <= 0 never calls fn and rejects with undefined | P3 | retry, bug | 2026-11-03 |
 
 ## Recently Completed
 
