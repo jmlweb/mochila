@@ -27,6 +27,71 @@ describe('LRUCache', () => {
     expect(cache.get('key4')).toBe('value4');
   });
 
+  it('should keep a key that was read with get() and evict the least recently used one', () => {
+    const cache = LRUCache<string>({ max: 2 });
+
+    cache.set('a', 'A');
+    cache.set('b', 'B');
+    const read: string | undefined = cache.get('a');
+    cache.set('c', 'C');
+
+    expect(read).toBe('A');
+    expect(cache.get('a')).toBe('A');
+    expect(cache.get('b')).toBeUndefined();
+    expect(cache.get('c')).toBe('C');
+  });
+
+  it('should keep a key that was checked with has() and evict the least recently used one', () => {
+    const cache = LRUCache<string>({ max: 2 });
+
+    cache.set('a', 'A');
+    cache.set('b', 'B');
+    const isPresent: boolean = cache.has('a');
+    cache.set('c', 'C');
+
+    expect(isPresent).toBe(true);
+    expect(cache.has('a')).toBe(true);
+    expect(cache.has('b')).toBe(false);
+    expect(cache.has('c')).toBe(true);
+  });
+
+  it('should not refresh recency on a miss', () => {
+    const cache = LRUCache<string>({ max: 2 });
+
+    cache.set('a', 'A');
+    cache.set('b', 'B');
+    expect(cache.get('missing')).toBeUndefined();
+    expect(cache.has('missing')).toBe(false);
+    cache.set('c', 'C');
+
+    expect(cache.get('a')).toBeUndefined();
+    expect(cache.get('b')).toBe('B');
+    expect(cache.get('c')).toBe('C');
+  });
+
+  it('should refresh recency for a stored undefined value', () => {
+    const cache = LRUCache<string | undefined>({ max: 2 });
+
+    cache.set('a', undefined);
+    cache.set('b', 'B');
+    expect(cache.has('a')).toBe(true);
+    cache.set('c', 'C');
+
+    expect(cache.has('a')).toBe(true);
+    expect(cache.has('b')).toBe(false);
+  });
+
+  it('should evict the least recently read key with max of 1', () => {
+    const cache = LRUCache<string>({ max: 1 });
+
+    cache.set('a', 'A');
+    expect(cache.get('a')).toBe('A');
+    cache.set('b', 'B');
+
+    expect(cache.get('a')).toBeUndefined();
+    expect(cache.get('b')).toBe('B');
+  });
+
   it('should respect the time-to-live (TTL) for each item', (done) => {
     const cache = LRUCache<string>({ max: 3, ttl: 100 });
 

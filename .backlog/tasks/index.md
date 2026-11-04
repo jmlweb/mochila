@@ -4,10 +4,10 @@
 
 | Status | Count |
 |--------|-------|
-| Pending | 6 |
+| Pending | 5 |
 | Active | 0 |
 | Blocked | 0 |
-| Complete | 0 |
+| Complete | 1 |
 
 ## Active Tasks
 
@@ -17,7 +17,6 @@ _No active tasks._
 
 | ID | Title | Priority | Tags | Created |
 |----|-------|----------|------|---------|
-| TSK-001 | Fix: LRUCache evicts by insertion order: get() does not refresh recency | P2 |  | 2026-10-31 |
 | TSK-002 | Fix: memoize cache key collides for undefined/null/NaN/Infinity arguments | P3 |  | 2026-10-31 |
 | TSK-003 | Fix: Release workflow masks npm publish failures as success | P3 |  | 2026-10-31 |
 | TSK-004 | Fix: debounce sync throw in fn escapes as uncaught exception and pending promises never settle | P2 | debounce, bug | 2026-11-03 |
@@ -28,3 +27,4 @@ _No active tasks._
 
 | ID | Title | Completed |
 |----|-------|-----------|
+| TSK-001 | Fix: LRUCache evicts by insertion order: get() does not refresh recency | 2026-11-03 |
