@@ -253,8 +253,8 @@ See `release.config.cjs` for configuration.
 | `jest.config.js`        | Test framework (85% coverage thresholds)                   |
 | `eslint.config.mjs`     | ESLint 9 flat config (@typescript-eslint, prettier, tsdoc) |
 | `.prettierrc.json`      | Formatting (2-space, single quotes, trailing commas)       |
-| `package.json`          | Scripts, exports, engines (Node >=20, pnpm >=9)            |
-| `commitlint.config.cjs` | Commit message validation                                  |
+| `package.json`          | Scripts, exports, engines (Node >=22, pnpm >=9)            |
+| `commitlint.config.mjs` | Commit message validation                                  |
 | `.pnpmrc`               | Strict dependency management                               |
 | `.size-limit.js`        | Bundle size limits                                         |
 

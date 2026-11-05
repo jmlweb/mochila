@@ -15,5 +15,5 @@
 export const fromEntries = <T = unknown>(
   entries: readonly (readonly [string, T])[],
 ): Record<string, T> => {
-  return Object.fromEntries(entries) as Record<string, T>;
+  return Object.fromEntries(entries);
 };

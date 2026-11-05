@@ -29,7 +29,7 @@ describe('retry', () => {
 
     const mockSetTimeout = jest.fn((callback, delay) => {
       delays.push(delay as number);
-      return originalSetTimeout(callback, 0) as unknown as NodeJS.Timeout;
+      return originalSetTimeout(callback, 0);
     });
 
     const fn = jest.fn().mockRejectedValue(new Error('fail'));

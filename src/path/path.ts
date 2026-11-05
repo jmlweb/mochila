@@ -29,10 +29,10 @@ export const path =
   <O>(o: O): PathResult<K, O> => {
     const keys = key.split('.').filter((k) => k.length > 0);
     if (keys.length === 0) {
-      return undefined as PathResult<K, O>;
+      return undefined;
     }
     if (o == null || typeof o !== 'object') {
-      return undefined as PathResult<K, O>;
+      return undefined;
     }
     let value: unknown = o;
     const length = keys.length;
@@ -40,9 +40,9 @@ export const path =
       const key = keys[i];
       value = (value as Record<string, unknown>)[key as keyof typeof value];
       if ((value == null || typeof value !== 'object') && i < length - 1) {
-        return undefined as PathResult<K, O>;
+        return undefined;
       }
     }
 
-    return value as PathResult<K, O>;
+    return value;
   };
