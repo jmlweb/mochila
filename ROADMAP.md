@@ -40,7 +40,6 @@ The following items represent potential improvements, not critical issues:
 - `jest.config.js` - uses `module.exports`
 - `release.config.cjs` - uses `module.exports`
 - `.size-limit.js` - uses `module.exports`
-- `commitlint.config.cjs` - uses `.cjs` extension
 
 **Impact**: Low (tooling-dependent)
 

@@ -188,7 +188,7 @@ cachedCompute(5); // 25 (cached)
 ## Installation
 
 **Requirements:**
-- Node.js 20+
+- Node.js 22+
 - pnpm 9+
 
 ```bash

@@ -86,6 +86,6 @@ export function pipe<A extends unknown[], B, C, D, E, F, G, H, I, R>(
 export function pipe(...fns: AnyFn[]): (...x: unknown[]) => unknown {
   return (...x: unknown[]): unknown => {
     const initial: unknown = fns[0]!(...x);
-    return fns.slice(1).reduce<unknown>((y, f) => f(y as never), initial);
+    return fns.slice(1).reduce<unknown>((y, f) => f(y), initial);
   };
 }

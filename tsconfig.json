@@ -4,6 +4,8 @@
     "lib": ["ES2022"],
     "allowJs": true,
     "noEmit": true,
+    "rootDir": "./src",
+    "types": ["jest", "node"],
     "moduleDetection": "force",
     "verbatimModuleSyntax": false
   },
