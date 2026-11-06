@@ -3,19 +3,19 @@
  */
 export type RetryConfig = {
   /**
-   * Maximum number of attempts (default: 3)
+   * Maximum number of attempts (default: 3). Must be at least 1.
    */
   maxAttempts?: number;
   /**
-   * Initial delay in milliseconds (default: 100)
+   * Initial delay in milliseconds (default: 100). Must not be negative.
    */
   initialDelayMs?: number;
   /**
-   * Multiplier for exponential backoff (default: 2)
+   * Multiplier for exponential backoff (default: 2). Must not be negative.
    */
   backoffMultiplier?: number;
   /**
-   * Maximum delay in milliseconds (default: 30000)
+   * Maximum delay in milliseconds (default: 30000). Must not be negative.
    */
   maxDelayMs?: number;
 };
@@ -23,6 +23,10 @@ export type RetryConfig = {
 /**
  * Retries an async function with exponential backoff.
  * Useful for handling transient failures in network requests, etc.
+ *
+ * Throws an `Error` when `retry(config)` is called with a `maxAttempts` below
+ * 1 or `NaN`, or a `NaN` or negative `initialDelayMs`, `backoffMultiplier`
+ * or `maxDelayMs`.
  *
  * @category Promise
  * @example
@@ -35,17 +39,29 @@ export type RetryConfig = {
  * @returns Wrapped function that retries on failure
  * @typeParam T - Return type of the function
  */
-export const retry =
-  (config: RetryConfig = {}) =>
-  <T>(fn: () => Promise<T>): (() => Promise<T>) => {
-    const {
-      maxAttempts = 3,
-      initialDelayMs = 100,
-      backoffMultiplier = 2,
-      maxDelayMs = 30000,
-    } = config;
+export const retry = (config: RetryConfig = {}) => {
+  const {
+    maxAttempts = 3,
+    initialDelayMs = 100,
+    backoffMultiplier = 2,
+    maxDelayMs = 30000,
+  } = config;
 
-    return async () => {
+  if (!(maxAttempts >= 1)) {
+    throw new Error('maxAttempts must be at least 1');
+  }
+  if (!(initialDelayMs >= 0)) {
+    throw new Error('initialDelayMs must be a non-negative number');
+  }
+  if (!(backoffMultiplier >= 0)) {
+    throw new Error('backoffMultiplier must be a non-negative number');
+  }
+  if (!(maxDelayMs >= 0)) {
+    throw new Error('maxDelayMs must be a non-negative number');
+  }
+
+  return <T>(fn: () => Promise<T>): (() => Promise<T>) =>
+    async () => {
       let lastError: Error | undefined;
 
       for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
@@ -66,4 +82,4 @@ export const retry =
 
       throw lastError;
     };
-  };
+};
