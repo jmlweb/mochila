@@ -168,4 +168,135 @@ describe('memoize', () => {
     expect(count1).toBe(1);
     expect(count2).toBe(1);
   });
+
+  describe('cache key', () => {
+    const describeArg = jest.fn((x?: unknown, ..._rest: unknown[]): string => {
+      if (x === undefined) return 'undefined';
+      if (typeof x === 'bigint') return `bigint:${x}`;
+      if (typeof x === 'function') return 'function';
+      if (typeof x === 'symbol') return 'symbol';
+      return `${typeof x}:${String(x)}`;
+    });
+
+    afterEach(() => {
+      describeArg.mockClear();
+    });
+
+    test('keeps undefined and null apart in one instance', () => {
+      const memoized = memoize(describeArg);
+      const results: string[] = [memoized(null), memoized(undefined)];
+
+      expect(results).toEqual(['object:null', 'undefined']);
+      expect(describeArg).toHaveBeenCalledTimes(2);
+    });
+
+    test('keeps NaN, Infinity, -Infinity and null apart', () => {
+      const memoized = memoize(describeArg);
+      const inputs = [NaN, Infinity, -Infinity, null];
+
+      expect(inputs.map((x) => memoized(x))).toEqual([
+        'number:NaN',
+        'number:Infinity',
+        'number:-Infinity',
+        'object:null',
+      ]);
+      expect(describeArg).toHaveBeenCalledTimes(4);
+    });
+
+    test('still caches each of those values on repeat calls', () => {
+      const memoized = memoize(describeArg);
+      [undefined, NaN, Infinity, -Infinity, null].forEach((x) => {
+        memoized(x);
+        memoized(x);
+      });
+
+      expect(describeArg).toHaveBeenCalledTimes(5);
+    });
+
+    test('keeps undefined apart from null inside arrays and objects', () => {
+      const fn = jest.fn((x: unknown[]) => x.length);
+      const memoized = memoize(fn);
+
+      memoized([undefined]);
+      memoized([null]);
+      memoized({ a: undefined } as never);
+      memoized({} as never);
+
+      expect(fn).toHaveBeenCalledTimes(4);
+    });
+
+    test('distinguishes functions by identity', () => {
+      const first = (): number => 1;
+      const second = (): number => 1;
+      const memoized = memoize(describeArg);
+
+      memoized(first);
+      memoized(second);
+      memoized(first);
+      memoized(null);
+
+      expect(describeArg).toHaveBeenCalledTimes(3);
+    });
+
+    test('distinguishes symbols by identity', () => {
+      const a = Symbol('same');
+      const b = Symbol('same');
+      const memoized = memoize(describeArg);
+
+      memoized(a);
+      memoized(b);
+      memoized(a);
+      memoized(null);
+
+      expect(describeArg).toHaveBeenCalledTimes(3);
+    });
+
+    test('supports BigInt and keeps it apart from number and string', () => {
+      const memoized = memoize(describeArg);
+
+      expect(memoized(1n)).toBe('bigint:1');
+      expect(memoized(2n)).toBe('bigint:2');
+      expect(memoized(1)).toBe('number:1');
+      expect(memoized('1')).toBe('string:1');
+      expect(memoized(1n)).toBe('bigint:1');
+      expect(describeArg).toHaveBeenCalledTimes(4);
+    });
+
+    test('still throws for circular arguments', () => {
+      const circular: Record<string, unknown> = {};
+      circular['self'] = circular;
+      const memoized = memoize(describeArg);
+
+      expect(() => memoized(circular)).toThrow(TypeError);
+      expect(describeArg).not.toHaveBeenCalled();
+    });
+
+    test('keeps structural keys for objects, arrays and mixed args', () => {
+      const memoized = memoize(describeArg);
+
+      memoized({ a: 1, b: [1, 2] });
+      memoized({ a: 1, b: [1, 2] });
+      memoized([1, { c: 'x' }], 'y', 3);
+      memoized([1, { c: 'x' }], 'y', 3);
+
+      expect(describeArg).toHaveBeenCalledTimes(2);
+    });
+
+    test('treats equal dates as one key and -0 as 0, as before', () => {
+      const memoized = memoize(describeArg);
+
+      memoized(new Date(0));
+      memoized(new Date(0));
+      memoized(0);
+      memoized(-0);
+
+      expect(describeArg).toHaveBeenCalledTimes(2);
+    });
+
+    test('keeps the memoized function type', () => {
+      const memoized: (x?: unknown) => string = memoize(describeArg);
+
+      expect(memoized(undefined)).toBe('undefined');
+    });
+  });
 });
