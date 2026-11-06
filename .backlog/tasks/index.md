@@ -5,13 +5,13 @@
 | Status | Count |
 |--------|-------|
 | Pending | 4 |
-| Active | 1 |
+| Active | 0 |
 | Blocked | 0 |
-| Complete | 1 |
+| Complete | 2 |
 
 ## Active Tasks
 
-- TSK-003: Fix: Release workflow masks npm publish failures as success (P3)
+_No active tasks._
 
 ## Pending Tasks
 
@@ -26,4 +26,5 @@
 
 | ID | Title | Completed |
 |----|-------|-----------|
+| TSK-003 | Fix: Release workflow masks npm publish failures as success | 2026-11-06 |
 | TSK-001 | Fix: LRUCache evicts by insertion order: get() does not refresh recency | 2026-11-03 |
