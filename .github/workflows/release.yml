@@ -46,7 +46,13 @@ jobs:
       - name: Publish to npm with provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --provenance --access public || echo "Publish skipped (no new version or already published)"
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "$(npm view "mochila-ts@${VERSION}" version 2>/dev/null)" = "${VERSION}" ]; then
+            echo "mochila-ts@${VERSION} already on npm, skipping publish"
+          else
+            npm publish --provenance --access public
+          fi
   docs:
     needs: release
     runs-on: ubuntu-latest
