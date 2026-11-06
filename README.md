@@ -1,5 +1,10 @@
 # 🎒 Mochila
 
+> [!WARNING]
+> **This project is unmaintained.** No further fixes or releases are planned. Existing versions stay on npm and keep working.
+>
+> For new projects, use [remeda](https://github.com/remeda/remeda) (data-last, typed) or [es-toolkit](https://github.com/toss/es-toolkit) (modern lodash replacement).
+
 Your Lightweight Travel Companion for TypeScript Programming
 
 [![npm version](https://img.shields.io/npm/v/mochila-ts)](https://www.npmjs.com/package/mochila-ts)
