@@ -1,12 +1,13 @@
 ---
 id: TSK-003
 title: Fix: Release workflow masks npm publish failures as success
-status: pending
+status: active
 priority: P3
 tags: []
 created: 2026-10-31
 source: report/RPT-003
 depends-on: []
+started: 2026-11-06
 ---
 
 # Fix: Release workflow masks npm publish failures as success
@@ -28,3 +29,4 @@ Source: RPT-003. `.github/workflows/release.yml:49` ends `npm publish` with `|| 
 ## Progress Log
 
 - [2026-10-31] Created
+- [2026-11-06] Started
