@@ -153,4 +153,82 @@ describe('retry', () => {
 
     await expect(retried()).rejects.toThrow('second error');
   });
+
+  describe('config validation', () => {
+    const succeed = () => jest.fn(() => Promise.resolve(1));
+
+    test.each([0, -1, -0.5, NaN, -Infinity])(
+      'throws when maxAttempts is %p',
+      (maxAttempts) => {
+        expect(() => retry({ maxAttempts })).toThrow(
+          new Error('maxAttempts must be at least 1'),
+        );
+      },
+    );
+
+    test('never calls fn when the config is invalid', () => {
+      const fn = succeed();
+
+      expect(() => retry({ maxAttempts: 0 })(fn)).toThrow();
+      expect(fn).not.toHaveBeenCalled();
+    });
+
+    test.each([
+      ['initialDelayMs', -1],
+      ['initialDelayMs', NaN],
+      ['backoffMultiplier', -2],
+      ['backoffMultiplier', NaN],
+      ['maxDelayMs', -1],
+      ['maxDelayMs', NaN],
+    ] as const)('throws when %s is %p', (option, value) => {
+      expect(() => retry({ [option]: value })).toThrow(
+        new Error(`${option} must be a non-negative number`),
+      );
+    });
+
+    test.each([1, 1.5, 2.9, Infinity])(
+      'still accepts maxAttempts %p',
+      async (maxAttempts) => {
+        const fn = succeed();
+
+        await expect(retry({ maxAttempts })(fn)()).resolves.toBe(1);
+        expect(fn).toHaveBeenCalledTimes(1);
+      },
+    );
+
+    test('retries with maxAttempts Infinity until fn succeeds', async () => {
+      const fn = jest
+        .fn<Promise<string>, []>()
+        .mockRejectedValueOnce(new Error('a'))
+        .mockRejectedValueOnce(new Error('b'))
+        .mockResolvedValue('ok');
+
+      await expect(
+        retry({ maxAttempts: Infinity, initialDelayMs: 0 })(fn)(),
+      ).resolves.toBe('ok');
+      expect(fn).toHaveBeenCalledTimes(3);
+    });
+
+    test('keeps a non-integer maxAttempts rounding up as before', async () => {
+      const fn = jest
+        .fn<Promise<number>, []>()
+        .mockRejectedValue(new Error('x'));
+
+      await expect(
+        retry({ maxAttempts: 1.5, initialDelayMs: 0 })(fn)(),
+      ).rejects.toThrow('x');
+      expect(fn).toHaveBeenCalledTimes(2);
+    });
+
+    test('accepts zero and Infinity for the delay options', async () => {
+      const fn = succeed();
+      const retried = retry({
+        initialDelayMs: 0,
+        backoffMultiplier: 0,
+        maxDelayMs: Infinity,
+      })(fn);
+
+      await expect(retried()).resolves.toBe(1);
+    });
+  });
 });

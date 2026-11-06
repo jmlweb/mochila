@@ -3,6 +3,12 @@ type Subscriber<V> = (data: V) => void;
 /**
  * Creates a Subscription object that allows subscribing, unsubscribing, notifying and resetting subscribers.
  *
+ * `initialSubscribers` is copied, so the array you pass is never mutated and
+ * later changes to it have no effect. `notify` calls the subscribers
+ * registered when it started, each once, even if one unsubscribes itself or
+ * another during the call; subscribers added during the call wait for the
+ * next `notify`.
+ *
  * @category Subscription
  *
  * @example
@@ -16,7 +22,7 @@ type Subscriber<V> = (data: V) => void;
  * ```
  */
 export const Subscription = <V>(initialSubscribers: Subscriber<V>[] = []) => {
-  const subscribers: Subscriber<V>[] = initialSubscribers;
+  const subscribers: Subscriber<V>[] = [...initialSubscribers];
 
   const subscribe = (subscriber: Subscriber<V>) => {
     subscribers.push(subscriber);
@@ -30,7 +36,7 @@ export const Subscription = <V>(initialSubscribers: Subscriber<V>[] = []) => {
   };
 
   const notify = (data: V) => {
-    subscribers.forEach((subscriber) => {
+    [...subscribers].forEach((subscriber) => {
       subscriber(data);
     });
   };

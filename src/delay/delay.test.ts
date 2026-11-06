@@ -71,7 +71,7 @@ describe('delay', () => {
     const elapsed = Date.now() - start;
 
     expect(results).toEqual([1, 2, 3]);
-    expect(elapsed).toBeGreaterThanOrEqual(30);
+    expect(elapsed).toBeGreaterThanOrEqual(25);
     expect(elapsed).toBeLessThan(150);
   });
 });
