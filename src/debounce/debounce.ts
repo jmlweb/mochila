@@ -32,7 +32,9 @@ export const debounce = <Fn extends AnyFn>(duration: number, fn: Fn) => {
       timeout = setTimeout(() => {
         const currentPending = [...pending];
         pending = [];
-        Promise.resolve(fn(...args)).then(
+        new Promise<ReturnType<Fn>>((resolveResult) => {
+          resolveResult(fn(...args));
+        }).then(
           (data: ReturnType<Fn>) => {
             currentPending.forEach(({ resolve }) => {
               resolve(data);
